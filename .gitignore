@@ -2,3 +2,4 @@
 .vs
 TetrisOpenGL/x64
 *.user
+.idea
