@@ -16,7 +16,11 @@ public:
 
     //---------------------------------------------------------------
 
-    void Move(const double& scaleFactor, const Key keyPressed) override;
+    void Move(const double& scaleFactor, Key keyPressed) override;
+
+    //---------------------------------------------------------------
+
+    void SetMove(const bool shouldMove) override;
 
     //---------------------------------------------------------------
 

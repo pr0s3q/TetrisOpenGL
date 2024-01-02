@@ -15,7 +15,7 @@ unsigned int Entity::m_vertexShader = 0;
 //---------------------------------------------------------------
 
 Entity::Entity(const unsigned int count, const unsigned int mode)
-    : m_count(count), m_mode(mode), m_VAO(0), m_VBO(0)
+    : m_shouldMove(true), m_count(count), m_mode(mode), m_VAO(0), m_VBO(0)
 {
 }
 

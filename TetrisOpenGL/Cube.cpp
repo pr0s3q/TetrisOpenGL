@@ -48,7 +48,10 @@ void Cube::Color()
 
 void Cube::Move(const double& scaleFactor, const Key keyPressed)
 {
-    constexpr double moveFactor = 0.25;
+    if (!m_shouldMove)
+        return;
+
+    constexpr double moveFactor = 1.0;
     switch (keyPressed)
     {
         case Key::W:
@@ -87,6 +90,13 @@ void Cube::Move(const double& scaleFactor, const Key keyPressed)
 
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_positions), m_positions);
+}
+
+//---------------------------------------------------------------
+
+void Cube::SetMove(const bool shouldMove)
+{
+    m_shouldMove = shouldMove;
 }
 
 //---------------------------------------------------------------

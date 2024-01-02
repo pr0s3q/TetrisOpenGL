@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Entity.h"
+#include "KeyboardManager.h"
 
 class Tetris
 {
@@ -33,7 +34,7 @@ private:
 
     //---------------------------------------------------------------
 
-    void Loop() const;
+    void Loop();
 
     //---------------------------------------------------------------
 
@@ -47,6 +48,7 @@ private:
 
     std::vector<Entity*> m_entities;
     GLFWwindow* m_window;
+    KeyboardManager m_keyboardManager;
     double m_scaleFactorX;
     double m_scaleFactorY;
 

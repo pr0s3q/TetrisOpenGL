@@ -5,6 +5,8 @@
 #include "Cube.h"
 #include "Tetris.h"
 
+//---------------------------------------------------------------
+
 void TetriminoCreator::Create(std::vector<Entity*>& entities, const double scaleFactorX, const double scaleFactorY, const TetriminoType tetriminoType)
 {
     switch (tetriminoType)
@@ -32,6 +34,8 @@ void TetriminoCreator::Create(std::vector<Entity*>& entities, const double scale
         break;*/
     }
 }
+
+//---------------------------------------------------------------
 
 void TetriminoCreator::CreateITetrimino(std::vector<Entity*>& entities, const double scaleFactorX, const double scaleFactorY)
 {
@@ -65,10 +69,10 @@ void TetriminoCreator::CreateITetrimino(std::vector<Entity*>& entities, const do
     positions.clear();
     positions.insert(positions.end(),
         {
-            1.45 * scaleFactorX, 1.45 * scaleFactorY,
-            0.55 * scaleFactorX, 1.45 * scaleFactorY,
-            0.55 * scaleFactorX, 0.55 * scaleFactorY,
-            1.45 * scaleFactorX, 0.55 * scaleFactorY
+             0.45 * scaleFactorX, 2.45 * scaleFactorY,
+            -0.45 * scaleFactorX, 2.45 * scaleFactorY,
+            -0.45 * scaleFactorX, 1.55 * scaleFactorY,
+             0.45 * scaleFactorX, 1.55 * scaleFactorY
         });
 
     entities.emplace_back(new Cube(positions, colors));
@@ -76,10 +80,10 @@ void TetriminoCreator::CreateITetrimino(std::vector<Entity*>& entities, const do
     positions.clear();
     positions.insert(positions.end(),
         {
-            1.45 * scaleFactorX, 2.45 * scaleFactorY,
-            0.55 * scaleFactorX, 2.45 * scaleFactorY,
-            0.55 * scaleFactorX, 1.55 * scaleFactorY,
-            1.45 * scaleFactorX, 1.55 * scaleFactorY
+             0.45 * scaleFactorX, 3.45 * scaleFactorY,
+            -0.45 * scaleFactorX, 3.45 * scaleFactorY,
+            -0.45 * scaleFactorX, 2.55 * scaleFactorY,
+             0.45 * scaleFactorX, 2.55 * scaleFactorY
         });
 
     entities.emplace_back(new Cube(positions, colors));

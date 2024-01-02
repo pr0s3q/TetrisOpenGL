@@ -82,6 +82,7 @@
   <ItemGroup>
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="KeyboardManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="TetriminoCreator.cpp" />
     <ClCompile Include="Tetris.cpp" />
@@ -90,6 +91,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Enums.h" />
+    <ClInclude Include="KeyboardManager.h" />
     <ClInclude Include="TetriminoCreator.h" />
     <ClInclude Include="Tetris.h" />
   </ItemGroup>
