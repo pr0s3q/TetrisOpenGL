@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 
+#include "Enums.h"
+
 class Entity
 {
 public:
@@ -35,6 +37,10 @@ public:
     //---------------------------------------------------------------
 
     void Loop();
+
+    //---------------------------------------------------------------
+
+    virtual void Move(const double& scaleFactor, const Key keyPressed) = 0;
 
     //---------------------------------------------------------------
 

@@ -1,12 +1,12 @@
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
 
-#include "Tetris.h"
-
 #include <stdexcept>
 #include <string>
 
 #include "Cube.h"
+#include "Tetris.h"
+#include "TetriminoCreator.h"
 
 //---------------------------------------------------------------
 
@@ -61,56 +61,9 @@ void Tetris::AddEntity()
 {
     m_entities = std::vector<Entity*>();
 
-    m_entities.reserve(1);
+    m_entities.reserve(4);
 
-    std::vector<double> positions;
-    positions.reserve(8);
-    positions.insert(positions.end(),
-        {
-             0.45 * m_scaleFactorX,  0.45 * m_scaleFactorY,
-            -0.45 * m_scaleFactorX,  0.45 * m_scaleFactorY,
-            -0.45 * m_scaleFactorX, -0.45 * m_scaleFactorY,
-             0.45 * m_scaleFactorX, -0.45 * m_scaleFactorY
-        });
-
-    std::vector<float> colors;
-    colors.reserve(4);
-    colors.insert(colors.end(), { 1.0f , 0.0f , 0.0f , 1.0f });
-
-    m_entities.emplace_back(new Cube(positions, colors));
-
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-             0.45 * m_scaleFactorX, 1.45 * m_scaleFactorY,
-            -0.45 * m_scaleFactorX, 1.45 * m_scaleFactorY,
-            -0.45 * m_scaleFactorX, 0.55 * m_scaleFactorY,
-             0.45 * m_scaleFactorX, 0.55 * m_scaleFactorY
-        });
-
-    m_entities.emplace_back(new Cube(positions, colors));
-
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            1.45 * m_scaleFactorX, 1.45 * m_scaleFactorY,
-            0.55 * m_scaleFactorX, 1.45 * m_scaleFactorY,
-            0.55 * m_scaleFactorX, 0.55 * m_scaleFactorY,
-            1.45 * m_scaleFactorX, 0.55 * m_scaleFactorY
-        });
-
-    m_entities.emplace_back(new Cube(positions, colors));
-
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            1.45 * m_scaleFactorX, 2.45 * m_scaleFactorY,
-            0.55 * m_scaleFactorX, 2.45 * m_scaleFactorY,
-            0.55 * m_scaleFactorX, 1.55 * m_scaleFactorY,
-            1.45 * m_scaleFactorX, 1.55 * m_scaleFactorY
-        });
-
-    m_entities.emplace_back(new Cube(positions, colors));
+    TetriminoCreator::Create(m_entities, m_scaleFactorX, m_scaleFactorY, TetriminoType::I);
 }
 
 //---------------------------------------------------------------
@@ -142,6 +95,35 @@ void Tetris::Loop() const
 
         // Poll for and process events
         glfwPollEvents();
+
+        if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
+        {
+            for (const auto entity : m_entities)
+            {
+                entity->Move(m_scaleFactorY, Key::S);
+            }
+        }
+        if(glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
+        {
+            for (const auto entity : m_entities)
+            {
+                entity->Move(m_scaleFactorY, Key::W);
+            }
+        }
+        if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
+        {
+            for (const auto entity : m_entities)
+            {
+                entity->Move(m_scaleFactorX, Key::A);
+            }
+        }
+        if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
+        {
+            for (const auto entity : m_entities)
+            {
+                entity->Move(m_scaleFactorX, Key::D);
+            }
+        }
     }
 }
 

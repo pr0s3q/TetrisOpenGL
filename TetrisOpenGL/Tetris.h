@@ -47,8 +47,8 @@ private:
 
     std::vector<Entity*> m_entities;
     GLFWwindow* m_window;
-    const double m_scaleFactorX;
-    const double m_scaleFactorY;
+    double m_scaleFactorX;
+    double m_scaleFactorY;
 
     static const int s_height;
     static const int s_width;
