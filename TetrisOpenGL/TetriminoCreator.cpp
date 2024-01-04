@@ -43,10 +43,10 @@ void TetriminoCreator::CreateITetrimino(std::vector<Entity*>& entities, const do
     positions.reserve(8);
     positions.insert(positions.end(),
         {
-             0.45 * scaleFactorX,  0.45 * scaleFactorY,
-            -0.45 * scaleFactorX,  0.45 * scaleFactorY,
-            -0.45 * scaleFactorX, -0.45 * scaleFactorY,
-             0.45 * scaleFactorX, -0.45 * scaleFactorY
+             0.45 * scaleFactorX, 7.45 * scaleFactorY,
+            -0.45 * scaleFactorX, 7.45 * scaleFactorY,
+            -0.45 * scaleFactorX, 6.55 * scaleFactorY,
+             0.45 * scaleFactorX, 6.55 * scaleFactorY
         });
 
     std::vector<float> colors;
@@ -58,10 +58,10 @@ void TetriminoCreator::CreateITetrimino(std::vector<Entity*>& entities, const do
     positions.clear();
     positions.insert(positions.end(),
         {
-             0.45 * scaleFactorX, 1.45 * scaleFactorY,
-            -0.45 * scaleFactorX, 1.45 * scaleFactorY,
-            -0.45 * scaleFactorX, 0.55 * scaleFactorY,
-             0.45 * scaleFactorX, 0.55 * scaleFactorY
+             0.45 * scaleFactorX, 8.45 * scaleFactorY,
+            -0.45 * scaleFactorX, 8.45 * scaleFactorY,
+            -0.45 * scaleFactorX, 7.55 * scaleFactorY,
+             0.45 * scaleFactorX, 7.55 * scaleFactorY
         });
 
     entities.emplace_back(new Cube(positions, colors));
@@ -69,10 +69,10 @@ void TetriminoCreator::CreateITetrimino(std::vector<Entity*>& entities, const do
     positions.clear();
     positions.insert(positions.end(),
         {
-             0.45 * scaleFactorX, 2.45 * scaleFactorY,
-            -0.45 * scaleFactorX, 2.45 * scaleFactorY,
-            -0.45 * scaleFactorX, 1.55 * scaleFactorY,
-             0.45 * scaleFactorX, 1.55 * scaleFactorY
+             0.45 * scaleFactorX, 9.45 * scaleFactorY,
+            -0.45 * scaleFactorX, 9.45 * scaleFactorY,
+            -0.45 * scaleFactorX, 8.55 * scaleFactorY,
+             0.45 * scaleFactorX, 8.55 * scaleFactorY
         });
 
     entities.emplace_back(new Cube(positions, colors));
@@ -80,10 +80,10 @@ void TetriminoCreator::CreateITetrimino(std::vector<Entity*>& entities, const do
     positions.clear();
     positions.insert(positions.end(),
         {
-             0.45 * scaleFactorX, 3.45 * scaleFactorY,
-            -0.45 * scaleFactorX, 3.45 * scaleFactorY,
-            -0.45 * scaleFactorX, 2.55 * scaleFactorY,
-             0.45 * scaleFactorX, 2.55 * scaleFactorY
+             0.45 * scaleFactorX, 10.45 * scaleFactorY,
+            -0.45 * scaleFactorX, 10.45 * scaleFactorY,
+            -0.45 * scaleFactorX,  9.55 * scaleFactorY,
+             0.45 * scaleFactorX,  9.55 * scaleFactorY
         });
 
     entities.emplace_back(new Cube(positions, colors));

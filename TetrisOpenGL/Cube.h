@@ -5,6 +5,10 @@
 class Cube : public Entity
 {
 public:
+    
+    //---------------------------------------------------------------
+
+    Cube(bool staticImage, const std::vector<double>& positions, const std::vector<float>& colors);
 
     //---------------------------------------------------------------
 
@@ -40,6 +44,7 @@ private:
 
     //---------------------------------------------------------------
 
+    bool m_staticImage = false;
     double m_positions[12];
 
     //---------------------------------------------------------------

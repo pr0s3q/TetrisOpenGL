@@ -4,6 +4,14 @@
 
 //---------------------------------------------------------------
 
+Cube::Cube(const bool staticImage, const std::vector<double>& positions, const std::vector<float>& colors)
+    : Cube(positions, colors)
+{
+    m_staticImage = staticImage;
+}
+
+//---------------------------------------------------------------
+
 Cube::Cube(const std::vector<double>& positions, const std::vector<float>& colors)
     : Entity(6, GL_TRIANGLES)
 {
@@ -41,14 +49,14 @@ Cube::Cube(const std::vector<double>& positions, const std::vector<float>& color
 
 void Cube::Color()
 {
-    glUniform4f(glGetUniformLocation(m_shaderProgram, "triangleColor"), 1.0f, 0.0f, 0.0f, 1.0f);
+    glUniform4f(glGetUniformLocation(m_shaderProgram, "triangleColor"), m_colors[0], m_colors[1], m_colors[2], m_colors[3]);
 }
 
 //---------------------------------------------------------------
 
 void Cube::Move(const double& scaleFactor, const Key keyPressed)
 {
-    if (!m_shouldMove)
+    if (!m_shouldMove || m_staticImage)
         return;
 
     constexpr double moveFactor = 1.0;
@@ -96,6 +104,9 @@ void Cube::Move(const double& scaleFactor, const Key keyPressed)
 
 void Cube::SetMove(const bool shouldMove)
 {
+    if (m_staticImage)
+        return;
+
     m_shouldMove = shouldMove;
 }
 

@@ -16,7 +16,7 @@ const int Tetris::s_width = 1600;
 //---------------------------------------------------------------
 
 Tetris::Tetris()
-    : m_scaleFactorX(100.0 / s_width), m_scaleFactorY(100.0 / s_height)
+    : m_scaleFactorX(50.0 / s_width), m_scaleFactorY(50.0 / s_height)
 {
     const char* title = "Tetris OpenGL";
     if (!glfwInit())
@@ -59,11 +59,102 @@ Tetris::~Tetris()
 
 void Tetris::AddEntity()
 {
-    m_entities = std::vector<Entity*>();
-
-    m_entities.reserve(4);
-
     TetriminoCreator::Create(m_entities, m_scaleFactorX, m_scaleFactorY, TetriminoType::I);
+}
+
+//---------------------------------------------------------------
+
+void Tetris::CreateBorder()
+{
+    m_entities = std::vector<Entity*>();
+    // Reserve std::vector, so the array is not going to expand during runtime
+    // Border - 7 cubes
+    // Max possible cube entities from tetrimino - 11 X 22 -> 242 (11 X 22 is the board size)
+    // Total 249 cubes (reserve 260 to have some extra space just in case)
+    // If, std::vector will expand over 260, this could mean potential memory leak
+    m_entities.reserve(260);
+
+    std::vector<double> positions;
+    positions.reserve(8);
+    positions.insert(positions.end(),
+        {
+            -5.45 * m_scaleFactorX, -10.45 * m_scaleFactorY,
+            -4.55 * m_scaleFactorX, -10.45 * m_scaleFactorY,
+            -4.55 * m_scaleFactorX,  -9.55 * m_scaleFactorY,
+            -5.45 * m_scaleFactorX,  -9.55 * m_scaleFactorY
+        });
+
+    std::vector<float> colors;
+    colors.reserve(4);
+    colors.insert(colors.end(), { 0.0f , 1.0f , 0.0f , 1.0f });
+
+    m_entities.emplace_back(new Cube(true, positions, colors));
+
+    positions.clear();
+    positions.insert(positions.end(),
+        {
+            -4.45 * m_scaleFactorX, -10.45 * m_scaleFactorY,
+             4.45 * m_scaleFactorX, -10.45 * m_scaleFactorY,
+             4.45 * m_scaleFactorX,  -9.55 * m_scaleFactorY,
+            -4.45 * m_scaleFactorX,  -9.55 * m_scaleFactorY
+        });
+
+    m_entities.emplace_back(new Cube(true, positions, colors));
+
+    positions.clear();
+    positions.insert(positions.end(),
+        {
+            5.45 * m_scaleFactorX, -10.45 * m_scaleFactorY,
+            4.55 * m_scaleFactorX, -10.45 * m_scaleFactorY,
+            4.55 * m_scaleFactorX,  -9.55 * m_scaleFactorY,
+            5.45 * m_scaleFactorX,  -9.55 * m_scaleFactorY
+        });
+
+    m_entities.emplace_back(new Cube(true, positions, colors));
+
+    positions.clear();
+    positions.insert(positions.end(),
+        {
+            -5.45 * m_scaleFactorX, 10.45 * m_scaleFactorY,
+            -4.55 * m_scaleFactorX, 10.45 * m_scaleFactorY,
+            -4.55 * m_scaleFactorX,  9.55 * m_scaleFactorY,
+            -5.45 * m_scaleFactorX,  9.55 * m_scaleFactorY
+        });
+
+    m_entities.emplace_back(new Cube(true, positions, colors));
+
+    positions.clear();
+    positions.insert(positions.end(),
+        {
+            5.45 * m_scaleFactorX, 10.45 * m_scaleFactorY,
+            4.55 * m_scaleFactorX, 10.45 * m_scaleFactorY,
+            4.55 * m_scaleFactorX,  9.55 * m_scaleFactorY,
+            5.45 * m_scaleFactorX,  9.55 * m_scaleFactorY
+        });
+
+    m_entities.emplace_back(new Cube(true, positions, colors));
+
+    positions.clear();
+    positions.insert(positions.end(),
+        {
+            -5.45 * m_scaleFactorX, -9.45 * m_scaleFactorY,
+            -4.55 * m_scaleFactorX, -9.45 * m_scaleFactorY,
+            -4.55 * m_scaleFactorX,  9.45 * m_scaleFactorY,
+            -5.45 * m_scaleFactorX,  9.45 * m_scaleFactorY
+        });
+
+    m_entities.emplace_back(new Cube(true, positions, colors));
+
+    positions.clear();
+    positions.insert(positions.end(),
+        {
+            5.45 * m_scaleFactorX, -9.45 * m_scaleFactorY,
+            4.55 * m_scaleFactorX, -9.45 * m_scaleFactorY,
+            4.55 * m_scaleFactorX,  9.45 * m_scaleFactorY,
+            5.45 * m_scaleFactorX,  9.45 * m_scaleFactorY
+        });
+
+    m_entities.emplace_back(new Cube(true, positions, colors));
 }
 
 //---------------------------------------------------------------
@@ -71,6 +162,7 @@ void Tetris::AddEntity()
 void Tetris::Init()
 {
     Tetris tetris;
+    tetris.CreateBorder();
     tetris.AddEntity();
     tetris.Loop();
 }
@@ -187,16 +279,16 @@ void Tetris::Loop()
 
 //---------------------------------------------------------------
 
-bool Tetris::ShouldTerminate() const
+void Tetris::SetOutcome(const std::string& errorMessage)
 {
-    return glfwWindowShouldClose(m_window);
+    throw std::runtime_error(errorMessage.c_str());
 }
 
 //---------------------------------------------------------------
 
-void Tetris::SetOutcome(const std::string& errorMessage)
+bool Tetris::ShouldTerminate() const
 {
-    throw std::runtime_error(errorMessage.c_str());
+    return glfwWindowShouldClose(m_window);
 }
 
 //---------------------------------------------------------------
