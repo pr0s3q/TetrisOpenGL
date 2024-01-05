@@ -30,6 +30,13 @@ Entity::~Entity()
 
 //---------------------------------------------------------------
 
+bool Entity::IsStatic()
+{
+    return m_staticImage;
+}
+
+//---------------------------------------------------------------
+
 void Entity::Loop()
 {
     glUseProgram(m_shaderProgram);

@@ -36,15 +36,19 @@ public:
 
     //---------------------------------------------------------------
 
+    virtual bool IsStatic();
+
+    //---------------------------------------------------------------
+
     void Loop();
 
     //---------------------------------------------------------------
 
-    virtual void Move(const double& scaleFactor, const Key keyPressed) = 0;
+    virtual void Move(const double& scaleFactor, Key keyPressed) = 0;
 
     //---------------------------------------------------------------
 
-    virtual void SetMove(const bool shouldMove) = 0;
+    virtual void SetMove(bool shouldMove) = 0;
 
     //---------------------------------------------------------------
 
@@ -53,6 +57,7 @@ protected:
     //---------------------------------------------------------------
 
     bool m_shouldMove;
+    bool m_staticImage = false;
     unsigned int m_count;
     unsigned int m_mode;
     unsigned int m_VAO;

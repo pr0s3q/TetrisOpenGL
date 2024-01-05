@@ -87,6 +87,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="TetriminoCreator.cpp" />
     <ClCompile Include="TetriminoCube.cpp" />
+    <ClCompile Include="TetriminoCubeGroup.cpp" />
     <ClCompile Include="Tetris.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +98,7 @@
     <ClInclude Include="KeyboardManager.h" />
     <ClInclude Include="TetriminoCreator.h" />
     <ClInclude Include="TetriminoCube.h" />
+    <ClInclude Include="TetriminoCubeGroup.h" />
     <ClInclude Include="Tetris.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

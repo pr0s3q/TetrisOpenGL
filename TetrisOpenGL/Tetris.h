@@ -7,6 +7,7 @@
 
 #include "Entity.h"
 #include "KeyboardManager.h"
+#include "TetriminoCubeGroup.h"
 
 class Tetris
 {
@@ -15,10 +16,6 @@ public:
     //---------------------------------------------------------------
 
     ~Tetris();
-
-    //---------------------------------------------------------------
-
-    void AddEntity();
 
     //---------------------------------------------------------------
 
@@ -31,6 +28,14 @@ private:
     //---------------------------------------------------------------
 
     Tetris();
+
+    //---------------------------------------------------------------
+
+    void AddEntity();
+
+    //---------------------------------------------------------------
+
+    void CheckPressedKey(const double& scaleFactor, const int& key, Key keyPressed);
 
     //---------------------------------------------------------------
 
@@ -51,6 +56,7 @@ private:
     //---------------------------------------------------------------
 
     std::vector<Entity*> m_entities;
+    TetriminoCubeGroup m_cubeGroup;
     GLFWwindow* m_window;
     KeyboardManager m_keyboardManager;
     double m_scaleFactorX;

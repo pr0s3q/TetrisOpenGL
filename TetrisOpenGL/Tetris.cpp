@@ -59,7 +59,30 @@ Tetris::~Tetris()
 
 void Tetris::AddEntity()
 {
-    TetriminoCreator::Create(m_entities, m_scaleFactorX, m_scaleFactorY, TetriminoType::I);
+    TetriminoCreator::Create(m_cubeGroup, m_entities, m_scaleFactorX, m_scaleFactorY, TetriminoType::I);
+}
+
+//---------------------------------------------------------------
+
+void Tetris::CheckPressedKey(const double& scaleFactor, const int& key, const Key keyPressed)
+{
+    if (glfwGetKey(m_window, key) == GLFW_PRESS)
+    {
+        if (!m_keyboardManager.IsPressed(key))
+        {
+            m_keyboardManager.SetPressedToTrue(key);
+            m_cubeGroup.MoveCubes(m_entities, scaleFactor, keyPressed);
+            if (!m_cubeGroup.ShouldBeMovable(m_entities))
+            {
+                m_cubeGroup.SetMove(false);
+            }
+        }
+
+    }
+    else
+    {
+        m_keyboardManager.SetPressedToFalse(key);
+    }
 }
 
 //---------------------------------------------------------------
@@ -188,86 +211,19 @@ void Tetris::Loop()
         // Poll for and process events
         glfwPollEvents();
 
-        // S
-        if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
-        {
-            if (!m_keyboardManager.IsPressed(GLFW_KEY_S))
-            {
-                m_keyboardManager.SetPressedToTrue(GLFW_KEY_S);
-                for (const auto entity : m_entities)
-                {
-                    entity->Move(m_scaleFactorY, Key::S);
-                }
-            }
-
-        }
-        else
-        {
-            m_keyboardManager.SetPressedToFalse(GLFW_KEY_S);
-        }
-
-        // W
-        if(glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
-        {
-            if (!m_keyboardManager.IsPressed(GLFW_KEY_W))
-            {
-                m_keyboardManager.SetPressedToTrue(GLFW_KEY_W);
-                for (const auto entity : m_entities)
-                {
-                    entity->Move(m_scaleFactorY, Key::W);
-                }
-            }
-
-        }
-        else
-        {
-            m_keyboardManager.SetPressedToFalse(GLFW_KEY_W);
-        }
-
-        // A
-        if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
-        {
-            if (!m_keyboardManager.IsPressed(GLFW_KEY_A))
-            {
-                m_keyboardManager.SetPressedToTrue(GLFW_KEY_A);
-                for (const auto entity : m_entities)
-                {
-                    entity->Move(m_scaleFactorX, Key::A);
-                }
-            }
-        }
-        else
-        {
-            m_keyboardManager.SetPressedToFalse(GLFW_KEY_A);
-        }
-
-        // D
-        if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
-        {
-            if (!m_keyboardManager.IsPressed(GLFW_KEY_D))
-            {
-                m_keyboardManager.SetPressedToTrue(GLFW_KEY_D);
-                for (const auto entity : m_entities)
-                {
-                    entity->Move(m_scaleFactorX, Key::D);
-                }
-            }
-        }
-        else
-        {
-            m_keyboardManager.SetPressedToFalse(GLFW_KEY_D);
-        }
+        CheckPressedKey(m_scaleFactorY, GLFW_KEY_S, Key::S);
+        CheckPressedKey(m_scaleFactorY, GLFW_KEY_W, Key::W);
+        CheckPressedKey(m_scaleFactorX, GLFW_KEY_A, Key::A);
+        CheckPressedKey(m_scaleFactorX, GLFW_KEY_D, Key::D);
 
         if (glfwGetKey(m_window, GLFW_KEY_L) == GLFW_PRESS)
         {
             if (!m_keyboardManager.IsPressed(GLFW_KEY_L))
             {
                 m_keyboardManager.SetPressedToTrue(GLFW_KEY_L);
-                for (const auto entity : m_entities)
-                {
-                    entity->SetMove(false);
-                }
-                TetriminoCreator::Create(m_entities, m_scaleFactorX, m_scaleFactorY, TetriminoType::I);
+                m_cubeGroup.SetMove(false);
+                m_cubeGroup.ResetCubes();
+                TetriminoCreator::Create(m_cubeGroup, m_entities, m_scaleFactorX, m_scaleFactorY, TetriminoType::I);
             }
         }
         else

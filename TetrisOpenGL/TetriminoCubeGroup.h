@@ -1,46 +1,40 @@
-﻿#pragma once
+#pragma once
 
-#include "Entity.h"
+#include <vector>
 
-class Cube : public Entity
+#include "TetriminoCube.h"
+
+class TetriminoCubeGroup
 {
 public:
 
     //---------------------------------------------------------------
 
-    Cube(bool staticImage, const std::vector<double>& positions, const std::vector<float>& colors);
+    TetriminoCubeGroup();
 
     //---------------------------------------------------------------
 
-    Cube(const std::vector<double>& positions, const std::vector<float>& colors);
+    void AddCube(TetriminoCube* cube);
 
     //---------------------------------------------------------------
 
-    void Color() override;
+    bool CanBeMoved(const std::vector<Entity*>& entities, Key keyPressed) const;
 
     //---------------------------------------------------------------
 
-    void Move(const double& scaleFactor, Key keyPressed) override;
+    void MoveCubes(const std::vector<Entity*>& entities, const double& scaleFactor, Key keyPressed) const;
 
     //---------------------------------------------------------------
 
-    void SetMove(bool shouldMove) override;
+    void SetMove(bool shouldMove) const;
 
     //---------------------------------------------------------------
 
-    static void InitShader();
+    bool ShouldBeMovable(const std::vector<Entity*>& entities) const;
 
     //---------------------------------------------------------------
 
-    static void TerminateShader();
-
-    //---------------------------------------------------------------
-
-protected:
-
-    //---------------------------------------------------------------
-
-    double m_positions[12];
+    void ResetCubes();
 
     //---------------------------------------------------------------
 
@@ -48,7 +42,7 @@ private:
 
     //---------------------------------------------------------------
 
-    static void CompileShaders();
+    std::vector<TetriminoCube*> m_tetriminoCubes;
 
     //---------------------------------------------------------------
 };

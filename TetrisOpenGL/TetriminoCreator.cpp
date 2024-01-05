@@ -7,12 +7,12 @@
 
 //---------------------------------------------------------------
 
-void TetriminoCreator::Create(std::vector<Entity*>& entities, const double scaleFactorX, const double scaleFactorY, const TetriminoType tetriminoType)
+void TetriminoCreator::Create(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, const double scaleFactorX, const double scaleFactorY, const TetriminoType tetriminoType)
 {
     switch (tetriminoType)
     {
     case TetriminoType::I:
-        CreateITetrimino(entities, scaleFactorX, scaleFactorY);
+        CreateITetrimino(cubeGroup, entities, scaleFactorX, scaleFactorY);
         break;
     /*case T:
         CreateTTetrimino();
@@ -37,7 +37,7 @@ void TetriminoCreator::Create(std::vector<Entity*>& entities, const double scale
 
 //---------------------------------------------------------------
 
-void TetriminoCreator::CreateITetrimino(std::vector<Entity*>& entities, const double scaleFactorX, const double scaleFactorY)
+void TetriminoCreator::CreateITetrimino(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, const double scaleFactorX, const double scaleFactorY)
 {
     std::vector<double> positions;
     positions.reserve(8);
@@ -56,7 +56,9 @@ void TetriminoCreator::CreateITetrimino(std::vector<Entity*>& entities, const do
     colors.reserve(4);
     colors.insert(colors.end(), { 1.0f , 0.0f , 0.0f , 1.0f });
 
-    entities.emplace_back(new TetriminoCube(positions, colors, 0, 7));
+    auto cube = new TetriminoCube(positions, colors, 0, 7);
+    entities.emplace_back(cube);
+    cubeGroup.AddCube(cube);
 
     yCoord = BoardManager::GetCoordinate(8, scaleFactorY);
     positions.clear();
@@ -68,7 +70,9 @@ void TetriminoCreator::CreateITetrimino(std::vector<Entity*>& entities, const do
             xCoord.first,  yCoord.second
         });
 
-    entities.emplace_back(new TetriminoCube(positions, colors, 0, 8));
+    cube = new TetriminoCube(positions, colors, 0, 8);
+    entities.emplace_back(cube);
+    cubeGroup.AddCube(cube);
 
     yCoord = BoardManager::GetCoordinate(9, scaleFactorY);
     positions.clear();
@@ -80,7 +84,9 @@ void TetriminoCreator::CreateITetrimino(std::vector<Entity*>& entities, const do
             xCoord.first,  yCoord.second
         });
 
-    entities.emplace_back(new TetriminoCube(positions, colors, 0, 9));
+    cube = new TetriminoCube(positions, colors, 0, 9);
+    entities.emplace_back(cube);
+    cubeGroup.AddCube(cube);
 
     yCoord = BoardManager::GetCoordinate(10, scaleFactorY);
     positions.clear();
@@ -92,7 +98,9 @@ void TetriminoCreator::CreateITetrimino(std::vector<Entity*>& entities, const do
             xCoord.first,  yCoord.second
         });
 
-    entities.emplace_back(new TetriminoCube(positions, colors, 0, 10));
+    cube = new TetriminoCube(positions, colors, 0, 10);
+    entities.emplace_back(cube);
+    cubeGroup.AddCube(cube);
 }
 
 //void TetriminoCreator::CreateTTetrimino(double scaleFactorX, double scaleFactorY)

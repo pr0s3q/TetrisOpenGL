@@ -12,6 +12,40 @@ TetriminoCube::TetriminoCube(const std::vector<double>& positions, const std::ve
 
 //---------------------------------------------------------------
 
+bool TetriminoCube::CanBeMoved(const Key keyPressed) const
+{
+    switch (keyPressed)
+    {
+        case Key::W:
+        {
+            if (m_yLocation == 10)
+                return false;
+            break;
+        }
+        case Key::S:
+        {
+            if (m_yLocation == -10)
+                return false;
+            break;
+        }
+        case Key::A:
+        {
+            if (m_xLocation == -5)
+                return false;
+            break;
+        }
+        case Key::D:
+        {
+            if (m_xLocation == 5)
+                return false;
+            break;
+        }
+    }
+    return true;
+}
+
+//---------------------------------------------------------------
+
 int TetriminoCube::GetXLocation() const
 {
     return m_xLocation;
@@ -23,6 +57,8 @@ int TetriminoCube::GetYLocation() const
 {
     return m_yLocation;
 }
+
+//---------------------------------------------------------------
 
 void TetriminoCube::Move(const double& scaleFactor, const Key keyPressed)
 {

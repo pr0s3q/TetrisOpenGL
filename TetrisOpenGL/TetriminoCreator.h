@@ -4,6 +4,7 @@
 
 #include "Entity.h"
 #include "Enums.h"
+#include "TetriminoCubeGroup.h"
 
 class TetriminoCreator
 {
@@ -11,7 +12,7 @@ public:
 
     //---------------------------------------------------------------
 
-    static void Create(std::vector<Entity*>& entities, double scaleFactorX, double scaleFactorY, const TetriminoType tetriminoType);
+    static void Create(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, double scaleFactorX, double scaleFactorY, TetriminoType tetriminoType);
 
     //---------------------------------------------------------------
 
@@ -19,7 +20,7 @@ private:
 
     //---------------------------------------------------------------
 
-    static void CreateITetrimino(std::vector<Entity*>& entities, double scaleFactorX, double scaleFactorY);
+    static void CreateITetrimino(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, double scaleFactorX, double scaleFactorY);
 
     //---------------------------------------------------------------
 

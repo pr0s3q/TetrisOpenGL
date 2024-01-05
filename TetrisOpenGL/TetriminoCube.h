@@ -12,6 +12,10 @@ public:
 
     //---------------------------------------------------------------
 
+    bool CanBeMoved(Key keyPressed) const;
+
+    //---------------------------------------------------------------
+
     int GetXLocation() const;
 
     //---------------------------------------------------------------
@@ -20,7 +24,7 @@ public:
 
     //---------------------------------------------------------------
 
-    void Move(const double& scaleFactor, const Key keyPressed) override;
+    void Move(const double& scaleFactor, Key keyPressed) override;
 
     //---------------------------------------------------------------
 
