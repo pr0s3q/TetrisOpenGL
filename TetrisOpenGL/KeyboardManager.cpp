@@ -1,6 +1,6 @@
-#include "KeyboardManager.h"
-
 #include <GLFW/glfw3.h>
+
+#include "KeyboardManager.h"
 
 //---------------------------------------------------------------
 

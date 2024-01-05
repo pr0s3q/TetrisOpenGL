@@ -1,47 +1,34 @@
-﻿#pragma once
+#pragma once
 
-#include "Entity.h"
+#include "Cube.h"
 
-class Cube : public Entity
+class TetriminoCube : public Cube
 {
 public:
 
     //---------------------------------------------------------------
 
-    Cube(bool staticImage, const std::vector<double>& positions, const std::vector<float>& colors);
+    TetriminoCube(const std::vector<double>& positions, const std::vector<float>& colors, int xLocation, int yLocation);
 
     //---------------------------------------------------------------
 
-    Cube(const std::vector<double>& positions, const std::vector<float>& colors);
+    int GetXLocation() const;
 
     //---------------------------------------------------------------
 
-    void Color() override;
+    int GetYLocation() const;
 
     //---------------------------------------------------------------
 
-    void Move(const double& scaleFactor, Key keyPressed) override;
+    void Move(const double& scaleFactor, const Key keyPressed) override;
 
     //---------------------------------------------------------------
 
-    void SetMove(const bool shouldMove) override;
+    void SetXLocation(int location);
 
     //---------------------------------------------------------------
 
-    static void InitShader();
-
-    //---------------------------------------------------------------
-
-    static void TerminateShader();
-
-    //---------------------------------------------------------------
-
-protected:
-
-    //---------------------------------------------------------------
-
-    bool m_staticImage = false;
-    double m_positions[12];
+    void SetYLocation(int location);
 
     //---------------------------------------------------------------
 
@@ -49,7 +36,11 @@ private:
 
     //---------------------------------------------------------------
 
-    static void CompileShaders();
+    int m_xLocation;
+
+    //---------------------------------------------------------------
+
+    int m_yLocation;
 
     //---------------------------------------------------------------
 };

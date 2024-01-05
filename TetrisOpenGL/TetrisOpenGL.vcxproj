@@ -80,19 +80,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BoardManager.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="KeyboardManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="TetriminoCreator.cpp" />
+    <ClCompile Include="TetriminoCube.cpp" />
     <ClCompile Include="Tetris.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoardManager.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="KeyboardManager.h" />
     <ClInclude Include="TetriminoCreator.h" />
+    <ClInclude Include="TetriminoCube.h" />
     <ClInclude Include="Tetris.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

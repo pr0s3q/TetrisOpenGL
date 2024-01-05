@@ -56,48 +56,6 @@ void Cube::Color()
 
 void Cube::Move(const double& scaleFactor, const Key keyPressed)
 {
-    if (!m_shouldMove || m_staticImage)
-        return;
-
-    constexpr double moveFactor = 1.0;
-    switch (keyPressed)
-    {
-        case Key::W:
-        {
-            for (int i = 0; i < 6; i++)
-            {
-                m_positions[i * 2 + 1] += moveFactor * scaleFactor;
-            }
-            break;
-        }
-        case Key::S:
-        {
-            for (int i = 0; i < 6; i++)
-            {
-                m_positions[i * 2 + 1] -= moveFactor * scaleFactor;
-            }
-            break;
-        }
-        case Key::A:
-        {
-            for (int i = 0; i < 6; i++)
-            {
-                m_positions[i * 2] -= moveFactor * scaleFactor;
-            }
-            break;
-        }
-        case Key::D:
-        {
-            for (int i = 0; i < 6; i++)
-            {
-                m_positions[i * 2] += moveFactor * scaleFactor;
-            }
-            break;
-        }
-    }
-
-    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_positions), m_positions);
 }
 
 //---------------------------------------------------------------

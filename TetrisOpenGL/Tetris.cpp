@@ -69,19 +69,19 @@ void Tetris::CreateBorder()
     m_entities = std::vector<Entity*>();
     // Reserve std::vector, so the array is not going to expand during runtime
     // Border - 7 cubes
-    // Max possible cube entities from tetrimino - 11 X 22 -> 242 (11 X 22 is the board size)
-    // Total 249 cubes (reserve 260 to have some extra space just in case)
-    // If, std::vector will expand over 260, this could mean potential memory leak
-    m_entities.reserve(260);
+    // Max possible cube entities from tetrimino - 11 X 21 -> 231 (11 X 21 is the board size)
+    // Total 238 cubes (reserve 250 to have some extra space just in case)
+    // If, std::vector will expand over 250, this could mean potential memory leak
+    m_entities.reserve(250);
 
     std::vector<double> positions;
     positions.reserve(8);
     positions.insert(positions.end(),
         {
-            -5.45 * m_scaleFactorX, -10.45 * m_scaleFactorY,
-            -4.55 * m_scaleFactorX, -10.45 * m_scaleFactorY,
-            -4.55 * m_scaleFactorX,  -9.55 * m_scaleFactorY,
-            -5.45 * m_scaleFactorX,  -9.55 * m_scaleFactorY
+            -6.45 * m_scaleFactorX, -11.45 * m_scaleFactorY,
+            -5.55 * m_scaleFactorX, -11.45 * m_scaleFactorY,
+            -5.55 * m_scaleFactorX, -10.55 * m_scaleFactorY,
+            -6.45 * m_scaleFactorX, -10.55 * m_scaleFactorY
         });
 
     std::vector<float> colors;
@@ -93,10 +93,10 @@ void Tetris::CreateBorder()
     positions.clear();
     positions.insert(positions.end(),
         {
-            -4.45 * m_scaleFactorX, -10.45 * m_scaleFactorY,
-             4.45 * m_scaleFactorX, -10.45 * m_scaleFactorY,
-             4.45 * m_scaleFactorX,  -9.55 * m_scaleFactorY,
-            -4.45 * m_scaleFactorX,  -9.55 * m_scaleFactorY
+            -5.45 * m_scaleFactorX, -11.45 * m_scaleFactorY,
+             5.45 * m_scaleFactorX, -11.45 * m_scaleFactorY,
+             5.45 * m_scaleFactorX, -10.55 * m_scaleFactorY,
+            -5.45 * m_scaleFactorX, -10.55 * m_scaleFactorY
         });
 
     m_entities.emplace_back(new Cube(true, positions, colors));
@@ -104,10 +104,10 @@ void Tetris::CreateBorder()
     positions.clear();
     positions.insert(positions.end(),
         {
-            5.45 * m_scaleFactorX, -10.45 * m_scaleFactorY,
-            4.55 * m_scaleFactorX, -10.45 * m_scaleFactorY,
-            4.55 * m_scaleFactorX,  -9.55 * m_scaleFactorY,
-            5.45 * m_scaleFactorX,  -9.55 * m_scaleFactorY
+            6.45 * m_scaleFactorX, -11.45 * m_scaleFactorY,
+            5.55 * m_scaleFactorX, -11.45 * m_scaleFactorY,
+            5.55 * m_scaleFactorX, -10.55 * m_scaleFactorY,
+            6.45 * m_scaleFactorX, -10.55 * m_scaleFactorY
         });
 
     m_entities.emplace_back(new Cube(true, positions, colors));
@@ -115,10 +115,10 @@ void Tetris::CreateBorder()
     positions.clear();
     positions.insert(positions.end(),
         {
-            -5.45 * m_scaleFactorX, 10.45 * m_scaleFactorY,
-            -4.55 * m_scaleFactorX, 10.45 * m_scaleFactorY,
-            -4.55 * m_scaleFactorX,  9.55 * m_scaleFactorY,
-            -5.45 * m_scaleFactorX,  9.55 * m_scaleFactorY
+            -6.45 * m_scaleFactorX, 11.45 * m_scaleFactorY,
+            -5.55 * m_scaleFactorX, 11.45 * m_scaleFactorY,
+            -5.55 * m_scaleFactorX, 10.55 * m_scaleFactorY,
+            -6.45 * m_scaleFactorX, 10.55 * m_scaleFactorY
         });
 
     m_entities.emplace_back(new Cube(true, positions, colors));
@@ -126,10 +126,10 @@ void Tetris::CreateBorder()
     positions.clear();
     positions.insert(positions.end(),
         {
-            5.45 * m_scaleFactorX, 10.45 * m_scaleFactorY,
-            4.55 * m_scaleFactorX, 10.45 * m_scaleFactorY,
-            4.55 * m_scaleFactorX,  9.55 * m_scaleFactorY,
-            5.45 * m_scaleFactorX,  9.55 * m_scaleFactorY
+            6.45 * m_scaleFactorX, 11.45 * m_scaleFactorY,
+            5.55 * m_scaleFactorX, 11.45 * m_scaleFactorY,
+            5.55 * m_scaleFactorX, 10.55 * m_scaleFactorY,
+            6.45 * m_scaleFactorX, 10.55 * m_scaleFactorY
         });
 
     m_entities.emplace_back(new Cube(true, positions, colors));
@@ -137,10 +137,10 @@ void Tetris::CreateBorder()
     positions.clear();
     positions.insert(positions.end(),
         {
-            -5.45 * m_scaleFactorX, -9.45 * m_scaleFactorY,
-            -4.55 * m_scaleFactorX, -9.45 * m_scaleFactorY,
-            -4.55 * m_scaleFactorX,  9.45 * m_scaleFactorY,
-            -5.45 * m_scaleFactorX,  9.45 * m_scaleFactorY
+            -6.45 * m_scaleFactorX, -10.45 * m_scaleFactorY,
+            -5.55 * m_scaleFactorX, -10.45 * m_scaleFactorY,
+            -5.55 * m_scaleFactorX,  10.45 * m_scaleFactorY,
+            -6.45 * m_scaleFactorX,  10.45 * m_scaleFactorY
         });
 
     m_entities.emplace_back(new Cube(true, positions, colors));
@@ -148,10 +148,10 @@ void Tetris::CreateBorder()
     positions.clear();
     positions.insert(positions.end(),
         {
-            5.45 * m_scaleFactorX, -9.45 * m_scaleFactorY,
-            4.55 * m_scaleFactorX, -9.45 * m_scaleFactorY,
-            4.55 * m_scaleFactorX,  9.45 * m_scaleFactorY,
-            5.45 * m_scaleFactorX,  9.45 * m_scaleFactorY
+            6.45 * m_scaleFactorX, -10.45 * m_scaleFactorY,
+            5.55 * m_scaleFactorX, -10.45 * m_scaleFactorY,
+            5.55 * m_scaleFactorX,  10.45 * m_scaleFactorY,
+            6.45 * m_scaleFactorX,  10.45 * m_scaleFactorY
         });
 
     m_entities.emplace_back(new Cube(true, positions, colors));
