@@ -1,12 +1,13 @@
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
 
+#include <ctime>
 #include <stdexcept>
 #include <string>
 
 #include "Cube.h"
-#include "Tetris.h"
 #include "TetriminoCreator.h"
+#include "Tetris.h"
 
 //---------------------------------------------------------------
 
@@ -59,7 +60,7 @@ Tetris::~Tetris()
 
 void Tetris::AddEntity()
 {
-    TetriminoCreator::Create(m_cubeGroup, m_entities, m_scaleFactorX, m_scaleFactorY, TetriminoType::I);
+    TetriminoCreator::Create(m_cubeGroup, m_entities, m_scaleFactorX, m_scaleFactorY);
 }
 
 //---------------------------------------------------------------
@@ -184,6 +185,7 @@ void Tetris::CreateBorder()
 
 void Tetris::Init()
 {
+    srand(time(nullptr));
     Tetris tetris;
     tetris.CreateBorder();
     tetris.AddEntity();
@@ -223,7 +225,7 @@ void Tetris::Loop()
                 m_keyboardManager.SetPressedToTrue(GLFW_KEY_L);
                 m_cubeGroup.SetMove(false);
                 m_cubeGroup.ResetCubes();
-                TetriminoCreator::Create(m_cubeGroup, m_entities, m_scaleFactorX, m_scaleFactorY, TetriminoType::I);
+                TetriminoCreator::Create(m_cubeGroup, m_entities, m_scaleFactorX, m_scaleFactorY);
             }
         }
         else
