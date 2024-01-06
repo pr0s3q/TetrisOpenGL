@@ -139,6 +139,24 @@ void TetriminoCube::Move(const double& scaleFactor, const Key keyPressed)
 
 //---------------------------------------------------------------
 
+void TetriminoCube::MoveForce(const double& scaleFactor)
+{
+    m_yLocation -= 1;
+
+    const auto yCoord = BoardManager::GetCoordinate(m_yLocation, scaleFactor);
+    m_positions[1] = yCoord.first;
+    m_positions[3] = yCoord.first;
+    m_positions[5] = yCoord.second;
+    m_positions[7] = yCoord.second;
+    m_positions[9] = yCoord.second;
+    m_positions[11] = yCoord.first;
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_positions), m_positions);
+}
+
+//---------------------------------------------------------------
+
 void TetriminoCube::SetXLocation(const int location)
 {
     m_xLocation = location;

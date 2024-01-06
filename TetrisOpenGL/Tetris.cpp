@@ -1,6 +1,7 @@
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
 
+#include <algorithm>
 #include <ctime>
 #include <stdexcept>
 #include <string>
@@ -65,6 +66,120 @@ void Tetris::AddEntity()
 
 //---------------------------------------------------------------
 
+void Tetris::CheckForRowToDelete()
+{
+    while(true)
+    {
+        for(int yCoord = -10; yCoord <= 10; yCoord++)
+        {
+            bool rowEmpty = true;
+            bool columnEmpty = false;
+            for(int xCoord = -5; xCoord <= 5; xCoord++)
+            {
+                bool cubeFound = false;
+                for (const auto entity : m_entities)
+                {
+                    if (entity->IsStatic())
+                        continue;
+
+                    const TetriminoCube* cube = dynamic_cast<TetriminoCube*>(entity);
+                    if(cube->GetYLocation() == yCoord && cube->GetXLocation() == xCoord)
+                    {
+                        rowEmpty = false;
+                        cubeFound = true;
+                    }
+                }
+                if (!cubeFound)
+                    columnEmpty = true;
+            }
+            if(!rowEmpty && !columnEmpty)
+            {
+                std::vector<Entity*> toDelete;
+                std::vector<long long> indexToErase;
+                toDelete.reserve(11);
+                indexToErase.reserve(11);
+                for (const auto entity : m_entities)
+                {
+                    if (entity->IsStatic())
+                        continue;
+
+                    const TetriminoCube* cube = dynamic_cast<TetriminoCube*>(entity);
+                    if (cube->GetYLocation() == yCoord)
+                    {
+                        const long long index = std::ranges::find(m_entities, entity) - m_entities.begin();
+                        indexToErase.emplace_back(index);
+                        toDelete.emplace_back(entity);
+                    }
+                }
+                std::ranges::sort(indexToErase, std::ranges::greater());
+                for(int i = 0; i < 11; i++)
+                {
+                    m_entities.erase(m_entities.begin() + indexToErase[i]);
+                    delete toDelete[i];
+                }
+                ++yCoord;
+                std::vector<TetriminoCube*> movableCubes;
+                for (const auto entity : m_entities)
+                {
+                    if (entity->IsStatic())
+                        continue;
+
+                    TetriminoCube* cube = dynamic_cast<TetriminoCube*>(entity);
+                    if (cube->GetYLocation() >= yCoord)
+                    {
+                        cube->MoveForce(m_scaleFactorY);
+                        movableCubes.emplace_back(cube);
+                    }
+                }
+                bool cubeMoved = true;
+                while(cubeMoved)
+                {
+                    cubeMoved = false;
+                    bool cubeInRow = true;
+                    if(yCoord > -9)
+                        --yCoord;
+                    for(int i = yCoord; i <= 10 && cubeInRow; i++)
+                    {
+                        cubeInRow = false;
+                        for(const auto movableCube : movableCubes)
+                        {
+                            if(movableCube->GetYLocation() == i)
+                            {
+                                cubeInRow = true;
+                                bool shouldBeMovable = true;
+                                for (const auto entity : m_entities)
+                                {
+                                    if (entity->IsStatic())
+                                        continue;
+
+                                    const TetriminoCube* cube = dynamic_cast<TetriminoCube*>(entity);
+
+                                    if (cube->GetXLocation() == movableCube->GetXLocation() &&
+                                        cube->GetYLocation() == movableCube->GetYLocation() - 1)
+                                    {
+                                        shouldBeMovable = false;
+                                        break;
+                                    }
+                                }
+                                if (shouldBeMovable)
+                                {
+                                    movableCube->MoveForce(m_scaleFactorY);
+                                    cubeMoved = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+            if (rowEmpty)
+                return;
+        }
+    }
+}
+
+//---------------------------------------------------------------
+
 void Tetris::CheckPressedKey(const double& scaleFactor, const int& key, const Key keyPressed)
 {
     if (glfwGetKey(m_window, key) == GLFW_PRESS)
@@ -76,6 +191,9 @@ void Tetris::CheckPressedKey(const double& scaleFactor, const int& key, const Ke
             if (!m_cubeGroup.ShouldBeMovable(m_entities))
             {
                 m_cubeGroup.SetMove(false);
+                m_cubeGroup.ResetCubes();
+                CheckForRowToDelete();
+                TetriminoCreator::Create(m_cubeGroup, m_entities, m_scaleFactorX, m_scaleFactorY);
             }
         }
 

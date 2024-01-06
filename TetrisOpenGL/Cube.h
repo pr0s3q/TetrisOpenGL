@@ -20,7 +20,11 @@ public:
 
     //---------------------------------------------------------------
 
-    void Move(const double& scaleFactor, Key keyPressed) override;
+    void Move(const double& /*scaleFactor*/, Key /*keyPressed*/) override;
+
+    //---------------------------------------------------------------
+
+    void MoveForce(const double& /*scaleFactor*/) override;
 
     //---------------------------------------------------------------
 

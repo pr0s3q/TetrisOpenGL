@@ -54,7 +54,13 @@ void Cube::Color()
 
 //---------------------------------------------------------------
 
-void Cube::Move(const double& scaleFactor, const Key keyPressed)
+void Cube::Move(const double& /*scaleFactor*/, const Key /*keyPressed*/)
+{
+}
+
+//---------------------------------------------------------------
+
+void Cube::MoveForce(const double& /*scaleFactor*/)
 {
 }
 
