@@ -2,7 +2,6 @@
 
 #include "BoardManager.h"
 #include "TetriminoCreator.h"
-
 #include "TetriminoCube.h"
 #include "Tetris.h"
 
@@ -10,7 +9,7 @@
 
 void TetriminoCreator::Create(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, const double scaleFactorX, const double scaleFactorY)
 {
-    TetriminoType type = static_cast<TetriminoType>(rand() % 7);
+    const TetriminoType type = static_cast<TetriminoType>(rand() % 7);
     cubeGroup.SetType(type);
 
     std::vector<std::vector<double>> positions;

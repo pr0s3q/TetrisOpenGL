@@ -18,7 +18,7 @@ const int Tetris::s_width = 1600;
 //---------------------------------------------------------------
 
 Tetris::Tetris()
-    : m_scaleFactorX(50.0 / s_width), m_scaleFactorY(50.0 / s_height)
+    : m_scaleFactorX(70.0 / s_width), m_scaleFactorY(70.0 / s_height)
 {
     const char* title = "Tetris OpenGL";
     if (!glfwInit())

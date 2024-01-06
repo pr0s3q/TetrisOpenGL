@@ -1,5 +1,3 @@
-#include <typeinfo>
-
 #include "TetriminoCubeGroup.h"
 
 //---------------------------------------------------------------
