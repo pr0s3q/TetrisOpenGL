@@ -12,6 +12,30 @@ TetriminoCube::TetriminoCube(const std::vector<double>& positions, const std::ve
 
 //---------------------------------------------------------------
 
+void TetriminoCube::ApplyRotationPositions(const std::vector<double>& positions, const int xLocation, const int yLocation)
+{
+    m_positions[0] = positions[0];
+    m_positions[1] = positions[1];
+    m_positions[2] = positions[2];
+    m_positions[3] = positions[3];
+    m_positions[4] = positions[4];
+    m_positions[5] = positions[5];
+    m_positions[6] = positions[4];
+    m_positions[7] = positions[5];
+    m_positions[8] = positions[6];
+    m_positions[9] = positions[7];
+    m_positions[10] = positions[0];
+    m_positions[11] = positions[1];
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_positions), m_positions);
+
+    m_xLocation = xLocation;
+    m_yLocation = yLocation;
+}
+
+//---------------------------------------------------------------
+
 bool TetriminoCube::CanBeMoved(const Key keyPressed) const
 {
     switch (keyPressed)

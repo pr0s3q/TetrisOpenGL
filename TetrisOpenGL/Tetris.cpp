@@ -206,6 +206,24 @@ void Tetris::CheckPressedKey(const double& scaleFactor, const int& key, const Ke
 
 //---------------------------------------------------------------
 
+void Tetris::CheckPressedKey(const int& key, Key keyPressed)
+{
+    if (glfwGetKey(m_window, key) == GLFW_PRESS)
+    {
+        if (!m_keyboardManager.IsPressed(key))
+        {
+            m_keyboardManager.SetPressedToTrue(key);
+            TetriminoCreator::RotateIfPossible(m_entities, m_cubeGroup, m_scaleFactorX, m_scaleFactorY);
+        }
+    }
+    else
+    {
+        m_keyboardManager.SetPressedToFalse(key);
+    }
+}
+
+//---------------------------------------------------------------
+
 void Tetris::CreateBorder()
 {
     m_entities = std::vector<Entity*>();
@@ -335,6 +353,7 @@ void Tetris::Loop()
         CheckPressedKey(m_scaleFactorY, GLFW_KEY_W, Key::W);
         CheckPressedKey(m_scaleFactorX, GLFW_KEY_A, Key::A);
         CheckPressedKey(m_scaleFactorX, GLFW_KEY_D, Key::D);
+        CheckPressedKey(GLFW_KEY_Q, Key::Q);
 
         if (glfwGetKey(m_window, GLFW_KEY_L) == GLFW_PRESS)
         {

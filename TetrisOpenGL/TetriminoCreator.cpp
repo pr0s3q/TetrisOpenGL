@@ -10,510 +10,290 @@
 
 void TetriminoCreator::Create(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, const double scaleFactorX, const double scaleFactorY)
 {
-    switch (static_cast<TetriminoType>(rand() % 7))
+    TetriminoType type = static_cast<TetriminoType>(rand() % 7);
+    cubeGroup.SetType(type);
+
+    std::vector<std::vector<double>> positions;
+    std::vector<int> xLocations;
+    std::vector<int> yLocations;
+    std::vector<float> colors;
+    colors.reserve(4);
+    colors.insert(colors.end(), { 1.0f , 0.0f , 0.0f , 1.0f });
+
+    GetTypeLocations(xLocations, yLocations, 0, type);
+    CreateTetriminoPositions(positions, xLocations, yLocations, scaleFactorX, scaleFactorY);
+
+    for (int i = 0; i < 4; i++)
     {
-    case TetriminoType::I:
-        CreateITetrimino(cubeGroup, entities, scaleFactorX, scaleFactorY);
-        break;
-    case TetriminoType::T:
-        CreateTTetrimino(cubeGroup, entities, scaleFactorX, scaleFactorY);
-        break;
-    case TetriminoType::O:
-        CreateOTetrimino(cubeGroup, entities, scaleFactorX, scaleFactorY);
-        break;
-    case TetriminoType::L:
-        CreateLTetrimino(cubeGroup, entities, scaleFactorX, scaleFactorY);
-        break;
-    case TetriminoType::J:
-        CreateJTetrimino(cubeGroup, entities, scaleFactorX, scaleFactorY);
-        break;
-    case TetriminoType::S:
-        CreateSTetrimino(cubeGroup, entities, scaleFactorX, scaleFactorY);
-        break;
-    case TetriminoType::Z:
-        CreateZTetrimino(cubeGroup, entities, scaleFactorX, scaleFactorY);
-        break;
+        auto cube = new TetriminoCube(positions[i], colors, xLocations[i], yLocations[i]);
+        entities.emplace_back(cube);
+        cubeGroup.AddCube(cube);
     }
 }
 
 //---------------------------------------------------------------
 
-void TetriminoCreator::CreateITetrimino(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, const double scaleFactorX, const double scaleFactorY)
+void TetriminoCreator::RotateIfPossible(const std::vector<Entity*>& entities, TetriminoCubeGroup& cubeGroup, const double& scaleFactorX, const double& scaleFactorY)
 {
-    std::vector<double> positions;
-    positions.reserve(8);
+    const TetriminoType type = cubeGroup.GetType();
 
-    auto xCoord = BoardManager::GetCoordinate(0, scaleFactorX);
-    auto yCoord = BoardManager::GetCoordinate(10, scaleFactorY);
-    positions.insert(positions.end(),
+    if (type == TetriminoType::O)
+        return;
+
+    const int xMovingFactor = cubeGroup.GetXMovingFactor();
+    const int yMovingFactor = cubeGroup.GetYMovingFactor();
+    int rotation = cubeGroup.GetRotation() + 1;
+    std::vector<int> xLocations;
+    std::vector<int> yLocations;
+    std::vector<std::vector<double>> positions;
+
+    switch (type)
+    {
+        case TetriminoType::I:
+        case TetriminoType::S:
+        case TetriminoType::Z:
         {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    std::vector<float> colors;
-    colors.reserve(4);
-    colors.insert(colors.end(), { 1.0f , 0.0f , 0.0f , 1.0f });
-
-    auto cube = new TetriminoCube(positions, colors, 0, 10);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    yCoord = BoardManager::GetCoordinate(9, scaleFactorY);
-    positions.clear();
-    positions.insert(positions.end(),
+            if (rotation == 2)
+                rotation = 0;
+            break;
+        }
+        case TetriminoType::T:
+        case TetriminoType::L:
+        case TetriminoType::J:
         {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
+            if (rotation == 4)
+                rotation = 0;
+            break;
+        }
+    }
 
-    cube = new TetriminoCube(positions, colors, 0, 9);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
+    GetTypeLocations(xLocations, yLocations, rotation, type);
 
-    yCoord = BoardManager::GetCoordinate(8, scaleFactorY);
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
+    xLocations[0] += xMovingFactor;
+    xLocations[1] += xMovingFactor;
+    xLocations[2] += xMovingFactor;
+    xLocations[3] += xMovingFactor;
+    yLocations[0] += yMovingFactor;
+    yLocations[1] += yMovingFactor;
+    yLocations[2] += yMovingFactor;
+    yLocations[3] += yMovingFactor;
+    if (IsCollidingWithOtherCubes(entities, xLocations, yLocations, cubeGroup))
+        return;
 
-    cube = new TetriminoCube(positions, colors, 0, 8);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    yCoord = BoardManager::GetCoordinate(7, scaleFactorY);
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, 0, 7);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
+    CreateTetriminoPositions(positions, xLocations, yLocations, scaleFactorX, scaleFactorY);
+    cubeGroup.ApplyRotationPositions(positions, xLocations, yLocations, rotation);
 }
 
 //---------------------------------------------------------------
 
-void TetriminoCreator::CreateTTetrimino(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, const double scaleFactorX, const double scaleFactorY)
+void TetriminoCreator::CreateTetriminoPositions(
+    std::vector<std::vector<double>>& positions,
+    const std::vector<int>& xPositions,
+    const std::vector<int>& yPositions,
+    const double scaleFactorX,
+    const double scaleFactorY)
 {
-    std::vector<double> positions;
-    positions.reserve(8);
-
-    auto xCoord = BoardManager::GetCoordinate(-1, scaleFactorX);
-    auto yCoord = BoardManager::GetCoordinate(10, scaleFactorY);
+    positions.reserve(4);
     positions.insert(positions.end(),
         {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
+            std::vector<double>(),
+            std::vector<double>(),
+            std::vector<double>(),
+            std::vector<double>()
         });
 
-    std::vector<float> colors;
-    colors.reserve(4);
-    colors.insert(colors.end(), { 1.0f , 0.0f , 0.0f , 1.0f });
-
-    auto cube = new TetriminoCube(positions, colors, -1, 10);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    xCoord = BoardManager::GetCoordinate(0, scaleFactorX);
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, 0, 10);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    xCoord = BoardManager::GetCoordinate(1, scaleFactorX);
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, 1, 10);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    xCoord = BoardManager::GetCoordinate(0, scaleFactorX);
-    yCoord = BoardManager::GetCoordinate(9, scaleFactorY);
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, 0, 9);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
+    for(int i = 0; i < 4; i++)
+    {
+        auto xCoord = BoardManager::GetCoordinate(xPositions[i], scaleFactorX);
+        auto yCoord = BoardManager::GetCoordinate(yPositions[i], scaleFactorY);
+        positions[i].reserve(8);
+        positions[i].insert(positions[i].end(),
+            {
+                xCoord.first,  yCoord.first,
+                xCoord.second, yCoord.first,
+                xCoord.second, yCoord.second,
+                xCoord.first,  yCoord.second
+            });
+    }
 }
 
 //---------------------------------------------------------------
 
-void TetriminoCreator::CreateOTetrimino(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, const double scaleFactorX, const double scaleFactorY)
+void TetriminoCreator::GetTypeLocations(std::vector<int>& xLocation, std::vector<int>& yLocation, const int rotation, TetriminoType type)
 {
-    std::vector<double> positions;
-    positions.reserve(8);
-
-    auto xCoord = BoardManager::GetCoordinate(-1, scaleFactorX);
-    auto yCoord = BoardManager::GetCoordinate(10, scaleFactorY);
-    positions.insert(positions.end(),
+    xLocation.reserve(4);
+    yLocation.reserve(4);
+    switch (type)
+    {
+        case TetriminoType::I:
         {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    std::vector<float> colors;
-    colors.reserve(4);
-    colors.insert(colors.end(), { 1.0f , 0.0f , 0.0f , 1.0f });
-
-    auto cube = new TetriminoCube(positions, colors, -1, 10);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    xCoord = BoardManager::GetCoordinate(0, scaleFactorX);
-    positions.clear();
-    positions.insert(positions.end(),
+            if (rotation == 0)
+            {
+                xLocation.insert(xLocation.end(), { 0, 0, 0, 0 });
+                yLocation.insert(yLocation.end(), { 10, 9, 8, 7 });
+            }
+            else
+            {
+                xLocation.insert(xLocation.end(), { -2, -1, 0, 1 });
+                yLocation.insert(yLocation.end(), { 9, 9, 9, 9 });
+            }
+            break;
+        }
+        case TetriminoType::T:
         {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, 0, 10);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    xCoord = BoardManager::GetCoordinate(-1, scaleFactorX);
-    yCoord = BoardManager::GetCoordinate(9, scaleFactorY);
-    positions.clear();
-    positions.insert(positions.end(),
+            if (rotation == 0)
+            {
+                xLocation.insert(xLocation.end(), { -1, 0, 1, 0 });
+                yLocation.insert(yLocation.end(), { 10, 10, 10, 9 });
+            }
+            else if (rotation == 1)
+            {
+                xLocation.insert(xLocation.end(), { -1, 0, 0, 0 });
+                yLocation.insert(yLocation.end(), { 10, 11, 10, 9 });
+            }
+            else if (rotation == 2)
+            {
+                xLocation.insert(xLocation.end(), { -1, 0, 1, 0 });
+                yLocation.insert(yLocation.end(), { 10, 10, 10, 11 });
+            }
+            else
+            {
+                xLocation.insert(xLocation.end(), { 1, 0, 0, 0 });
+                yLocation.insert(yLocation.end(), { 10, 11, 10, 9 });
+            }
+            break;
+        }
+        case TetriminoType::O:
         {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, -1, 9);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    xCoord = BoardManager::GetCoordinate(0, scaleFactorX);
-    positions.clear();
-    positions.insert(positions.end(),
+            xLocation.insert(xLocation.end(), { 0, 0, 1, 1 });
+            yLocation.insert(yLocation.end(), { 10, 9, 10, 9 });
+            break;
+        }
+        case TetriminoType::L:
         {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, 0, 9);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
+            if (rotation == 0)
+            {
+                xLocation.insert(xLocation.end(), { 0, 0, 0, 1 });
+                yLocation.insert(yLocation.end(), { 10, 9, 8, 8 });
+            }
+            else if (rotation == 1)
+            {
+                xLocation.insert(xLocation.end(), { -1, -1, 0, 1 });
+                yLocation.insert(yLocation.end(), { 8, 9, 9, 9 });
+            }
+            else if (rotation == 2)
+            {
+                xLocation.insert(xLocation.end(), { -1, 0, 0, 0 });
+                yLocation.insert(yLocation.end(), { 10, 10, 9, 8 });
+            }
+            else
+            {
+                xLocation.insert(xLocation.end(), { -1, 0, 1, 1 });
+                yLocation.insert(yLocation.end(), { 9, 9, 9, 10 });
+            }
+            break;
+        }
+        case TetriminoType::J:
+        {
+            if (rotation == 0)
+            {
+                xLocation.insert(xLocation.end(), { -1, 0, 0, 0 });
+                yLocation.insert(yLocation.end(), { 8, 8, 9, 10 });
+            }
+            else if (rotation == 1)
+            {
+                xLocation.insert(xLocation.end(), { -1, -1, 0, 1 });
+                yLocation.insert(yLocation.end(), { 10, 9, 9, 9 });
+            }
+            else if (rotation == 2)
+            {
+                xLocation.insert(xLocation.end(), { 0, 0, 0, 1 });
+                yLocation.insert(yLocation.end(), { 8, 9, 10, 10 });
+            }
+            else
+            {
+                xLocation.insert(xLocation.end(), { -1, 0, 1, 1 });
+                yLocation.insert(yLocation.end(), { 9, 9, 9, 8 });
+            }
+            break;
+        }
+        case TetriminoType::S:
+        {
+            if (rotation == 0)
+            {
+                xLocation.insert(xLocation.end(), { -1, 0, 0, 1 });
+                yLocation.insert(yLocation.end(), { 9, 9, 10, 10 });
+            }
+            else
+            {
+                xLocation.insert(xLocation.end(), { 0, 0, 1, 1 });
+                yLocation.insert(yLocation.end(), { 10, 9, 9, 8 });
+            }
+            break;
+        }
+        case TetriminoType::Z:
+        {
+            if (rotation == 0)
+            {
+                xLocation.insert(xLocation.end(), { -1, 0, 0, 1 });
+                yLocation.insert(yLocation.end(), { 10, 10, 9, 9 });
+            }
+            else
+            {
+                xLocation.insert(xLocation.end(), { 0, 0, 1, 1 });
+                yLocation.insert(yLocation.end(), { 8, 9, 9, 10 });
+            }
+            break;
+        }
+    }
 }
 
 //---------------------------------------------------------------
 
-void TetriminoCreator::CreateLTetrimino(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, const double scaleFactorX, const double scaleFactorY)
+bool TetriminoCreator::IsCollidingWithOtherCubes(
+    const std::vector<Entity*>& entities,
+    const std::vector<int>& xLocations,
+    const std::vector<int>& yLocations,
+    TetriminoCubeGroup& cubeGroup)
 {
-    std::vector<double> positions;
-    positions.reserve(8);
+    for(const int xLocation : xLocations)
+    {
+        if (xLocation < -5 || xLocation > 5)
+            return true;
+    }
 
-    auto xCoord = BoardManager::GetCoordinate(0, scaleFactorX);
-    auto yCoord = BoardManager::GetCoordinate(10, scaleFactorY);
-    positions.insert(positions.end(),
+    for (const int yLocation : yLocations)
+    {
+        if (yLocation < -10 || yLocation > 10)
+            return true;
+    }
+
+    const std::vector<TetriminoCube*> cubes = cubeGroup.GetCubes();
+    for (const auto entity : entities)
+    {
+        if (entity->IsStatic())
+            continue;
+
+        const TetriminoCube* cubeEntity = dynamic_cast<TetriminoCube*>(entity);
+        bool belongToCurrentGroup = false;
+        for (const TetriminoCube* cube : cubes)
         {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    std::vector<float> colors;
-    colors.reserve(4);
-    colors.insert(colors.end(), { 1.0f , 0.0f , 0.0f , 1.0f });
-
-    auto cube = new TetriminoCube(positions, colors, 0, 10);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    yCoord = BoardManager::GetCoordinate(9, scaleFactorY);
-    positions.clear();
-    positions.insert(positions.end(),
+            if (cube == cubeEntity)
+            {
+                belongToCurrentGroup = true;
+                break;
+            }
+        }
+        if (belongToCurrentGroup)
+            continue;
+        for (int i = 0; i < 4; i++)
         {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, 0, 9);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    yCoord = BoardManager::GetCoordinate(8, scaleFactorY);
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, 0, 8);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    xCoord = BoardManager::GetCoordinate(1, scaleFactorX);
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, 1, 8);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-}
-
-//---------------------------------------------------------------
-
-void TetriminoCreator::CreateJTetrimino(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, const double scaleFactorX, const double scaleFactorY)
-{
-    std::vector<double> positions;
-    positions.reserve(8);
-
-    auto xCoord = BoardManager::GetCoordinate(0, scaleFactorX);
-    auto yCoord = BoardManager::GetCoordinate(10, scaleFactorY);
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    std::vector<float> colors;
-    colors.reserve(4);
-    colors.insert(colors.end(), { 1.0f , 0.0f , 0.0f , 1.0f });
-
-    auto cube = new TetriminoCube(positions, colors, 0, 10);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    yCoord = BoardManager::GetCoordinate(9, scaleFactorY);
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, 0, 9);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    yCoord = BoardManager::GetCoordinate(8, scaleFactorY);
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, 0, 8);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    xCoord = BoardManager::GetCoordinate(-1, scaleFactorX);
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, -1, 8);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-}
-
-//---------------------------------------------------------------
-
-void TetriminoCreator::CreateSTetrimino(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, const double scaleFactorX, const double scaleFactorY)
-{
-    std::vector<double> positions;
-    positions.reserve(8);
-
-    auto xCoord = BoardManager::GetCoordinate(0, scaleFactorX);
-    auto yCoord = BoardManager::GetCoordinate(10, scaleFactorY);
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    std::vector<float> colors;
-    colors.reserve(4);
-    colors.insert(colors.end(), { 1.0f , 0.0f , 0.0f , 1.0f });
-
-    auto cube = new TetriminoCube(positions, colors, 0, 10);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    xCoord = BoardManager::GetCoordinate(1, scaleFactorX);
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, 1, 10);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    xCoord = BoardManager::GetCoordinate(0, scaleFactorX);
-    yCoord = BoardManager::GetCoordinate(9, scaleFactorY);
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, 0, 9);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    xCoord = BoardManager::GetCoordinate(-1, scaleFactorX);
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, -1, 9);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-}
-
-//---------------------------------------------------------------
-
-void TetriminoCreator::CreateZTetrimino(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, const double scaleFactorX, const double scaleFactorY)
-{
-    std::vector<double> positions;
-    positions.reserve(8);
-
-    auto xCoord = BoardManager::GetCoordinate(0, scaleFactorX);
-    auto yCoord = BoardManager::GetCoordinate(10, scaleFactorY);
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    std::vector<float> colors;
-    colors.reserve(4);
-    colors.insert(colors.end(), { 1.0f , 0.0f , 0.0f , 1.0f });
-
-    auto cube = new TetriminoCube(positions, colors, 0, 10);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    xCoord = BoardManager::GetCoordinate(-1, scaleFactorX);
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, -1, 10);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    xCoord = BoardManager::GetCoordinate(0, scaleFactorX);
-    yCoord = BoardManager::GetCoordinate(9, scaleFactorY);
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, 0, 9);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
-
-    xCoord = BoardManager::GetCoordinate(1, scaleFactorX);
-    positions.clear();
-    positions.insert(positions.end(),
-        {
-            xCoord.first,  yCoord.first,
-            xCoord.second, yCoord.first,
-            xCoord.second, yCoord.second,
-            xCoord.first,  yCoord.second
-        });
-
-    cube = new TetriminoCube(positions, colors, 1, 9);
-    entities.emplace_back(cube);
-    cubeGroup.AddCube(cube);
+            if (cubeEntity->GetYLocation() == yLocations[i] &&
+                cubeEntity->GetXLocation() == xLocations[i])
+                return true;
+        }
+    }
+    return false;
 }
 
 //---------------------------------------------------------------

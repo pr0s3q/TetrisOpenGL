@@ -5,13 +5,15 @@
 //---------------------------------------------------------------
 
 KeyboardManager::KeyboardManager()
-    : m_pressedKeys(5)
+    : m_pressedKeys(7)
 {
     m_pressedKeys.insert({ GLFW_KEY_W, false });
     m_pressedKeys.insert({ GLFW_KEY_S, false });
     m_pressedKeys.insert({ GLFW_KEY_A, false });
     m_pressedKeys.insert({ GLFW_KEY_D, false });
     m_pressedKeys.insert({ GLFW_KEY_L, false });
+    m_pressedKeys.insert({ GLFW_KEY_Q, false });
+    m_pressedKeys.insert({ GLFW_KEY_E, false });
 }
 
 //---------------------------------------------------------------

@@ -16,35 +16,32 @@ public:
 
     //---------------------------------------------------------------
 
+    static void RotateIfPossible(const std::vector<Entity*>& entities, TetriminoCubeGroup& cubeGroup, const double& scaleFactorX, const double& scaleFactorY);
+
+    //---------------------------------------------------------------
+
 private:
 
     //---------------------------------------------------------------
 
-    static void CreateITetrimino(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, double scaleFactorX, double scaleFactorY);
+    static void CreateTetriminoPositions(
+        std::vector<std::vector<double>>& positions,
+        const std::vector<int>& xPositions,
+        const std::vector<int>& yPositions,
+        double scaleFactorX,
+        double scaleFactorY);
 
     //---------------------------------------------------------------
 
-    static void CreateTTetrimino(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, double scaleFactorX, double scaleFactorY);
+    static void GetTypeLocations(std::vector<int>& xLocation, std::vector<int>& yLocation, int rotation, TetriminoType type);
 
     //---------------------------------------------------------------
 
-    static void CreateOTetrimino(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, double scaleFactorX, double scaleFactorY);
-
-    //---------------------------------------------------------------
-
-    static void CreateLTetrimino(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, double scaleFactorX, double scaleFactorY);
-
-    //---------------------------------------------------------------
-
-    static void CreateJTetrimino(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, double scaleFactorX, double scaleFactorY);
-
-    //---------------------------------------------------------------
-
-    static void CreateSTetrimino(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, double scaleFactorX, double scaleFactorY);
-
-    //---------------------------------------------------------------
-
-    static void CreateZTetrimino(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, double scaleFactorX, double scaleFactorY);
+    static bool IsCollidingWithOtherCubes(
+        const std::vector<Entity*>& entities,
+        const std::vector<int>& xLocations,
+        const std::vector<int>& yLocations,
+        TetriminoCubeGroup& cubeGroup);
 
     //---------------------------------------------------------------
 };
