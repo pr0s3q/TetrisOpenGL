@@ -49,7 +49,7 @@ Cube::Cube(const std::vector<double>& positions, const std::vector<float>& color
 
 void Cube::Color()
 {
-    glUniform4f(glGetUniformLocation(m_shaderProgram, "triangleColor"), m_colors[0], m_colors[1], m_colors[2], m_colors[3]);
+    glUniform4f(glGetUniformLocation(s_shaderProgram, "triangleColor"), m_colors[0], m_colors[1], m_colors[2], m_colors[3]);
 }
 
 //---------------------------------------------------------------
@@ -80,30 +80,30 @@ void Cube::InitShader()
 {
     CompileShaders();
 
-    m_shaderProgram = glCreateProgram();
-    glAttachShader(m_shaderProgram, m_vertexShader);
-    glAttachShader(m_shaderProgram, m_fragmentShader);
-    glLinkProgram(m_shaderProgram);
+    s_shaderProgram = glCreateProgram();
+    glAttachShader(s_shaderProgram, s_vertexShader);
+    glAttachShader(s_shaderProgram, s_fragmentShader);
+    glLinkProgram(s_shaderProgram);
 
     // Check for program linking errors
-    CheckProgramLinking(m_shaderProgram);
+    CheckProgramLinking(s_shaderProgram);
 
-    glDeleteShader(m_vertexShader);
-    glDeleteShader(m_fragmentShader);
+    glDeleteShader(s_vertexShader);
+    glDeleteShader(s_fragmentShader);
 }
 
 //---------------------------------------------------------------
 
 void Cube::TerminateShader()
 {
-    glDeleteProgram(m_shaderProgram);
+    glDeleteProgram(s_shaderProgram);
 }
 
 //---------------------------------------------------------------
 
 void Cube::CompileShaders()
 {
-    m_vertexShaderSource = R"(
+    s_vertexShaderSource = R"(
         #version 330 core
         layout (location = 0) in vec3 aPos;
         void main() {
@@ -111,7 +111,7 @@ void Cube::CompileShaders()
         }
     )";
 
-    m_fragmentShaderSource = R"(
+    s_fragmentShaderSource = R"(
         #version 330 core
         out vec4 FragColor;
         uniform vec4 triangleColor;
@@ -120,17 +120,17 @@ void Cube::CompileShaders()
         }
     )";
 
-    m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(m_vertexShader, 1, &m_vertexShaderSource, nullptr);
-    glCompileShader(m_vertexShader);
+    s_vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(s_vertexShader, 1, &s_vertexShaderSource, nullptr);
+    glCompileShader(s_vertexShader);
 
-    m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(m_fragmentShader, 1, &m_fragmentShaderSource, nullptr);
-    glCompileShader(m_fragmentShader);
+    s_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(s_fragmentShader, 1, &s_fragmentShaderSource, nullptr);
+    glCompileShader(s_fragmentShader);
 
     // Check for shader compilation errors
-    CheckShaderCompilation(m_vertexShader);
-    CheckShaderCompilation(m_fragmentShader);
+    CheckShaderCompilation(s_vertexShader);
+    CheckShaderCompilation(s_fragmentShader);
 }
 
 //---------------------------------------------------------------

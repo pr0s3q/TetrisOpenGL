@@ -50,7 +50,10 @@ public:
 
     //---------------------------------------------------------------
 
-    void MoveCubes(const std::vector<Entity*>& entities, const double& scaleFactor, Key keyPressed);
+    void MoveCubes(
+        const std::vector<Entity*>& entities,
+        const double& scaleFactor,
+        Key keyPressed);
 
     //---------------------------------------------------------------
 

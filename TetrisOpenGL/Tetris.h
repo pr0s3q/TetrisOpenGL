@@ -43,7 +43,7 @@ private:
 
     //---------------------------------------------------------------
 
-    void CheckPressedKey(const int& key, Key keyPressed);
+    void CheckPressedKey(const int& key);
 
     //---------------------------------------------------------------
 

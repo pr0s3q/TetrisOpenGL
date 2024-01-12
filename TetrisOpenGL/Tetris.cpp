@@ -68,13 +68,13 @@ void Tetris::AddEntity()
 
 void Tetris::CheckForRowToDelete()
 {
-    while(true)
+    while (true)
     {
-        for(int yCoord = -10; yCoord <= 10; yCoord++)
+        for (int yCoord = -10; yCoord <= 10; yCoord++)
         {
             bool rowEmpty = true;
             bool columnEmpty = false;
-            for(int xCoord = -5; xCoord <= 5; xCoord++)
+            for (int xCoord = -5; xCoord <= 5; xCoord++)
             {
                 bool cubeFound = false;
                 for (const auto entity : m_entities)
@@ -83,7 +83,7 @@ void Tetris::CheckForRowToDelete()
                         continue;
 
                     const TetriminoCube* cube = dynamic_cast<TetriminoCube*>(entity);
-                    if(cube->GetYLocation() == yCoord && cube->GetXLocation() == xCoord)
+                    if (cube->GetYLocation() == yCoord && cube->GetXLocation() == xCoord)
                     {
                         rowEmpty = false;
                         cubeFound = true;
@@ -92,88 +92,90 @@ void Tetris::CheckForRowToDelete()
                 if (!cubeFound)
                     columnEmpty = true;
             }
-            if(!rowEmpty && !columnEmpty)
+
+            if (rowEmpty)
+                return;
+
+            if (columnEmpty)
+                continue;
+
+            std::vector<Entity*> toDelete;
+            std::vector<long long> indexToErase;
+            toDelete.reserve(11);
+            indexToErase.reserve(11);
+            for (const auto entity : m_entities)
             {
-                std::vector<Entity*> toDelete;
-                std::vector<long long> indexToErase;
-                toDelete.reserve(11);
-                indexToErase.reserve(11);
-                for (const auto entity : m_entities)
-                {
-                    if (entity->IsStatic())
-                        continue;
+                if (entity->IsStatic())
+                    continue;
 
-                    const TetriminoCube* cube = dynamic_cast<TetriminoCube*>(entity);
-                    if (cube->GetYLocation() == yCoord)
-                    {
-                        const long long index = std::ranges::find(m_entities, entity) - m_entities.begin();
-                        indexToErase.emplace_back(index);
-                        toDelete.emplace_back(entity);
-                    }
-                }
-                std::ranges::sort(indexToErase, std::ranges::greater());
-                for(int i = 0; i < 11; i++)
+                const TetriminoCube* cube = dynamic_cast<TetriminoCube*>(entity);
+                if (cube->GetYLocation() == yCoord)
                 {
-                    m_entities.erase(m_entities.begin() + indexToErase[i]);
-                    delete toDelete[i];
+                    const long long index = std::ranges::find(m_entities, entity) - m_entities.begin();
+                    indexToErase.emplace_back(index);
+                    toDelete.emplace_back(entity);
                 }
-                ++yCoord;
-                std::vector<TetriminoCube*> movableCubes;
-                for (const auto entity : m_entities)
-                {
-                    if (entity->IsStatic())
-                        continue;
+            }
+            std::ranges::sort(indexToErase, std::ranges::greater());
+            for (int i = 0; i < 11; i++)
+            {
+                m_entities.erase(m_entities.begin() + indexToErase[i]);
+                delete toDelete[i];
+            }
+            ++yCoord;
+            std::vector<TetriminoCube*> movableCubes;
+            for (const auto entity : m_entities)
+            {
+                if (entity->IsStatic())
+                    continue;
 
-                    TetriminoCube* cube = dynamic_cast<TetriminoCube*>(entity);
-                    if (cube->GetYLocation() >= yCoord)
-                    {
-                        cube->MoveForce(m_scaleFactorY);
-                        movableCubes.emplace_back(cube);
-                    }
-                }
-                bool cubeMoved = true;
-                while(cubeMoved)
+                TetriminoCube* cube = dynamic_cast<TetriminoCube*>(entity);
+                if (cube->GetYLocation() >= yCoord)
                 {
-                    cubeMoved = false;
-                    bool cubeInRow = true;
-                    if(yCoord > -9)
-                        --yCoord;
-                    for(int i = yCoord; i <= 10 && cubeInRow; i++)
+                    cube->MoveForce(m_scaleFactorY);
+                    movableCubes.emplace_back(cube);
+                }
+            }
+            bool cubeMoved = true;
+            while (cubeMoved)
+            {
+                cubeMoved = false;
+                bool cubeInRow = true;
+                if (yCoord > -9)
+                    --yCoord;
+                for (int i = yCoord; i <= 10 && cubeInRow; i++)
+                {
+                    cubeInRow = false;
+                    for (const auto movableCube : movableCubes)
                     {
-                        cubeInRow = false;
-                        for(const auto movableCube : movableCubes)
+                        if (movableCube->GetYLocation() != i)
+                            continue;
+
+                        cubeInRow = true;
+                        bool shouldBeMovable = true;
+                        for (const auto entity : m_entities)
                         {
-                            if(movableCube->GetYLocation() == i)
+                            if (entity->IsStatic())
+                                continue;
+
+                            const TetriminoCube* cube = dynamic_cast<TetriminoCube*>(entity);
+
+                            if (cube->GetXLocation() == movableCube->GetXLocation() &&
+                                cube->GetYLocation() == movableCube->GetYLocation() - 1)
                             {
-                                cubeInRow = true;
-                                bool shouldBeMovable = true;
-                                for (const auto entity : m_entities)
-                                {
-                                    if (entity->IsStatic())
-                                        continue;
-
-                                    const TetriminoCube* cube = dynamic_cast<TetriminoCube*>(entity);
-
-                                    if (cube->GetXLocation() == movableCube->GetXLocation() &&
-                                        cube->GetYLocation() == movableCube->GetYLocation() - 1)
-                                    {
-                                        shouldBeMovable = false;
-                                        break;
-                                    }
-                                }
-                                if (shouldBeMovable)
-                                {
-                                    movableCube->MoveForce(m_scaleFactorY);
-                                    cubeMoved = true;
-                                }
+                                shouldBeMovable = false;
+                                break;
                             }
+                        }
+                        if (shouldBeMovable)
+                        {
+                            movableCube->MoveForce(m_scaleFactorY);
+                            cubeMoved = true;
                         }
                     }
                 }
-                break;
             }
-            if (rowEmpty)
-                return;
+            break;
         }
     }
 }
@@ -184,19 +186,19 @@ void Tetris::CheckPressedKey(const double& scaleFactor, const int& key, const Ke
 {
     if (glfwGetKey(m_window, key) == GLFW_PRESS)
     {
-        if (!m_keyboardManager.IsPressed(key))
-        {
-            m_keyboardManager.SetPressedToTrue(key);
-            m_cubeGroup.MoveCubes(m_entities, scaleFactor, keyPressed);
-            if (!m_cubeGroup.ShouldBeMovable(m_entities))
-            {
-                m_cubeGroup.SetMove(false);
-                m_cubeGroup.ResetCubes();
-                CheckForRowToDelete();
-                TetriminoCreator::Create(m_cubeGroup, m_entities, m_scaleFactorX, m_scaleFactorY);
-            }
-        }
+        if (m_keyboardManager.IsPressed(key))
+            return;
 
+        m_keyboardManager.SetPressedToTrue(key);
+        m_cubeGroup.MoveCubes(m_entities, scaleFactor, keyPressed);
+
+        if (m_cubeGroup.ShouldBeMovable(m_entities))
+            return;
+
+        m_cubeGroup.SetMove(false);
+        m_cubeGroup.ResetCubes();
+        CheckForRowToDelete();
+        TetriminoCreator::Create(m_cubeGroup, m_entities, m_scaleFactorX, m_scaleFactorY);
     }
     else
     {
@@ -206,15 +208,15 @@ void Tetris::CheckPressedKey(const double& scaleFactor, const int& key, const Ke
 
 //---------------------------------------------------------------
 
-void Tetris::CheckPressedKey(const int& key, Key keyPressed)
+void Tetris::CheckPressedKey(const int& key)
 {
     if (glfwGetKey(m_window, key) == GLFW_PRESS)
     {
-        if (!m_keyboardManager.IsPressed(key))
-        {
-            m_keyboardManager.SetPressedToTrue(key);
-            TetriminoCreator::RotateIfPossible(m_entities, m_cubeGroup, m_scaleFactorX, m_scaleFactorY);
-        }
+        if (m_keyboardManager.IsPressed(key))
+            return;
+
+        m_keyboardManager.SetPressedToTrue(key);
+        TetriminoCreator::RotateIfPossible(m_entities, m_cubeGroup, m_scaleFactorX, m_scaleFactorY);
     }
     else
     {
@@ -353,8 +355,9 @@ void Tetris::Loop()
         CheckPressedKey(m_scaleFactorY, GLFW_KEY_W, Key::W);
         CheckPressedKey(m_scaleFactorX, GLFW_KEY_A, Key::A);
         CheckPressedKey(m_scaleFactorX, GLFW_KEY_D, Key::D);
-        CheckPressedKey(GLFW_KEY_Q, Key::Q);
+        CheckPressedKey(GLFW_KEY_Q);
 
+#ifdef _DEBUG // Extra feature for debug - L key is creating new TetriminoCube
         if (glfwGetKey(m_window, GLFW_KEY_L) == GLFW_PRESS)
         {
             if (!m_keyboardManager.IsPressed(GLFW_KEY_L))
@@ -369,6 +372,7 @@ void Tetris::Loop()
         {
             m_keyboardManager.SetPressedToFalse(GLFW_KEY_L);
         }
+#endif
     }
 }
 

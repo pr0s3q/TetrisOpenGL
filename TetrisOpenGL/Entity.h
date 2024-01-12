@@ -69,13 +69,11 @@ protected:
     unsigned int m_VBO;
     std::vector<float> m_colors;
 
-    //---------------------------------------------------------------
-
-    static const char* m_vertexShaderSource;
-    static const char* m_fragmentShaderSource;
-    static unsigned int m_fragmentShader;
-    static unsigned int m_vertexShader;
-    static unsigned int m_shaderProgram;
+    static const char* s_vertexShaderSource;
+    static const char* s_fragmentShaderSource;
+    static unsigned int s_fragmentShader;
+    static unsigned int s_vertexShader;
+    static unsigned int s_shaderProgram;
 
     //---------------------------------------------------------------
 };

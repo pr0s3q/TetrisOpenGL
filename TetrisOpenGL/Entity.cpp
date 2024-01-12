@@ -6,11 +6,11 @@
 
 //---------------------------------------------------------------
 
-unsigned int Entity::m_shaderProgram = 0;
-const char* Entity::m_vertexShaderSource = nullptr;
-const char* Entity::m_fragmentShaderSource = nullptr;
-unsigned int Entity::m_fragmentShader = 0;
-unsigned int Entity::m_vertexShader = 0;
+unsigned int Entity::s_shaderProgram = 0;
+const char* Entity::s_vertexShaderSource = nullptr;
+const char* Entity::s_fragmentShaderSource = nullptr;
+unsigned int Entity::s_fragmentShader = 0;
+unsigned int Entity::s_vertexShader = 0;
 
 //---------------------------------------------------------------
 
@@ -25,7 +25,7 @@ Entity::~Entity()
 {
     glDeleteVertexArrays(1, &m_VAO);
     glDeleteBuffers(1, &m_VBO);
-    glDeleteProgram(m_shaderProgram);
+    glDeleteProgram(s_shaderProgram);
 }
 
 //---------------------------------------------------------------
@@ -39,8 +39,8 @@ bool Entity::IsStatic()
 
 void Entity::Loop()
 {
-    glUseProgram(m_shaderProgram);
-    CheckProgramLinking(m_shaderProgram);
+    glUseProgram(s_shaderProgram);
+    CheckProgramLinking(s_shaderProgram);
     Color();
     glBindVertexArray(m_VAO);
     CheckOpenGLError("Before draw");

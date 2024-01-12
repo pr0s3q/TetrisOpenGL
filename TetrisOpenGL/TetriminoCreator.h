@@ -12,11 +12,19 @@ public:
 
     //---------------------------------------------------------------
 
-    static void Create(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, double scaleFactorX, double scaleFactorY);
+    static void Create(
+        TetriminoCubeGroup& cubeGroup,
+        std::vector<Entity*>& entities,
+        double scaleFactorX,
+        double scaleFactorY);
 
     //---------------------------------------------------------------
 
-    static void RotateIfPossible(const std::vector<Entity*>& entities, TetriminoCubeGroup& cubeGroup, const double& scaleFactorX, const double& scaleFactorY);
+    static void RotateIfPossible(
+        const std::vector<Entity*>& entities,
+        TetriminoCubeGroup& cubeGroup,
+        const double& scaleFactorX,
+        const double& scaleFactorY);
 
     //---------------------------------------------------------------
 
@@ -33,7 +41,11 @@ private:
 
     //---------------------------------------------------------------
 
-    static void GetTypeLocations(std::vector<int>& xLocation, std::vector<int>& yLocation, int rotation, TetriminoType type);
+    static void GetTypeLocations(
+        std::vector<int>& xLocation,
+        std::vector<int>& yLocation,
+        int rotation,
+        TetriminoType type);
 
     //---------------------------------------------------------------
 

@@ -8,11 +8,18 @@ public:
 
     //---------------------------------------------------------------
 
-    TetriminoCube(const std::vector<double>& positions, const std::vector<float>& colors, int xLocation, int yLocation);
+    TetriminoCube(
+        const std::vector<double>& positions,
+        const std::vector<float>& colors,
+        int xLocation,
+        int yLocation);
 
     //---------------------------------------------------------------
 
-    void ApplyRotationPositions(const std::vector<double>& positions, const int xLocation, const int yLocation);
+    void ApplyRotationPositions(
+        const std::vector<double>& positions,
+        int xLocation,
+        int yLocation);
 
     //---------------------------------------------------------------
 
