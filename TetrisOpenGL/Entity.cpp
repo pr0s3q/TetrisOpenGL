@@ -11,21 +11,15 @@ const char* Entity::s_vertexShaderSource = nullptr;
 const char* Entity::s_fragmentShaderSource = nullptr;
 unsigned int Entity::s_fragmentShader = 0;
 unsigned int Entity::s_vertexShader = 0;
+unsigned int Entity::s_VAO = 0;
+unsigned int Entity::s_VBO = 0;
+
 
 //---------------------------------------------------------------
 
 Entity::Entity(const unsigned int count, const unsigned int mode)
-    : m_shouldMove(true), m_count(count), m_mode(mode), m_VAO(0), m_VBO(0)
+    : m_shouldMove(true), m_count(count), m_mode(mode)
 {
-}
-
-//---------------------------------------------------------------
-
-Entity::~Entity()
-{
-    glDeleteVertexArrays(1, &m_VAO);
-    glDeleteBuffers(1, &m_VBO);
-    glDeleteProgram(s_shaderProgram);
 }
 
 //---------------------------------------------------------------
@@ -42,7 +36,7 @@ void Entity::Loop()
     glUseProgram(s_shaderProgram);
     CheckProgramLinking(s_shaderProgram);
     Color();
-    glBindVertexArray(m_VAO);
+    glBindVertexArray(s_VAO);
     CheckOpenGLError("Before draw");
     glDrawArrays(m_mode, 0, m_count);
 }

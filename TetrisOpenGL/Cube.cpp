@@ -1,4 +1,4 @@
-﻿#include <GL/glew.h>
+﻿#include "GL/glew.h"
 
 #include "Cube.h"
 
@@ -34,15 +34,6 @@ Cube::Cube(const std::vector<double>& positions, const std::vector<float>& color
     m_positions[9] = positions[7];
     m_positions[10] = positions[0];
     m_positions[11] = positions[1];
-
-    glGenVertexArrays(1, &m_VAO);
-    glGenBuffers(1, &m_VBO);
-
-    glBindVertexArray(m_VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(m_positions), m_positions, GL_DYNAMIC_DRAW);
-    glVertexAttribPointer(0, 2, GL_DOUBLE, GL_FALSE, 2 * sizeof(double), nullptr);
-    glEnableVertexAttribArray(0);
 }
 
 //---------------------------------------------------------------
@@ -90,12 +81,33 @@ void Cube::InitShader()
 
     glDeleteShader(s_vertexShader);
     glDeleteShader(s_fragmentShader);
+
+    glGenVertexArrays(1, &s_VAO);
+    glGenBuffers(1, &s_VBO);
+
+    glBindVertexArray(s_VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, s_VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(double) * 12, nullptr, GL_DYNAMIC_DRAW);
+    glVertexAttribPointer(0, 2, GL_DOUBLE, GL_FALSE, 2 * sizeof(double), nullptr);
+    glEnableVertexAttribArray(0);
+}
+
+//---------------------------------------------------------------
+
+void Cube::Loop()
+{
+    glBindBuffer(GL_ARRAY_BUFFER, s_VBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_positions), m_positions);
+
+    Entity::Loop();
 }
 
 //---------------------------------------------------------------
 
 void Cube::TerminateShader()
 {
+    glDeleteVertexArrays(1, &s_VAO);
+    glDeleteBuffers(1, &s_VBO);
     glDeleteProgram(s_shaderProgram);
 }
 

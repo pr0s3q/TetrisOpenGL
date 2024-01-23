@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+#include "GL/glew.h"
 
 #include "BoardManager.h"
 #include "TetriminoCube.h"
@@ -27,7 +27,7 @@ void TetriminoCube::ApplyRotationPositions(const std::vector<double>& positions,
     m_positions[10] = positions[0];
     m_positions[11] = positions[1];
 
-    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, s_VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_positions), m_positions);
 
     m_xLocation = xLocation;
@@ -157,7 +157,7 @@ void TetriminoCube::Move(const double& scaleFactor, const Key keyPressed)
         }
     }
 
-    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, s_VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_positions), m_positions);
 }
 
@@ -175,7 +175,7 @@ void TetriminoCube::MoveForce(const double& scaleFactor)
     m_positions[9] = yCoord.second;
     m_positions[11] = yCoord.first;
 
-    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, s_VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_positions), m_positions);
 }
 

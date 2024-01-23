@@ -14,7 +14,7 @@ public:
 
     //---------------------------------------------------------------
 
-    virtual ~Entity();
+    virtual ~Entity() = default;
 
     //---------------------------------------------------------------
 
@@ -41,7 +41,7 @@ public:
 
     //---------------------------------------------------------------
 
-    void Loop();
+    virtual void Loop();
 
     //---------------------------------------------------------------
 
@@ -65,8 +65,6 @@ protected:
     bool m_staticImage = false;
     unsigned int m_count;
     unsigned int m_mode;
-    unsigned int m_VAO;
-    unsigned int m_VBO;
     std::vector<float> m_colors;
 
     static const char* s_vertexShaderSource;
@@ -74,6 +72,8 @@ protected:
     static unsigned int s_fragmentShader;
     static unsigned int s_vertexShader;
     static unsigned int s_shaderProgram;
+    static unsigned int s_VAO;
+    static unsigned int s_VBO;
 
     //---------------------------------------------------------------
 };
