@@ -1,7 +1,11 @@
+#include <functional>
 #include <vector>
+#include <random>
+#include <thread>
 
 #include "BoardManager.h"
 #include "TetriminoCreator.h"
+
 #include "TetriminoCube.h"
 #include "Tetris.h"
 
@@ -9,7 +13,10 @@
 
 void TetriminoCreator::Create(TetriminoCubeGroup& cubeGroup, std::vector<Entity*>& entities, const double scaleFactorX, const double scaleFactorY)
 {
-    const TetriminoType type = static_cast<TetriminoType>(rand() % 7);
+    std::uniform_int_distribution uid(0, 6);
+    std::mersenne_twister_engine<unsigned long long, 32, 624, 397, 31, 0x9908b0df, 11, 0xffffffff, 7, 0x9d2c5680, 15, 0xefc60000, 18, 1812433253> rng_engine(clock() + std::hash<std::thread::id>()(std::this_thread::get_id()));
+    auto generator = std::bind(uid, rng_engine);
+    const TetriminoType type = static_cast<TetriminoType>(generator());
     cubeGroup.SetType(type);
 
     std::vector<std::vector<double>> positions;

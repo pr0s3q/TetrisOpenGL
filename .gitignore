@@ -3,3 +3,4 @@
 TetrisOpenGL/x64
 *.user
 .idea
+*.ini

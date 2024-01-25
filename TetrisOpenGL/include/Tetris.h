@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Entity.h"
+#include "ImGuiWrapper.h"
 #include "KeyboardManager.h"
 #include "TetriminoCubeGroup.h"
 
@@ -69,6 +70,7 @@ private:
     KeyboardManager m_keyboardManager;
     double m_scaleFactorX;
     double m_scaleFactorY;
+    ImGuiWrapper* m_ImGuiWrapper;
 
     static const int s_height;
     static const int s_width;

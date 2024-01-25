@@ -10,6 +10,10 @@
 #include "TetriminoCreator.h"
 #include "Tetris.h"
 
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_glfw.h"
+#include "ImGui/imgui_impl_opengl3.h"
+
 //---------------------------------------------------------------
 
 const int Tetris::s_height = 900;
@@ -37,6 +41,7 @@ Tetris::Tetris()
 
     /* Make the window's context current */
     glfwMakeContextCurrent(m_window);
+    glfwSwapInterval(0);
 
     if (glewInit() != GLEW_OK)
     {
@@ -45,6 +50,15 @@ Tetris::Tetris()
     }
 
     Cube::InitShader();
+
+    ImGui::CreateContext();
+
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    m_ImGuiWrapper = new ImGuiWrapper(io);
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+    ImGui_ImplOpenGL3_Init("#version 130");
 }
 
 //---------------------------------------------------------------
@@ -52,6 +66,11 @@ Tetris::Tetris()
 Tetris::~Tetris()
 {
     Cube::TerminateShader();
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
     glfwTerminate();
     for (const auto entity : m_entities)
         delete entity;
@@ -323,7 +342,6 @@ void Tetris::CreateBorder()
 
 void Tetris::Init()
 {
-    srand(time(nullptr));
     Tetris tetris;
     tetris.CreateBorder();
     tetris.AddEntity();
@@ -344,6 +362,8 @@ void Tetris::Loop()
         {
             entity->Loop();
         }
+
+        m_ImGuiWrapper->Frame();
 
         // Swap front and back buffers
         glfwSwapBuffers(m_window);
