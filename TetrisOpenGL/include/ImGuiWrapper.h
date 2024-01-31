@@ -12,7 +12,15 @@ public:
 
     //---------------------------------------------------------------
 
+    bool Exit() const;
+
+    //---------------------------------------------------------------
+
     void Frame();
+
+    //---------------------------------------------------------------
+
+    void MenuGuiView();
 
     //---------------------------------------------------------------
 
@@ -28,12 +36,22 @@ private:
 
     //---------------------------------------------------------------
 
+    enum class Mode
+    {
+        EMenuView = 0
+    };
+
     ImFont* m_font;
     ImGuiIO& m_io;
     ImVec4 m_clear_color;
+    Mode m_viewMode;
     int m_width;
     int m_height;
     bool m_playGameClicked;
+    bool m_exitClicked;
+    const char* m_playText = "       Play       ";
+    const char* m_scoreboardText = " Scoreboard ";
+    const char* m_exitText = "       Exit       ";
 
     //---------------------------------------------------------------
 };
