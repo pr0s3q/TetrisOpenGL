@@ -361,7 +361,7 @@ void Tetris::Loop()
         // Poll for and process events
         glfwPollEvents();
         
-        if (!m_ImGuiWrapper->ShowGame())
+        if (!m_ImGuiWrapper->PlayGame())
             m_ImGuiWrapper->Frame();
         else
         {

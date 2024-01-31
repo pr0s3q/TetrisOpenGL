@@ -16,7 +16,7 @@ public:
 
     //---------------------------------------------------------------
 
-    bool ShowGame() const;
+    bool PlayGame() const;
 
     //---------------------------------------------------------------
 
@@ -33,7 +33,7 @@ private:
     ImVec4 m_clear_color;
     int m_width;
     int m_height;
-    bool m_showGameClicked;
+    bool m_playGameClicked;
 
     //---------------------------------------------------------------
 };

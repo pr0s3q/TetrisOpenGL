@@ -6,7 +6,7 @@
 //---------------------------------------------------------------
 
 ImGuiWrapper::ImGuiWrapper(ImGuiIO& io, int width, int height)
-    : m_io(io), m_clear_color(0.45f, 0.55f, 0.60f, 1.00f), m_width(width), m_height(height), m_showGameClicked(false)
+    : m_io(io), m_clear_color(0.45f, 0.55f, 0.60f, 1.00f), m_width(width), m_height(height), m_playGameClicked(false)
 {
     m_io.Fonts->AddFontDefault();
     m_font = m_io.Fonts->AddFontFromFileTTF("OpenSans-Light.ttf", 50.0f);
@@ -25,12 +25,14 @@ void ImGuiWrapper::Frame()
     ImGui::SetNextWindowSize({ static_cast<float>(m_width), static_cast<float>(m_height) });
     ImGui::SetNextWindowPos({ 0, 0 });
     ImGui::Begin("TetrisOpenGL", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-
     ImGui::PushFont(m_font);
-    if (ImGui::Button("Button"))
-        m_showGameClicked = true;
 
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", static_cast<double>(1000.0f / m_io.Framerate), static_cast<double>(m_io.Framerate));
+    const char* text = " Play ";
+    const ImVec2 label_size = ImGui::CalcTextSize(text, nullptr, true);
+    ImGui::SetCursorPos({ (static_cast<float>(m_width) - label_size.x) / 2, 100 });
+    if (ImGui::Button(text))
+        m_playGameClicked = true;
+
     ImGui::PopFont();
     ImGui::End();
 
@@ -40,16 +42,16 @@ void ImGuiWrapper::Frame()
 
 //---------------------------------------------------------------
 
-bool ImGuiWrapper::ShowGame() const
+bool ImGuiWrapper::PlayGame() const
 {
-    return m_showGameClicked;
+    return m_playGameClicked;
 }
 
 //---------------------------------------------------------------
 
 void ImGuiWrapper::ShowMenu()
 {
-    m_showGameClicked = false;
+    m_playGameClicked = false;
 }
 
 //---------------------------------------------------------------
