@@ -3,10 +3,18 @@
 #include "ImGui/imgui_impl_glfw.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
-ImGuiWrapper::ImGuiWrapper(ImGuiIO& io)
-    : m_io(io), m_show_demo_window(true), m_show_another_window(false), m_clear_color(0.45f, 0.55f, 0.60f, 1.00f)
+//---------------------------------------------------------------
+
+ImGuiWrapper::ImGuiWrapper(ImGuiIO& io, int width, int height)
+    : m_io(io), m_clear_color(0.45f, 0.55f, 0.60f, 1.00f), m_width(width), m_height(height), m_showGameClicked(false)
 {
+    m_io.Fonts->AddFontDefault();
+    m_font = m_io.Fonts->AddFontFromFileTTF("OpenSans-Light.ttf", 50.0f);
+    m_io.Fonts->Build();
+    IM_ASSERT(m_font != NULL);
 }
+
+//---------------------------------------------------------------
 
 void ImGuiWrapper::Frame()
 {
@@ -14,27 +22,34 @@ void ImGuiWrapper::Frame()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    static float f = 0.0f;
-    static int counter = 0;
+    ImGui::SetNextWindowSize({ static_cast<float>(m_width), static_cast<float>(m_height) });
+    ImGui::SetNextWindowPos({ 0, 0 });
+    ImGui::Begin("TetrisOpenGL", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
-    ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+    ImGui::PushFont(m_font);
+    if (ImGui::Button("Button"))
+        m_showGameClicked = true;
 
-    ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-    ImGui::Checkbox("Demo Window", &m_show_demo_window);      // Edit bools storing our window open/close state
-    ImGui::Checkbox("Another Window", &m_show_another_window);
-
-    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-    ImGui::ColorEdit3("clear color", (float*)&m_clear_color); // Edit 3 floats representing a color
-
-    if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-        counter++;
-    ImGui::SameLine();
-    ImGui::Text("counter = %d", counter);
-
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / m_io.Framerate, m_io.Framerate);
+    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", static_cast<double>(1000.0f / m_io.Framerate), static_cast<double>(m_io.Framerate));
+    ImGui::PopFont();
     ImGui::End();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
+//---------------------------------------------------------------
+
+bool ImGuiWrapper::ShowGame() const
+{
+    return m_showGameClicked;
+}
+
+//---------------------------------------------------------------
+
+void ImGuiWrapper::ShowMenu()
+{
+    m_showGameClicked = false;
+}
+
+//---------------------------------------------------------------

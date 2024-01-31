@@ -55,7 +55,7 @@ Tetris::Tetris()
 
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    m_ImGuiWrapper = new ImGuiWrapper(io);
+    m_ImGuiWrapper = new ImGuiWrapper(io, s_width, s_height);
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     ImGui_ImplOpenGL3_Init("#version 130");
@@ -358,41 +358,49 @@ void Tetris::Loop()
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        for (const auto entity : m_entities)
+        // Poll for and process events
+        glfwPollEvents();
+        
+        if (!m_ImGuiWrapper->ShowGame())
+            m_ImGuiWrapper->Frame();
+        else
         {
-            entity->Loop();
-        }
+            for (const auto entity : m_entities)
+            {
+                entity->Loop();
+            }
 
-        m_ImGuiWrapper->Frame();
+            CheckPressedKey(m_scaleFactorY, GLFW_KEY_S, Key::S);
+            CheckPressedKey(m_scaleFactorY, GLFW_KEY_W, Key::W);
+            CheckPressedKey(m_scaleFactorX, GLFW_KEY_A, Key::A);
+            CheckPressedKey(m_scaleFactorX, GLFW_KEY_D, Key::D);
+            CheckPressedKey(GLFW_KEY_Q);
+
+            if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+            {
+                m_ImGuiWrapper->ShowMenu();
+            }
+
+#ifdef _DEBUG // Extra feature for debug - L key is creating new TetriminoCube
+            if (glfwGetKey(m_window, GLFW_KEY_L) == GLFW_PRESS)
+            {
+                if (!m_keyboardManager.IsPressed(GLFW_KEY_L))
+                {
+                    m_keyboardManager.SetPressedToTrue(GLFW_KEY_L);
+                    m_cubeGroup.SetMove(false);
+                    m_cubeGroup.ResetCubes();
+                    TetriminoCreator::Create(m_cubeGroup, m_entities, m_scaleFactorX, m_scaleFactorY);
+                }
+            }
+            else
+            {
+                m_keyboardManager.SetPressedToFalse(GLFW_KEY_L);
+            }
+#endif
+        }
 
         // Swap front and back buffers
         glfwSwapBuffers(m_window);
-
-        // Poll for and process events
-        glfwPollEvents();
-
-        CheckPressedKey(m_scaleFactorY, GLFW_KEY_S, Key::S);
-        CheckPressedKey(m_scaleFactorY, GLFW_KEY_W, Key::W);
-        CheckPressedKey(m_scaleFactorX, GLFW_KEY_A, Key::A);
-        CheckPressedKey(m_scaleFactorX, GLFW_KEY_D, Key::D);
-        CheckPressedKey(GLFW_KEY_Q);
-
-#ifdef _DEBUG // Extra feature for debug - L key is creating new TetriminoCube
-        if (glfwGetKey(m_window, GLFW_KEY_L) == GLFW_PRESS)
-        {
-            if (!m_keyboardManager.IsPressed(GLFW_KEY_L))
-            {
-                m_keyboardManager.SetPressedToTrue(GLFW_KEY_L);
-                m_cubeGroup.SetMove(false);
-                m_cubeGroup.ResetCubes();
-                TetriminoCreator::Create(m_cubeGroup, m_entities, m_scaleFactorX, m_scaleFactorY);
-            }
-        }
-        else
-        {
-            m_keyboardManager.SetPressedToFalse(GLFW_KEY_L);
-        }
-#endif
     }
 }
 

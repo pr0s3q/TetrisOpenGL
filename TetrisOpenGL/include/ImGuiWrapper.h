@@ -5,14 +5,35 @@
 class ImGuiWrapper
 {
 public:
-    ImGuiWrapper(ImGuiIO& io);
+
+    //---------------------------------------------------------------
+
+    ImGuiWrapper(ImGuiIO& io, int width, int height);
+
+    //---------------------------------------------------------------
 
     void Frame();
 
-private:
-    ImGuiIO& m_io;
+    //---------------------------------------------------------------
 
-    bool m_show_demo_window;
-    bool m_show_another_window;
+    bool ShowGame() const;
+
+    //---------------------------------------------------------------
+
+    void ShowMenu();
+
+    //---------------------------------------------------------------
+
+private:
+
+    //---------------------------------------------------------------
+
+    ImFont* m_font;
+    ImGuiIO& m_io;
     ImVec4 m_clear_color;
+    int m_width;
+    int m_height;
+    bool m_showGameClicked;
+
+    //---------------------------------------------------------------
 };
