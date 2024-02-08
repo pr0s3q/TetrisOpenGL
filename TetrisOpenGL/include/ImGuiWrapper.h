@@ -12,6 +12,10 @@ public:
 
     //---------------------------------------------------------------
 
+    void AddScore();
+
+    //---------------------------------------------------------------
+
     bool Exit() const;
 
     //---------------------------------------------------------------
@@ -20,11 +24,19 @@ public:
 
     //---------------------------------------------------------------
 
+    void GameScoreGuiView() const;
+
+    //---------------------------------------------------------------
+
     void MenuGuiView();
 
     //---------------------------------------------------------------
 
     bool PlayGame() const;
+
+    //---------------------------------------------------------------
+
+    void ResetCombo();
 
     //---------------------------------------------------------------
 
@@ -38,7 +50,8 @@ private:
 
     enum class Mode
     {
-        EMenuView = 0
+        EMenuView = 0,
+        EGameScoreView = 1
     };
 
     ImFont* m_font;
@@ -46,11 +59,14 @@ private:
     Mode m_viewMode;
     int m_width;
     int m_height;
+    int m_score;
+    int m_scoreCombo;
     bool m_playGameClicked;
     bool m_exitClicked;
+    const char* m_exitText = "       Exit       ";
     const char* m_playText = "       Play       ";
     const char* m_scoreboardText = " Scoreboard ";
-    const char* m_exitText = "       Exit       ";
+    const char* m_scoreText = "Score: ";
 
     //---------------------------------------------------------------
 };

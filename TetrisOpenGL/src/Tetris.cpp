@@ -87,6 +87,7 @@ void Tetris::AddEntity()
 
 void Tetris::CheckForRowToDelete()
 {
+    bool pointsAdded = false;
     while (true)
     {
         for (int yCoord = -10; yCoord <= 10; yCoord++)
@@ -113,7 +114,11 @@ void Tetris::CheckForRowToDelete()
             }
 
             if (rowEmpty)
+            {
+                if (pointsAdded)
+                    m_ImGuiWrapper->ResetCombo();
                 return;
+            }
 
             if (columnEmpty)
                 continue;
@@ -141,6 +146,8 @@ void Tetris::CheckForRowToDelete()
                 m_entities.erase(m_entities.begin() + indexToErase[i]);
                 delete toDelete[i];
             }
+            m_ImGuiWrapper->AddScore();
+            pointsAdded = true;
             ++yCoord;
             std::vector<TetriminoCube*> movableCubes;
             for (const auto entity : m_entities)
@@ -364,9 +371,9 @@ void Tetris::Loop()
         if (m_ImGuiWrapper->Exit())
             break;
 
-        if (!m_ImGuiWrapper->PlayGame())
-            m_ImGuiWrapper->Frame();
-        else
+        m_ImGuiWrapper->Frame();
+
+        if (m_ImGuiWrapper->PlayGame())
         {
             for (const auto entity : m_entities)
             {

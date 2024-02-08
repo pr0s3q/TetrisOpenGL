@@ -10,12 +10,22 @@ ImGuiWrapper::ImGuiWrapper(const ImGuiIO& io, const int width, const int height)
       m_viewMode(Mode::EMenuView),
       m_width(width),
       m_height(height),
+      m_score(0),
+      m_scoreCombo(1),
       m_playGameClicked(false),
       m_exitClicked(false)
 {
     m_font = io.Fonts->AddFontFromFileTTF("OpenSans-Light.ttf", 50.0f);
     io.Fonts->Build();
     IM_ASSERT(m_font != NULL);
+}
+
+//---------------------------------------------------------------
+
+void ImGuiWrapper::AddScore()
+{
+    m_score += m_scoreCombo * 100;
+    ++m_scoreCombo;
 }
 
 //---------------------------------------------------------------
@@ -33,16 +43,16 @@ void ImGuiWrapper::Frame()
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::SetNextWindowSize({ static_cast<float>(m_width), static_cast<float>(m_height) });
-    ImGui::SetNextWindowPos({ 0, 0 });
-    ImGui::Begin("TetrisOpenGL", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-    ImGui::PushFont(m_font);
-
-    switch(m_viewMode)
+    switch (m_viewMode)
     {
-        case Mode::EMenuView:
+    case Mode::EMenuView:
         {
             MenuGuiView();
+            break;
+        }
+    case Mode::EGameScoreView:
+        {
+            GameScoreGuiView();
             break;
         }
     }
@@ -58,20 +68,50 @@ void ImGuiWrapper::Frame()
 
 void ImGuiWrapper::MenuGuiView()
 {
+
+    ImGui::SetNextWindowSize({ static_cast<float>(m_width), static_cast<float>(m_height) });
+    ImGui::SetNextWindowPos({ 0, 0 });
+    ImGui::Begin("TetrisOpenGL", nullptr,
+        ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove);
+    ImGui::PushFont(m_font);
+
     ImVec2 label_size = ImGui::CalcTextSize(m_playText, nullptr, true);
-    ImGui::SetCursorPos({ (static_cast<float>(m_width) - label_size.x) / 2, 100 });
+    ImGui::SetCursorPos({(static_cast<float>(m_width) - label_size.x) / 2, 100});
     if (ImGui::Button(m_playText))
+    {
         m_playGameClicked = true;
+        m_viewMode = Mode::EGameScoreView;
+    }
 
     label_size = ImGui::CalcTextSize(m_scoreboardText, nullptr, true);
-    ImGui::SetCursorPos({ (static_cast<float>(m_width) - label_size.x) / 2, 200 });
+    ImGui::SetCursorPos({(static_cast<float>(m_width) - label_size.x) / 2, 200});
     ImGui::Button(m_scoreboardText);
     // TODO : Add scoreboard
 
     label_size = ImGui::CalcTextSize(m_exitText, nullptr, true);
-    ImGui::SetCursorPos({ (static_cast<float>(m_width) - label_size.x) / 2, 300 });
+    ImGui::SetCursorPos({(static_cast<float>(m_width) - label_size.x) / 2, 300});
     if (ImGui::Button(m_exitText))
         m_exitClicked = true;
+}
+
+//---------------------------------------------------------------
+
+void ImGuiWrapper::GameScoreGuiView() const
+{
+    ImGui::SetNextWindowSize({ static_cast<float>(m_width) / 3, static_cast<float>(m_height) });
+    ImGui::SetNextWindowPos({ 0, 0 });
+    ImGui::Begin("TetrisOpenGL", nullptr,
+        ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove);
+    ImGui::PushFont(m_font);
+
+    ImGui::SetCursorPos({ 10, 10 });
+    ImGui::Text("%s", m_scoreText); // %s - string data type (format specifier in C )
+
+    const ImVec2 label_size = ImGui::CalcTextSize(m_scoreText, nullptr, true);
+    ImGui::SetCursorPos({ 10 + label_size.x, 10 });
+    ImGui::Text("%i", m_score); // %i - integer data type (format specifier in C )
 }
 
 //---------------------------------------------------------------
@@ -83,9 +123,17 @@ bool ImGuiWrapper::PlayGame() const
 
 //---------------------------------------------------------------
 
+void ImGuiWrapper::ResetCombo()
+{
+    m_scoreCombo = 1;
+}
+
+//---------------------------------------------------------------
+
 void ImGuiWrapper::ShowMenu()
 {
     m_playGameClicked = false;
+    m_viewMode = Mode::EMenuView;
 }
 
 //---------------------------------------------------------------
