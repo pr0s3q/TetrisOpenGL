@@ -8,7 +8,7 @@ public:
 
     //---------------------------------------------------------------
 
-    ImGuiWrapper(ImGuiIO& io, int width, int height);
+    ImGuiWrapper(const ImGuiIO& io, int width, int height);
 
     //---------------------------------------------------------------
 
@@ -42,7 +42,6 @@ private:
     };
 
     ImFont* m_font;
-    ImGuiIO& m_io;
     ImVec4 m_clear_color;
     Mode m_viewMode;
     int m_width;

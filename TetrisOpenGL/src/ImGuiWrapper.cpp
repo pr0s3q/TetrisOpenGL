@@ -5,17 +5,16 @@
 
 //---------------------------------------------------------------
 
-ImGuiWrapper::ImGuiWrapper(ImGuiIO& io, const int width, const int height)
-    : m_io(io),
-      m_clear_color(0.45f, 0.55f, 0.60f, 1.00f),
+ImGuiWrapper::ImGuiWrapper(const ImGuiIO& io, const int width, const int height)
+    : m_clear_color(0.45f, 0.55f, 0.60f, 1.00f),
       m_viewMode(Mode::EMenuView),
       m_width(width),
       m_height(height),
       m_playGameClicked(false),
       m_exitClicked(false)
 {
-    m_font = m_io.Fonts->AddFontFromFileTTF("OpenSans-Light.ttf", 50.0f);
-    m_io.Fonts->Build();
+    m_font = io.Fonts->AddFontFromFileTTF("OpenSans-Light.ttf", 50.0f);
+    io.Fonts->Build();
     IM_ASSERT(m_font != NULL);
 }
 
