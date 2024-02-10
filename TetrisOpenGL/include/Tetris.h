@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 
-#include "Entity.h"
 #include "ImGuiWrapper.h"
 #include "KeyboardManager.h"
 #include "TetriminoCubeGroup.h"
@@ -32,7 +31,7 @@ private:
 
     //---------------------------------------------------------------
 
-    void AddEntity();
+    void AddCube();
 
     //---------------------------------------------------------------
 
@@ -64,7 +63,7 @@ private:
 
     //---------------------------------------------------------------
 
-    std::vector<Entity*> m_entities;
+    std::vector<Cube*> m_cubes;
     TetriminoCubeGroup m_cubeGroup;
     GLFWwindow* m_window;
     KeyboardManager m_keyboardManager;

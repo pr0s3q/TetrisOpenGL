@@ -2,6 +2,18 @@
 
 #include "Cube.h"
 
+#include <iostream>
+
+//---------------------------------------------------------------
+
+unsigned int Cube::s_shaderProgram = 0;
+const char* Cube::s_vertexShaderSource = nullptr;
+const char* Cube::s_fragmentShaderSource = nullptr;
+unsigned int Cube::s_fragmentShader = 0;
+unsigned int Cube::s_vertexShader = 0;
+unsigned int Cube::s_VAO = 0;
+unsigned int Cube::s_VBO = 0;
+
 //---------------------------------------------------------------
 
 Cube::Cube(const bool staticImage, const std::vector<double>& positions, const std::vector<float>& colors)
@@ -13,7 +25,7 @@ Cube::Cube(const bool staticImage, const std::vector<double>& positions, const s
 //---------------------------------------------------------------
 
 Cube::Cube(const std::vector<double>& positions, const std::vector<float>& colors)
-    : Entity(6, GL_TRIANGLES)
+    : m_shouldMove(true), m_count(6), m_mode(GL_TRIANGLES)
 {
     m_colors = std::vector<float>();
     m_colors.reserve(colors.size());
@@ -38,31 +50,45 @@ Cube::Cube(const std::vector<double>& positions, const std::vector<float>& color
 
 //---------------------------------------------------------------
 
-void Cube::Color()
+void Cube::CheckShaderCompilation(const unsigned int shader) {
+    int success;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        char infoLog[512];
+        glGetShaderInfoLog(shader, 512, nullptr, infoLog);
+        std::cerr << "Shader compilation error:\n" << infoLog << '\n';
+    }
+}
+
+//---------------------------------------------------------------
+
+void Cube::CheckProgramLinking(const unsigned int program) {
+    int success;
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    if (!success)
+    {
+        char infoLog[512];
+        glGetProgramInfoLog(program, 512, nullptr, infoLog);
+        std::cerr << "Program linking error:\n" << infoLog << '\n';
+    }
+}
+
+//---------------------------------------------------------------
+
+void Cube::CheckOpenGLError(const char* checkpoint) {
+    const unsigned int error = glGetError();
+    if (error != GL_NO_ERROR)
+    {
+        std::cerr << "OpenGL error (" << checkpoint << "): " << error << '\n';
+    }
+}
+
+//---------------------------------------------------------------
+
+void Cube::Color() const
 {
     glUniform4f(glGetUniformLocation(s_shaderProgram, "triangleColor"), m_colors[0], m_colors[1], m_colors[2], m_colors[3]);
-}
-
-//---------------------------------------------------------------
-
-void Cube::Move(const double& /*scaleFactor*/, const Key /*keyPressed*/)
-{
-}
-
-//---------------------------------------------------------------
-
-void Cube::MoveForce(const double& /*scaleFactor*/)
-{
-}
-
-//---------------------------------------------------------------
-
-void Cube::SetMove(const bool shouldMove)
-{
-    if (m_staticImage)
-        return;
-
-    m_shouldMove = shouldMove;
 }
 
 //---------------------------------------------------------------
@@ -94,12 +120,46 @@ void Cube::InitShader()
 
 //---------------------------------------------------------------
 
-void Cube::Loop()
+bool Cube::IsStatic()
+{
+    return m_staticImage;
+}
+
+//---------------------------------------------------------------
+
+void Cube::Loop() const
 {
     glBindBuffer(GL_ARRAY_BUFFER, s_VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_positions), m_positions);
 
-    Entity::Loop();
+    glUseProgram(s_shaderProgram);
+    CheckProgramLinking(s_shaderProgram);
+    Color();
+    glBindVertexArray(s_VAO);
+    CheckOpenGLError("Before draw");
+    glDrawArrays(m_mode, 0, m_count);
+}
+
+//---------------------------------------------------------------
+
+void Cube::Move(const double& /*scaleFactor*/, const Key /*keyPressed*/)
+{
+}
+
+//---------------------------------------------------------------
+
+void Cube::MoveForce(const double& /*scaleFactor*/)
+{
+}
+
+//---------------------------------------------------------------
+
+void Cube::SetMove(const bool shouldMove)
+{
+    if (m_staticImage)
+        return;
+
+    m_shouldMove = shouldMove;
 }
 
 //---------------------------------------------------------------

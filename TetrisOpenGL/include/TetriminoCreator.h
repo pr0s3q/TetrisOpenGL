@@ -2,7 +2,6 @@
 
 #include <vector>
 
-#include "Entity.h"
 #include "Enums.h"
 #include "TetriminoCubeGroup.h"
 
@@ -14,14 +13,14 @@ public:
 
     static void Create(
         TetriminoCubeGroup& cubeGroup,
-        std::vector<Entity*>& entities,
+        std::vector<Cube*>& cubes,
         double scaleFactorX,
         double scaleFactorY);
 
     //---------------------------------------------------------------
 
     static void RotateIfPossible(
-        const std::vector<Entity*>& entities,
+        const std::vector<Cube*>& cubes,
         TetriminoCubeGroup& cubeGroup,
         const double& scaleFactorX,
         const double& scaleFactorY);
@@ -50,7 +49,7 @@ private:
     //---------------------------------------------------------------
 
     static bool IsCollidingWithOtherCubes(
-        const std::vector<Entity*>& entities,
+        const std::vector<Cube*>& cubes,
         const std::vector<int>& xLocations,
         const std::vector<int>& yLocations,
         TetriminoCubeGroup& cubeGroup);

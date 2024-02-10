@@ -72,15 +72,15 @@ Tetris::~Tetris()
     ImGui::DestroyContext();
 
     glfwTerminate();
-    for (const auto entity : m_entities)
-        delete entity;
+    for (const auto cube : m_cubes)
+        delete cube;
 }
 
 //---------------------------------------------------------------
 
-void Tetris::AddEntity()
+void Tetris::AddCube()
 {
-    TetriminoCreator::Create(m_cubeGroup, m_entities, m_scaleFactorX, m_scaleFactorY);
+    TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
 }
 
 //---------------------------------------------------------------
@@ -97,13 +97,13 @@ void Tetris::CheckForRowToDelete()
             for (int xCoord = -5; xCoord <= 5; xCoord++)
             {
                 bool cubeFound = false;
-                for (const auto entity : m_entities)
+                for (const auto cube : m_cubes)
                 {
-                    if (entity->IsStatic())
+                    if (cube->IsStatic())
                         continue;
 
-                    const TetriminoCube* cube = dynamic_cast<TetriminoCube*>(entity);
-                    if (cube->GetYLocation() == yCoord && cube->GetXLocation() == xCoord)
+                    const TetriminoCube* tetriminoCube = dynamic_cast<TetriminoCube*>(cube);
+                    if (tetriminoCube->GetYLocation() == yCoord && tetriminoCube->GetXLocation() == xCoord)
                     {
                         rowEmpty = false;
                         cubeFound = true;
@@ -123,34 +123,34 @@ void Tetris::CheckForRowToDelete()
             if (columnEmpty)
                 continue;
 
-            std::vector<Entity*> toDelete;
+            std::vector<Cube*> toDelete;
             std::vector<long long> indexToErase;
             toDelete.reserve(11);
             indexToErase.reserve(11);
-            for (const auto entity : m_entities)
+            for (const auto cube : m_cubes)
             {
-                if (entity->IsStatic())
+                if (cube->IsStatic())
                     continue;
 
-                const TetriminoCube* cube = dynamic_cast<TetriminoCube*>(entity);
-                if (cube->GetYLocation() == yCoord)
+                const TetriminoCube* tetriminoCube = dynamic_cast<TetriminoCube*>(cube);
+                if (tetriminoCube->GetYLocation() == yCoord)
                 {
-                    const long long index = std::ranges::find(m_entities, entity) - m_entities.begin();
+                    const long long index = std::ranges::find(m_cubes, cube) - m_cubes.begin();
                     indexToErase.emplace_back(index);
-                    toDelete.emplace_back(entity);
+                    toDelete.emplace_back(cube);
                 }
             }
             std::ranges::sort(indexToErase, std::ranges::greater());
             for (int i = 0; i < 11; i++)
             {
-                m_entities.erase(m_entities.begin() + indexToErase[i]);
+                m_cubes.erase(m_cubes.begin() + indexToErase[i]);
                 delete toDelete[i];
             }
             m_ImGuiWrapper->AddScore();
             pointsAdded = true;
             ++yCoord;
             std::vector<TetriminoCube*> movableCubes;
-            for (const auto entity : m_entities)
+            for (const auto entity : m_cubes)
             {
                 if (entity->IsStatic())
                     continue;
@@ -179,7 +179,7 @@ void Tetris::CheckForRowToDelete()
 
                         cubeInRow = true;
                         bool shouldBeMovable = true;
-                        for (const auto entity : m_entities)
+                        for (const auto entity : m_cubes)
                         {
                             if (entity->IsStatic())
                                 continue;
@@ -216,15 +216,15 @@ void Tetris::CheckPressedKey(const double& scaleFactor, const int& key, const Ke
             return;
 
         m_keyboardManager.SetPressedToTrue(key);
-        m_cubeGroup.MoveCubes(m_entities, scaleFactor, keyPressed);
+        m_cubeGroup.MoveCubes(m_cubes, scaleFactor, keyPressed);
 
-        if (m_cubeGroup.ShouldBeMovable(m_entities))
+        if (m_cubeGroup.ShouldBeMovable(m_cubes))
             return;
 
         m_cubeGroup.SetMove(false);
         m_cubeGroup.ResetCubes();
         CheckForRowToDelete();
-        TetriminoCreator::Create(m_cubeGroup, m_entities, m_scaleFactorX, m_scaleFactorY);
+        TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
     }
     else
     {
@@ -242,7 +242,7 @@ void Tetris::CheckPressedKey(const int& key)
             return;
 
         m_keyboardManager.SetPressedToTrue(key);
-        TetriminoCreator::RotateIfPossible(m_entities, m_cubeGroup, m_scaleFactorX, m_scaleFactorY);
+        TetriminoCreator::RotateIfPossible(m_cubes, m_cubeGroup, m_scaleFactorX, m_scaleFactorY);
     }
     else
     {
@@ -254,13 +254,13 @@ void Tetris::CheckPressedKey(const int& key)
 
 void Tetris::CreateBorder()
 {
-    m_entities = std::vector<Entity*>();
+    m_cubes = std::vector<Cube*>();
     // Reserve std::vector, so the array is not going to expand during runtime
     // Border - 7 cubes
     // Max possible cube entities from tetrimino - 11 X 21 -> 231 (11 X 21 is the board size)
     // Total 238 cubes (reserve 250 to have some extra space just in case)
     // If, std::vector will expand over 250, this could mean potential memory leak
-    m_entities.reserve(250);
+    m_cubes.reserve(250);
 
     std::vector<double> positions;
     positions.reserve(8);
@@ -276,7 +276,7 @@ void Tetris::CreateBorder()
     colors.reserve(4);
     colors.insert(colors.end(), { 0.0f , 1.0f , 0.0f , 1.0f });
 
-    m_entities.emplace_back(new Cube(true, positions, colors));
+    m_cubes.emplace_back(new Cube(true, positions, colors));
 
     positions.clear();
     positions.insert(positions.end(),
@@ -287,7 +287,7 @@ void Tetris::CreateBorder()
             -5.45 * m_scaleFactorX, -10.55 * m_scaleFactorY
         });
 
-    m_entities.emplace_back(new Cube(true, positions, colors));
+    m_cubes.emplace_back(new Cube(true, positions, colors));
 
     positions.clear();
     positions.insert(positions.end(),
@@ -298,7 +298,7 @@ void Tetris::CreateBorder()
             6.45 * m_scaleFactorX, -10.55 * m_scaleFactorY
         });
 
-    m_entities.emplace_back(new Cube(true, positions, colors));
+    m_cubes.emplace_back(new Cube(true, positions, colors));
 
     positions.clear();
     positions.insert(positions.end(),
@@ -309,7 +309,7 @@ void Tetris::CreateBorder()
             -6.45 * m_scaleFactorX, 10.55 * m_scaleFactorY
         });
 
-    m_entities.emplace_back(new Cube(true, positions, colors));
+    m_cubes.emplace_back(new Cube(true, positions, colors));
 
     positions.clear();
     positions.insert(positions.end(),
@@ -320,7 +320,7 @@ void Tetris::CreateBorder()
             6.45 * m_scaleFactorX, 10.55 * m_scaleFactorY
         });
 
-    m_entities.emplace_back(new Cube(true, positions, colors));
+    m_cubes.emplace_back(new Cube(true, positions, colors));
 
     positions.clear();
     positions.insert(positions.end(),
@@ -331,7 +331,7 @@ void Tetris::CreateBorder()
             -6.45 * m_scaleFactorX,  10.45 * m_scaleFactorY
         });
 
-    m_entities.emplace_back(new Cube(true, positions, colors));
+    m_cubes.emplace_back(new Cube(true, positions, colors));
 
     positions.clear();
     positions.insert(positions.end(),
@@ -342,7 +342,7 @@ void Tetris::CreateBorder()
             6.45 * m_scaleFactorX,  10.45 * m_scaleFactorY
         });
 
-    m_entities.emplace_back(new Cube(true, positions, colors));
+    m_cubes.emplace_back(new Cube(true, positions, colors));
 }
 
 //---------------------------------------------------------------
@@ -351,7 +351,7 @@ void Tetris::Init()
 {
     Tetris tetris;
     tetris.CreateBorder();
-    tetris.AddEntity();
+    tetris.AddCube();
     tetris.Loop();
 }
 
@@ -375,9 +375,9 @@ void Tetris::Loop()
 
         if (m_ImGuiWrapper->PlayGame())
         {
-            for (const auto entity : m_entities)
+            for (const auto cube : m_cubes)
             {
-                entity->Loop();
+                cube->Loop();
             }
 
             CheckPressedKey(m_scaleFactorY, GLFW_KEY_S, Key::S);
@@ -399,7 +399,7 @@ void Tetris::Loop()
                     m_keyboardManager.SetPressedToTrue(GLFW_KEY_L);
                     m_cubeGroup.SetMove(false);
                     m_cubeGroup.ResetCubes();
-                    TetriminoCreator::Create(m_cubeGroup, m_entities, m_scaleFactorX, m_scaleFactorY);
+                    TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
                 }
             }
             else

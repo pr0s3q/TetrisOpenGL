@@ -26,7 +26,7 @@ public:
 
     //---------------------------------------------------------------
 
-    bool CanBeMoved(const std::vector<Entity*>& entities, Key keyPressed) const;
+    bool CanBeMoved(const std::vector<Cube*>& cubes, Key keyPressed) const;
 
     //---------------------------------------------------------------
 
@@ -51,7 +51,7 @@ public:
     //---------------------------------------------------------------
 
     void MoveCubes(
-        const std::vector<Entity*>& entities,
+        const std::vector<Cube*>& cubes,
         const double& scaleFactor,
         Key keyPressed);
 
@@ -69,7 +69,7 @@ public:
 
     //---------------------------------------------------------------
 
-    bool ShouldBeMovable(const std::vector<Entity*>& entities) const;
+    bool ShouldBeMovable(const std::vector<Cube*>& cubes) const;
 
     //---------------------------------------------------------------
 

@@ -1,8 +1,10 @@
 ﻿#pragma once
 
-#include "Entity.h"
+#include <vector>
 
-class Cube : public Entity
+#include "Enums.h"
+
+class Cube
 {
 public:
 
@@ -16,19 +18,26 @@ public:
 
     //---------------------------------------------------------------
 
-    void Color() override;
+    virtual ~Cube() = default;
 
     //---------------------------------------------------------------
 
-    void Move(const double& /*scaleFactor*/, Key /*keyPressed*/) override;
+    // Check shader compilation status
+    static void CheckShaderCompilation(unsigned shader);
 
     //---------------------------------------------------------------
 
-    void MoveForce(const double& /*scaleFactor*/) override;
+    // Check program linking status
+    static void CheckProgramLinking(unsigned program);
 
     //---------------------------------------------------------------
 
-    void SetMove(bool shouldMove) override;
+    // Check for OpenGL errors
+    static void CheckOpenGLError(const char* checkpoint);
+
+    //---------------------------------------------------------------
+
+    void Color() const;
 
     //---------------------------------------------------------------
 
@@ -36,7 +45,23 @@ public:
 
     //---------------------------------------------------------------
 
-    void Loop() override;
+    virtual bool IsStatic();
+
+    //---------------------------------------------------------------
+
+    void Loop() const;
+
+    //---------------------------------------------------------------
+
+    virtual void Move(const double& /*scaleFactor*/, Key /*keyPressed*/);
+
+    //---------------------------------------------------------------
+
+    virtual void MoveForce(const double& /*scaleFactor*/);
+
+    //---------------------------------------------------------------
+
+    void SetMove(bool shouldMove);
 
     //---------------------------------------------------------------
 
@@ -49,6 +74,19 @@ protected:
     //---------------------------------------------------------------
 
     double m_positions[12];
+    bool m_shouldMove;
+    bool m_staticImage = false;
+    unsigned int m_count;
+    unsigned int m_mode;
+    std::vector<float> m_colors;
+
+    static const char* s_vertexShaderSource;
+    static const char* s_fragmentShaderSource;
+    static unsigned int s_fragmentShader;
+    static unsigned int s_vertexShader;
+    static unsigned int s_shaderProgram;
+    static unsigned int s_VAO;
+    static unsigned int s_VBO;
 
     //---------------------------------------------------------------
 
