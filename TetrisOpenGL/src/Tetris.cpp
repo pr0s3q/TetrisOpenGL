@@ -39,7 +39,7 @@ Tetris::Tetris()
         return;
     }
 
-    /* Make the window's context current */
+    // Make the window's context current
     glfwMakeContextCurrent(m_window);
     glfwSwapInterval(0);
 
@@ -53,7 +53,8 @@ Tetris::Tetris()
 
     ImGui::CreateContext();
 
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGuiIO& io = ImGui::GetIO();
+    (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     m_ImGuiWrapper = new ImGuiWrapper(io, s_width, s_height);
     ImGui::StyleColorsDark();
@@ -87,16 +88,24 @@ void Tetris::AddCube()
 
 void Tetris::CheckForRowToDelete()
 {
+    // Flag to track if points were added
     bool pointsAdded = false;
+
+    // Infinite loop to continuously check for filled rows
     while (true)
     {
+        // Iterate over the y-coordinates of the game board
         for (int yCoord = -10; yCoord <= 10; yCoord++)
         {
             bool rowEmpty = true;
             bool columnEmpty = false;
+
+            // Check each cell in the current row
             for (int xCoord = -5; xCoord <= 5; xCoord++)
             {
                 bool cubeFound = false;
+
+                // Iterate over all cubes to find if any occupy the current cell
                 for (const auto cube : m_cubes)
                 {
                     if (cube->IsStatic())
@@ -105,6 +114,7 @@ void Tetris::CheckForRowToDelete()
                     const TetriminoCube* tetriminoCube = dynamic_cast<TetriminoCube*>(cube);
                     if (tetriminoCube->GetYLocation() == yCoord && tetriminoCube->GetXLocation() == xCoord)
                     {
+                        // Cell is not empty
                         rowEmpty = false;
                         cubeFound = true;
                     }
@@ -113,16 +123,19 @@ void Tetris::CheckForRowToDelete()
                     columnEmpty = true;
             }
 
+            // If the row is empty, reset combo (if points were added) and return
             if (rowEmpty)
             {
                 if (pointsAdded)
-                    m_ImGuiWrapper->ResetCombo();
+                    m_ImGuiWrapper->ResetCombo(); // Reset combo if points were added
                 return;
             }
 
+            // If the column is empty, continue to the next row
             if (columnEmpty)
                 continue;
 
+            // Collect cubes from the filled row for deletion
             std::vector<Cube*> toDelete;
             std::vector<long long> indexToErase;
             toDelete.reserve(11);
@@ -135,20 +148,27 @@ void Tetris::CheckForRowToDelete()
                 const TetriminoCube* tetriminoCube = dynamic_cast<TetriminoCube*>(cube);
                 if (tetriminoCube->GetYLocation() == yCoord)
                 {
+                    // Store cube index for deletion and cube pointers for deletion
                     const long long index = std::ranges::find(m_cubes, cube) - m_cubes.begin();
                     indexToErase.emplace_back(index);
                     toDelete.emplace_back(cube);
                 }
             }
+
+            // Sort indices in descending order for correct deletion
             std::ranges::sort(indexToErase, std::ranges::greater());
             for (int i = 0; i < 11; i++)
             {
-                m_cubes.erase(m_cubes.begin() + indexToErase[i]);
-                delete toDelete[i];
+                m_cubes.erase(m_cubes.begin() + indexToErase[i]); // Remove cube from game board
+                delete toDelete[i]; // Deallocate memory for cube
             }
-            m_ImGuiWrapper->AddScore();
+
+            // Update score and set pointsAdded flag
+            m_ImGuiWrapper->AddScore(); // Increment score
             pointsAdded = true;
-            ++yCoord;
+            ++yCoord; // Move to the next row
+
+            // Move cubes above the deleted row down
             std::vector<TetriminoCube*> movableCubes;
             for (const auto entity : m_cubes)
             {
@@ -158,10 +178,12 @@ void Tetris::CheckForRowToDelete()
                 TetriminoCube* cube = dynamic_cast<TetriminoCube*>(entity);
                 if (cube->GetYLocation() >= yCoord)
                 {
-                    cube->MoveForce(m_scaleFactorY);
-                    movableCubes.emplace_back(cube);
+                    cube->MoveForce(m_scaleFactorY); // Move cube down
+                    movableCubes.emplace_back(cube); // Add cube to movable cubes list
                 }
             }
+
+            // Handle cube movement
             bool cubeMoved = true;
             while (cubeMoved)
             {
@@ -195,13 +217,13 @@ void Tetris::CheckForRowToDelete()
                         }
                         if (shouldBeMovable)
                         {
-                            movableCube->MoveForce(m_scaleFactorY);
+                            movableCube->MoveForce(m_scaleFactorY); // Move cube down
                             cubeMoved = true;
                         }
                     }
                 }
             }
-            break;
+            break; // Exit the loop after processing the row
         }
     }
 }
@@ -265,82 +287,82 @@ void Tetris::CreateBorder()
     std::vector<double> positions;
     positions.reserve(8);
     positions.insert(positions.end(),
-        {
-            -6.45 * m_scaleFactorX, -11.45 * m_scaleFactorY,
-            -5.55 * m_scaleFactorX, -11.45 * m_scaleFactorY,
-            -5.55 * m_scaleFactorX, -10.55 * m_scaleFactorY,
-            -6.45 * m_scaleFactorX, -10.55 * m_scaleFactorY
-        });
+                     {
+                         -6.45 * m_scaleFactorX, -11.45 * m_scaleFactorY,
+                         -5.55 * m_scaleFactorX, -11.45 * m_scaleFactorY,
+                         -5.55 * m_scaleFactorX, -10.55 * m_scaleFactorY,
+                         -6.45 * m_scaleFactorX, -10.55 * m_scaleFactorY
+                     });
 
     std::vector<float> colors;
     colors.reserve(4);
-    colors.insert(colors.end(), { 0.0f , 1.0f , 0.0f , 1.0f });
+    colors.insert(colors.end(), {0.0f, 1.0f, 0.0f, 1.0f});
 
     m_cubes.emplace_back(new Cube(true, positions, colors));
 
     positions.clear();
     positions.insert(positions.end(),
-        {
-            -5.45 * m_scaleFactorX, -11.45 * m_scaleFactorY,
-             5.45 * m_scaleFactorX, -11.45 * m_scaleFactorY,
-             5.45 * m_scaleFactorX, -10.55 * m_scaleFactorY,
-            -5.45 * m_scaleFactorX, -10.55 * m_scaleFactorY
-        });
+                     {
+                         -5.45 * m_scaleFactorX, -11.45 * m_scaleFactorY,
+                         5.45 * m_scaleFactorX, -11.45 * m_scaleFactorY,
+                         5.45 * m_scaleFactorX, -10.55 * m_scaleFactorY,
+                         -5.45 * m_scaleFactorX, -10.55 * m_scaleFactorY
+                     });
 
     m_cubes.emplace_back(new Cube(true, positions, colors));
 
     positions.clear();
     positions.insert(positions.end(),
-        {
-            6.45 * m_scaleFactorX, -11.45 * m_scaleFactorY,
-            5.55 * m_scaleFactorX, -11.45 * m_scaleFactorY,
-            5.55 * m_scaleFactorX, -10.55 * m_scaleFactorY,
-            6.45 * m_scaleFactorX, -10.55 * m_scaleFactorY
-        });
+                     {
+                         6.45 * m_scaleFactorX, -11.45 * m_scaleFactorY,
+                         5.55 * m_scaleFactorX, -11.45 * m_scaleFactorY,
+                         5.55 * m_scaleFactorX, -10.55 * m_scaleFactorY,
+                         6.45 * m_scaleFactorX, -10.55 * m_scaleFactorY
+                     });
 
     m_cubes.emplace_back(new Cube(true, positions, colors));
 
     positions.clear();
     positions.insert(positions.end(),
-        {
-            -6.45 * m_scaleFactorX, 11.45 * m_scaleFactorY,
-            -5.55 * m_scaleFactorX, 11.45 * m_scaleFactorY,
-            -5.55 * m_scaleFactorX, 10.55 * m_scaleFactorY,
-            -6.45 * m_scaleFactorX, 10.55 * m_scaleFactorY
-        });
+                     {
+                         -6.45 * m_scaleFactorX, 11.45 * m_scaleFactorY,
+                         -5.55 * m_scaleFactorX, 11.45 * m_scaleFactorY,
+                         -5.55 * m_scaleFactorX, 10.55 * m_scaleFactorY,
+                         -6.45 * m_scaleFactorX, 10.55 * m_scaleFactorY
+                     });
 
     m_cubes.emplace_back(new Cube(true, positions, colors));
 
     positions.clear();
     positions.insert(positions.end(),
-        {
-            6.45 * m_scaleFactorX, 11.45 * m_scaleFactorY,
-            5.55 * m_scaleFactorX, 11.45 * m_scaleFactorY,
-            5.55 * m_scaleFactorX, 10.55 * m_scaleFactorY,
-            6.45 * m_scaleFactorX, 10.55 * m_scaleFactorY
-        });
+                     {
+                         6.45 * m_scaleFactorX, 11.45 * m_scaleFactorY,
+                         5.55 * m_scaleFactorX, 11.45 * m_scaleFactorY,
+                         5.55 * m_scaleFactorX, 10.55 * m_scaleFactorY,
+                         6.45 * m_scaleFactorX, 10.55 * m_scaleFactorY
+                     });
 
     m_cubes.emplace_back(new Cube(true, positions, colors));
 
     positions.clear();
     positions.insert(positions.end(),
-        {
-            -6.45 * m_scaleFactorX, -10.45 * m_scaleFactorY,
-            -5.55 * m_scaleFactorX, -10.45 * m_scaleFactorY,
-            -5.55 * m_scaleFactorX,  10.45 * m_scaleFactorY,
-            -6.45 * m_scaleFactorX,  10.45 * m_scaleFactorY
-        });
+                     {
+                         -6.45 * m_scaleFactorX, -10.45 * m_scaleFactorY,
+                         -5.55 * m_scaleFactorX, -10.45 * m_scaleFactorY,
+                         -5.55 * m_scaleFactorX, 10.45 * m_scaleFactorY,
+                         -6.45 * m_scaleFactorX, 10.45 * m_scaleFactorY
+                     });
 
     m_cubes.emplace_back(new Cube(true, positions, colors));
 
     positions.clear();
     positions.insert(positions.end(),
-        {
-            6.45 * m_scaleFactorX, -10.45 * m_scaleFactorY,
-            5.55 * m_scaleFactorX, -10.45 * m_scaleFactorY,
-            5.55 * m_scaleFactorX,  10.45 * m_scaleFactorY,
-            6.45 * m_scaleFactorX,  10.45 * m_scaleFactorY
-        });
+                     {
+                         6.45 * m_scaleFactorX, -10.45 * m_scaleFactorY,
+                         5.55 * m_scaleFactorX, -10.45 * m_scaleFactorY,
+                         5.55 * m_scaleFactorX, 10.45 * m_scaleFactorY,
+                         6.45 * m_scaleFactorX, 10.45 * m_scaleFactorY
+                     });
 
     m_cubes.emplace_back(new Cube(true, positions, colors));
 }
@@ -359,7 +381,7 @@ void Tetris::Init()
 
 void Tetris::Loop()
 {
-    while(!ShouldTerminate())
+    while (!ShouldTerminate())
     {
         // Set the clear color
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
