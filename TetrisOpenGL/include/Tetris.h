@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "ImGuiWrapper.h"
+#include "JsonWrapper.h"
 #include "KeyboardManager.h"
 #include "TetriminoCubeGroup.h"
 
@@ -111,6 +112,7 @@ private:
     double m_scaleFactorX;
     double m_scaleFactorY;
     ImGuiWrapper* m_ImGuiWrapper;
+    JsonWrapper* m_jsonWrapper;
 
     static const int s_height;
     static const int s_width;

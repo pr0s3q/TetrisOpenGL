@@ -1,5 +1,6 @@
 #pragma once
 
+#include "JsonWrapper.h"
 #include "ImGui/imgui.h"
 
 class ImGuiWrapper
@@ -8,7 +9,7 @@ public:
 
     //---------------------------------------------------------------
 
-    ImGuiWrapper(const ImGuiIO& io, int width, int height);
+    ImGuiWrapper(JsonWrapper* jsonWrapper, const ImGuiIO& io, int width, int height);
 
     //---------------------------------------------------------------
 
@@ -32,6 +33,10 @@ public:
 
     //---------------------------------------------------------------
 
+    void ScoreboardView() const;
+
+    //---------------------------------------------------------------
+
     bool PlayGame() const;
 
     //---------------------------------------------------------------
@@ -51,9 +56,11 @@ private:
     enum class Mode
     {
         EMenuView = 0,
-        EGameScoreView = 1
+        EGameScoreView = 1,
+        EScoreboardView = 2
     };
 
+    JsonWrapper* m_jsonWrapper;
     ImFont* m_font;
     ImVec4 m_clear_color;
     Mode m_viewMode;
@@ -67,6 +74,7 @@ private:
     const char* m_playText = "       Play       ";
     const char* m_scoreboardText = " Scoreboard ";
     const char* m_scoreText = "Score: ";
+    const char* m_saveScore = "Save Score";
 
     //---------------------------------------------------------------
 };

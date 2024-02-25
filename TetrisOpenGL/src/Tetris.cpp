@@ -51,12 +51,15 @@ Tetris::Tetris()
 
     Cube::InitShader();
 
+    m_jsonWrapper = new JsonWrapper();
+    m_jsonWrapper->LoadFromFile();
+
     ImGui::CreateContext();
 
     ImGuiIO& io = ImGui::GetIO();
     (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    m_ImGuiWrapper = new ImGuiWrapper(io, s_width, s_height);
+    m_ImGuiWrapper = new ImGuiWrapper(m_jsonWrapper, io, s_width, s_height);
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     ImGui_ImplOpenGL3_Init("#version 130");
@@ -395,6 +398,11 @@ void Tetris::Loop()
 
         m_ImGuiWrapper->Frame();
 
+        if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        {
+            m_ImGuiWrapper->ShowMenu();
+        }
+
         if (m_ImGuiWrapper->PlayGame())
         {
             for (const auto cube : m_cubes)
@@ -407,11 +415,6 @@ void Tetris::Loop()
             CheckPressedKey(m_scaleFactorX, GLFW_KEY_A, Key::A);
             CheckPressedKey(m_scaleFactorX, GLFW_KEY_D, Key::D);
             CheckPressedKey(GLFW_KEY_Q);
-
-            if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-            {
-                m_ImGuiWrapper->ShowMenu();
-            }
 
 #ifdef _DEBUG // Extra feature for debug - L key is creating new TetriminoCube
             if (glfwGetKey(m_window, GLFW_KEY_L) == GLFW_PRESS)
