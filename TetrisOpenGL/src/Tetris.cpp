@@ -24,14 +24,14 @@ const int Tetris::s_width = 1600;
 Tetris::Tetris()
     : m_scaleFactorX(70.0 / s_width), m_scaleFactorY(70.0 / s_height)
 {
-    const char* title = "Tetris OpenGL";
+    const std::unique_ptr<const char> title("Tetris OpenGL");
     if (!glfwInit())
     {
         SetOutcome("Cannot initialize GLFW");
         return;
     }
 
-    m_window = glfwCreateWindow(s_width, s_height, title, nullptr, nullptr);
+    m_window = glfwCreateWindow(s_width, s_height, title.get(), nullptr, nullptr);
     if (!m_window)
     {
         SetOutcome("Cannot create window");
