@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "ImGuiWrapper.h"
-#include "JsonWrapper.h"
 #include "KeyboardManager.h"
 #include "TetriminoCubeGroup.h"
 
@@ -112,8 +111,7 @@ private:
     KeyboardManager m_keyboardManager;
     double m_scaleFactorX;
     double m_scaleFactorY;
-    ImGuiWrapper* m_ImGuiWrapper;
-    JsonWrapper* m_jsonWrapper;
+    std::shared_ptr<ImGuiWrapper> m_ImGuiWrapper;
 
     static const int s_height;
     static const int s_width;

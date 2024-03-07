@@ -5,7 +5,7 @@
 
 //---------------------------------------------------------------
 
-ImGuiWrapper::ImGuiWrapper(JsonWrapper* jsonWrapper, const ImGuiIO& io, const int width, const int height)
+ImGuiWrapper::ImGuiWrapper(const ImGuiIO& io, const int width, const int height)
     : m_clear_color(0.45f, 0.55f, 0.60f, 1.00f),
       m_viewMode(Mode::EMenuView),
       m_width(width),
@@ -15,10 +15,17 @@ ImGuiWrapper::ImGuiWrapper(JsonWrapper* jsonWrapper, const ImGuiIO& io, const in
       m_playGameClicked(false),
       m_exitClicked(false)
 {
-    m_jsonWrapper = jsonWrapper;
-    m_font = io.Fonts->AddFontFromFileTTF("OpenSans-Light.ttf", 50.0f);
+    m_jsonWrapper = std::make_shared<JsonWrapper>();
+    m_jsonWrapper->LoadFromFile();
+    m_font = std::shared_ptr<ImFont>(io.Fonts->AddFontFromFileTTF("OpenSans-Light.ttf", 50.0f));
     io.Fonts->Build();
     IM_ASSERT(m_font != NULL);
+
+    m_exitText = std::shared_ptr<const char>("       Exit       ");
+    m_playText = std::shared_ptr<const char>("       Play       ");
+    m_scoreboardText = std::shared_ptr<const char>(" Scoreboard ");
+    m_scoreText = std::shared_ptr<const char>("Score: ");
+    m_saveScore = std::shared_ptr<const char>("Save Score");
 }
 
 //---------------------------------------------------------------
@@ -79,24 +86,24 @@ void ImGuiWrapper::MenuGuiView()
     ImGui::Begin("TetrisOpenGL", nullptr,
                  ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
                  ImGuiWindowFlags_NoMove);
-    ImGui::PushFont(m_font);
+    ImGui::PushFont(m_font.get());
 
-    ImVec2 label_size = ImGui::CalcTextSize(m_playText, nullptr, true);
+    ImVec2 label_size = ImGui::CalcTextSize(m_playText.get(), nullptr, true);
     ImGui::SetCursorPos({(static_cast<float>(m_width) - label_size.x) / 2, 100});
-    if (ImGui::Button(m_playText))
+    if (ImGui::Button(m_playText.get()))
     {
         m_playGameClicked = true;
         m_viewMode = Mode::EGameScoreView;
     }
 
-    label_size = ImGui::CalcTextSize(m_scoreboardText, nullptr, true);
+    label_size = ImGui::CalcTextSize(m_scoreboardText.get(), nullptr, true);
     ImGui::SetCursorPos({(static_cast<float>(m_width) - label_size.x) / 2, 200});
-    if (ImGui::Button(m_scoreboardText))
+    if (ImGui::Button(m_scoreboardText.get()))
         m_viewMode = Mode::EScoreboardView;
 
-    label_size = ImGui::CalcTextSize(m_exitText, nullptr, true);
+    label_size = ImGui::CalcTextSize(m_exitText.get(), nullptr, true);
     ImGui::SetCursorPos({(static_cast<float>(m_width) - label_size.x) / 2, 300});
-    if (ImGui::Button(m_exitText))
+    if (ImGui::Button(m_exitText.get()))
         m_exitClicked = true;
 }
 
@@ -109,7 +116,7 @@ void ImGuiWrapper::ScoreboardView() const
     ImGui::Begin("TetrisOpenGL", nullptr,
                  ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
                  ImGuiWindowFlags_NoMove);
-    ImGui::PushFont(m_font);
+    ImGui::PushFont(m_font.get());
 
     const std::vector<Score>* scores = m_jsonWrapper->GetScores();
     for (size_t i = 0; i < scores->capacity() && i < 10; ++i)
@@ -130,16 +137,16 @@ void ImGuiWrapper::GameScoreGuiView() const
     ImGui::Begin("TetrisOpenGL", nullptr,
                  ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize |
                  ImGuiWindowFlags_NoMove);
-    ImGui::PushFont(m_font);
+    ImGui::PushFont(m_font.get());
 
     ImGui::SetCursorPos({10, 10});
-    ImGui::Text("%s", m_scoreText); // %s - string data type (format specifier in C )
+    ImGui::Text("%s", m_scoreText.get()); // %s - string data type (format specifier in C )
 
-    const ImVec2 label_size = ImGui::CalcTextSize(m_scoreText, nullptr, true);
+    const ImVec2 label_size = ImGui::CalcTextSize(m_scoreText.get(), nullptr, true);
     ImGui::SetCursorPos({10 + label_size.x, 10});
     ImGui::Text("%i", m_score); // %i - integer data type (format specifier in C )
 
-    if (ImGui::Button(m_saveScore))
+    if (ImGui::Button(m_saveScore.get()))
     {
         m_jsonWrapper->SaveToFile("Cris", m_score); // TODO: Create UI for username input (currently name is hardcoded)
         // TODO: Reset game upon saving score

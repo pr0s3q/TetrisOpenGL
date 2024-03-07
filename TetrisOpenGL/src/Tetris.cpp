@@ -51,15 +51,12 @@ Tetris::Tetris()
 
     Cube::InitShader();
 
-    m_jsonWrapper = new JsonWrapper();
-    m_jsonWrapper->LoadFromFile();
-
     ImGui::CreateContext();
 
     ImGuiIO& io = ImGui::GetIO();
     (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    m_ImGuiWrapper = new ImGuiWrapper(m_jsonWrapper, io, s_width, s_height);
+    m_ImGuiWrapper = std::make_shared<ImGuiWrapper>(io, s_width, s_height);
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     ImGui_ImplOpenGL3_Init("#version 130");

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "JsonWrapper.h"
 #include "ImGui/imgui.h"
 
@@ -9,7 +11,7 @@ public:
 
     //---------------------------------------------------------------
 
-    ImGuiWrapper(JsonWrapper* jsonWrapper, const ImGuiIO& io, int width, int height);
+    ImGuiWrapper(const ImGuiIO& io, int width, int height);
 
     //---------------------------------------------------------------
 
@@ -60,8 +62,8 @@ private:
         EScoreboardView = 2
     };
 
-    JsonWrapper* m_jsonWrapper;
-    ImFont* m_font;
+    std::shared_ptr<JsonWrapper> m_jsonWrapper;
+    std::shared_ptr<ImFont> m_font;
     ImVec4 m_clear_color;
     Mode m_viewMode;
     int m_width;
@@ -70,11 +72,11 @@ private:
     int m_scoreCombo;
     bool m_playGameClicked;
     bool m_exitClicked;
-    const char* m_exitText = "       Exit       ";
-    const char* m_playText = "       Play       ";
-    const char* m_scoreboardText = " Scoreboard ";
-    const char* m_scoreText = "Score: ";
-    const char* m_saveScore = "Save Score";
+    std::shared_ptr<const char> m_exitText;
+    std::shared_ptr<const char> m_playText;
+    std::shared_ptr<const char> m_scoreboardText;
+    std::shared_ptr<const char> m_scoreText;
+    std::shared_ptr<const char> m_saveScore;
 
     //---------------------------------------------------------------
 };
