@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 
 #include "TetriminoCube.h"
@@ -14,7 +15,7 @@ public:
 
     //---------------------------------------------------------------
 
-    void AddCube(TetriminoCube* cube);
+    void AddCube(const std::shared_ptr<TetriminoCube>& cube);
 
     //---------------------------------------------------------------
 
@@ -26,11 +27,11 @@ public:
 
     //---------------------------------------------------------------
 
-    bool CanBeMoved(const std::vector<Cube*>& cubes, Key keyPressed) const;
+    bool CanBeMoved(const std::vector<std::shared_ptr<Cube>>& cubes, const Key keyPressed) const;
 
     //---------------------------------------------------------------
 
-    std::vector<TetriminoCube*>& GetCubes();
+    std::vector<std::shared_ptr<TetriminoCube>>& GetCubes();
 
     //---------------------------------------------------------------
 
@@ -51,9 +52,9 @@ public:
     //---------------------------------------------------------------
 
     void MoveCubes(
-        const std::vector<Cube*>& cubes,
+        const std::vector<std::shared_ptr<Cube>>& cubes,
         const double& scaleFactor,
-        Key keyPressed);
+        const Key keyPressed);
 
     //---------------------------------------------------------------
 
@@ -69,7 +70,7 @@ public:
 
     //---------------------------------------------------------------
 
-    bool ShouldBeMovable(const std::vector<Cube*>& cubes) const;
+    bool ShouldBeMovable(const std::vector<std::shared_ptr<Cube>>& cubes) const;
 
     //---------------------------------------------------------------
 
@@ -77,7 +78,7 @@ private:
 
     //---------------------------------------------------------------
 
-    std::vector<TetriminoCube*> m_tetriminoCubes;
+    std::vector<std::shared_ptr<TetriminoCube>> m_tetriminoCubes;
     TetriminoType m_type;
     int m_xMovingFactor;
     int m_yMovingFactor;

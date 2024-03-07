@@ -2,6 +2,7 @@
 
 #include "GLFW/glfw3.h"
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -105,7 +106,7 @@ private:
 
     //---------------------------------------------------------------
 
-    std::vector<Cube*> m_cubes;
+    std::vector<std::shared_ptr<Cube>> m_cubes;
     TetriminoCubeGroup m_cubeGroup;
     GLFWwindow* m_window;
     KeyboardManager m_keyboardManager;
