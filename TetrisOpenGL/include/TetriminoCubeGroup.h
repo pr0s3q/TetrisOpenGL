@@ -3,7 +3,10 @@
 #include <memory>
 #include <vector>
 
-#include "TetriminoCube.h"
+#include "Enums.h"
+
+class Cube;
+class TetriminoCube;
 
 class TetriminoCubeGroup
 {

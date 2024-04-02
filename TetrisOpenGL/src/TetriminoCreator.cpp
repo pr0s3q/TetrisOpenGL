@@ -4,6 +4,8 @@
 #include <thread>
 
 #include "BoardManager.h"
+#include "ConnectedTetriminoCubes.h"
+#include "Cube.h"
 #include "TetriminoCreator.h"
 #include "TetriminoCube.h"
 #include "Tetris.h"
@@ -28,12 +30,19 @@ void TetriminoCreator::Create(TetriminoCubeGroup& cubeGroup, std::vector<std::sh
     GetTypeLocations(xLocations, yLocations, 0, type);
     CreateTetriminoPositions(positions, xLocations, yLocations, scaleFactorX, scaleFactorY);
 
+    auto connectedCubes = std::make_shared<ConnectedTetriminoCubes>();
+    std::vector<std::shared_ptr<TetriminoCube>> tetriminoCubes;
+    tetriminoCubes.reserve(4);
+
     for (int i = 0; i < 4; i++)
     {
-        auto cube = std::make_shared<TetriminoCube>(positions[i], colors, xLocations[i], yLocations[i]);
+        auto cube = std::make_shared<TetriminoCube>(connectedCubes, positions[i], colors, xLocations[i], yLocations[i]);
         cubes.emplace_back(cube);
+        tetriminoCubes.emplace_back(cube);
         cubeGroup.AddCube(cube);
     }
+
+    connectedCubes->AddCubes(tetriminoCubes);
 }
 
 //---------------------------------------------------------------

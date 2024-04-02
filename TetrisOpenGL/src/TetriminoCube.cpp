@@ -1,13 +1,16 @@
 #include "GL/glew.h"
 
 #include "BoardManager.h"
+#include "Enums.h"
 #include "TetriminoCube.h"
+#include "ConnectedTetriminoCubes.h"
 
 //---------------------------------------------------------------
 
-TetriminoCube::TetriminoCube(const std::vector<double>& positions, const std::vector<float>& colors, const int xLocation, const int yLocation)
+TetriminoCube::TetriminoCube(const std::shared_ptr<ConnectedTetriminoCubes>& connectedCubes, const std::vector<double>& positions, const std::vector<float>& colors, const int xLocation, const int yLocation)
     : Cube(positions, colors), m_xLocation(xLocation), m_yLocation(yLocation)
 {
+    m_connectedCubes = connectedCubes;
 }
 
 //---------------------------------------------------------------

@@ -1,6 +1,10 @@
 #pragma once
 
+#include <memory>
+
 #include "Cube.h"
+
+class ConnectedTetriminoCubes;
 
 class TetriminoCube : public Cube
 {
@@ -9,6 +13,7 @@ public:
     //---------------------------------------------------------------
 
     TetriminoCube(
+        const std::shared_ptr<ConnectedTetriminoCubes>& connectedCubes,
         const std::vector<double>& positions,
         const std::vector<float>& colors,
         int xLocation,
@@ -55,6 +60,7 @@ private:
 
     //---------------------------------------------------------------
 
+    std::shared_ptr<ConnectedTetriminoCubes> m_connectedCubes;
     int m_xLocation;
     int m_yLocation;
 

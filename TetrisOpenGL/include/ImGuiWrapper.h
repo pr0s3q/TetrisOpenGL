@@ -2,8 +2,9 @@
 
 #include <memory>
 
-#include "JsonWrapper.h"
-#include "ImGui/imgui.h"
+struct ImFont;
+struct ImGuiIO;
+class JsonWrapper;
 
 class ImGuiWrapper
 {
@@ -64,7 +65,6 @@ private:
 
     std::shared_ptr<JsonWrapper> m_jsonWrapper;
     ImFont* m_font;
-    ImVec4 m_clear_color;
     Mode m_viewMode;
     int m_width;
     int m_height;

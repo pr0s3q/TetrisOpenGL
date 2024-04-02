@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "Enums.h"
+enum class Key;
 
 class Cube
 {

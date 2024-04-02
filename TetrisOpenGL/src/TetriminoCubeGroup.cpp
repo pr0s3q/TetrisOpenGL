@@ -2,6 +2,9 @@
 
 #include <memory>
 
+#include "Cube.h"
+#include "TetriminoCube.h"
+
 //---------------------------------------------------------------
 
 TetriminoCubeGroup::TetriminoCubeGroup()

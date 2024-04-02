@@ -2,8 +2,10 @@
 
 #include <vector>
 
-#include "Enums.h"
-#include "TetriminoCubeGroup.h"
+enum class TetriminoType;
+
+class Cube;
+class TetriminoCubeGroup;
 
 class TetriminoCreator
 {

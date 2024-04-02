@@ -3,11 +3,12 @@
 #include "ImGui/imgui_impl_glfw.h"
 #include "ImGui/imgui_impl_opengl3.h"
 
+#include "JsonWrapper.h"
+
 //---------------------------------------------------------------
 
 ImGuiWrapper::ImGuiWrapper(const ImGuiIO& io, const int width, const int height)
-    : m_clear_color(0.45f, 0.55f, 0.60f, 1.00f),
-      m_viewMode(Mode::EMenuView),
+    : m_viewMode(Mode::EMenuView),
       m_width(width),
       m_height(height),
       m_score(0),

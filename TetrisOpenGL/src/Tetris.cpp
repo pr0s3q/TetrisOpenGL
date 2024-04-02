@@ -7,7 +7,9 @@
 #include <string>
 
 #include "Cube.h"
+#include "ImGuiWrapper.h"
 #include "TetriminoCreator.h"
+#include "TetriminoCube.h"
 #include "Tetris.h"
 
 #include "ImGui/imgui.h"

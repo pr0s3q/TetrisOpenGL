@@ -2,13 +2,12 @@
 
 #include "GLFW/glfw3.h"
 
-#include <memory>
 #include <string>
-#include <vector>
 
-#include "ImGuiWrapper.h"
 #include "KeyboardManager.h"
 #include "TetriminoCubeGroup.h"
+
+class ImGuiWrapper;
 
 class Tetris
 {
