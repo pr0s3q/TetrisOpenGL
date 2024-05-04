@@ -54,10 +54,7 @@ public:
 
     //---------------------------------------------------------------
 
-    void MoveCubes(
-        const std::vector<std::shared_ptr<Cube>>& cubes,
-        const double& scaleFactor,
-        const Key keyPressed);
+    void MoveCubes(const std::vector<std::shared_ptr<Cube>>& cubes, const double& scaleFactor, const Key keyPressed);
 
     //---------------------------------------------------------------
 

@@ -21,10 +21,7 @@ public:
 
     //---------------------------------------------------------------
 
-    void ApplyRotationPositions(
-        const std::vector<double>& positions,
-        int xLocation,
-        int yLocation);
+    void ApplyRotationPositions(const std::vector<double>& positions, int xLocation, int yLocation);
 
     //---------------------------------------------------------------
 

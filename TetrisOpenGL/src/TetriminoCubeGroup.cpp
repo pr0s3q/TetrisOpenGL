@@ -8,25 +8,22 @@
 //---------------------------------------------------------------
 
 TetriminoCubeGroup::TetriminoCubeGroup()
-    : m_type(), m_xMovingFactor(0), m_yMovingFactor(0), m_rotation(0)
+    : m_type()
+    , m_xMovingFactor(0)
+    , m_yMovingFactor(0)
+    , m_rotation(0)
 {
     m_tetriminoCubes.reserve(4);
-    m_tetriminoCubes.insert(m_tetriminoCubes.end(),
-        {
-            nullptr,
-            nullptr,
-            nullptr,
-            nullptr
-        });
+    m_tetriminoCubes.insert(m_tetriminoCubes.end(), { nullptr, nullptr, nullptr, nullptr });
 }
 
 //---------------------------------------------------------------
 
 void TetriminoCubeGroup::AddCube(const std::shared_ptr<TetriminoCube>& cube)
 {
-    for(size_t i = 0; i < m_tetriminoCubes.capacity(); i++)
+    for (size_t i = 0; i < m_tetriminoCubes.capacity(); i++)
     {
-        if(m_tetriminoCubes[i] == nullptr)
+        if (m_tetriminoCubes[i] == nullptr)
         {
             m_tetriminoCubes[i] = cube;
             break;
@@ -72,7 +69,7 @@ bool TetriminoCubeGroup::CanBeMoved(const std::vector<std::shared_ptr<Cube>>& cu
             continue;
         for (const auto& tetriminoCube : m_tetriminoCubes)
         {
-            if(keyPressed == Key::A)
+            if (keyPressed == Key::A)
             {
                 if (cubeEntity->GetYLocation() == tetriminoCube->GetYLocation() &&
                     cubeEntity->GetXLocation() == tetriminoCube->GetXLocation() - 1)
@@ -126,37 +123,36 @@ int TetriminoCubeGroup::GetYMovingFactor() const
 
 //---------------------------------------------------------------
 
-void TetriminoCubeGroup::MoveCubes(const std::vector<std::shared_ptr<Cube>>& cubes, const double& scaleFactor, const Key keyPressed)
+void TetriminoCubeGroup::MoveCubes(
+    const std::vector<std::shared_ptr<Cube>>& cubes,
+    const double& scaleFactor,
+    const Key keyPressed)
 {
-    for(const auto& cube : m_tetriminoCubes)
-    {
+    for (const auto& cube : m_tetriminoCubes)
         if (!cube->CanBeMoved(keyPressed))
             return;
-    }
 
     if ((keyPressed == Key::A || keyPressed == Key::D) && !CanBeMoved(cubes, keyPressed))
         return;
 
     switch (keyPressed)
     {
-    case Key::W:
-        m_yMovingFactor += 1;
-        break;
-    case Key::S:
-        m_yMovingFactor -= 1;
-        break;
-    case Key::A:
-        m_xMovingFactor -= 1;
-        break;
-    case Key::D:
-        m_xMovingFactor += 1;
-        break;
+        case Key::W:
+            m_yMovingFactor += 1;
+            break;
+        case Key::S:
+            m_yMovingFactor -= 1;
+            break;
+        case Key::A:
+            m_xMovingFactor -= 1;
+            break;
+        case Key::D:
+            m_xMovingFactor += 1;
+            break;
     }
 
     for (const auto& cube : m_tetriminoCubes)
-    {
         cube->Move(scaleFactor, keyPressed);
-    }
 }
 
 //---------------------------------------------------------------
@@ -164,9 +160,7 @@ void TetriminoCubeGroup::MoveCubes(const std::vector<std::shared_ptr<Cube>>& cub
 void TetriminoCubeGroup::ResetCubes()
 {
     for (size_t i = 0; i < 4; i++)
-    {
         m_tetriminoCubes[i] = nullptr;
-    }
     m_xMovingFactor = 0;
     m_yMovingFactor = 0;
     m_rotation = 0;
@@ -177,9 +171,7 @@ void TetriminoCubeGroup::ResetCubes()
 void TetriminoCubeGroup::SetMove(const bool shouldMove) const
 {
     for (const auto& cube : m_tetriminoCubes)
-    {
         cube->SetMove(shouldMove);
-    }
 }
 
 //---------------------------------------------------------------
@@ -197,22 +189,20 @@ bool TetriminoCubeGroup::ShouldBeMovable(const std::vector<std::shared_ptr<Cube>
 
     // Check, if touching the board floor
     for (const auto& cube : m_tetriminoCubes)
-    {
         if (cube->GetYLocation() == -10)
             shouldBeMovable = false;
-    }
 
     if (!shouldBeMovable)
         return shouldBeMovable;
 
-    for(const auto& cube : cubes)
+    for (const auto& cube : cubes)
     {
         if (cube->IsStatic())
             continue;
 
         const auto cubeEntity = std::dynamic_pointer_cast<TetriminoCube>(cube);
         bool belongToCurrentGroup = false;
-        for(const auto& tetriminoCube : m_tetriminoCubes)
+        for (const auto& tetriminoCube : m_tetriminoCubes)
         {
             if (tetriminoCube == cubeEntity)
             {
@@ -223,11 +213,9 @@ bool TetriminoCubeGroup::ShouldBeMovable(const std::vector<std::shared_ptr<Cube>
         if (belongToCurrentGroup)
             continue;
         for (const auto& tetriminoCube : m_tetriminoCubes)
-        {
             if (cubeEntity->GetXLocation() == tetriminoCube->GetXLocation() &&
                 cubeEntity->GetYLocation() == tetriminoCube->GetYLocation() - 1)
                 shouldBeMovable = false;
-        }
     }
 
     return shouldBeMovable;

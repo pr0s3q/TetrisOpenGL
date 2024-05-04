@@ -25,8 +25,7 @@ void JsonWrapper::LoadFromFile()
     while (std::getline(stream, line))
     {
         nlohmann::json j = nlohmann::json::parse(line);
-        Score sc
-        {
+        Score sc{
             j["playerName"].get<std::string>(),
             j["score"].get<int>(),
         };
@@ -39,7 +38,7 @@ void JsonWrapper::LoadFromFile()
 
 void JsonWrapper::SaveToFile(const std::string& name, const int& score)
 {
-    Score sc{name, score};
+    Score sc{ name, score };
     nlohmann::json j;
     j["playerName"] = sc.playerName;
     j["score"] = sc.score;

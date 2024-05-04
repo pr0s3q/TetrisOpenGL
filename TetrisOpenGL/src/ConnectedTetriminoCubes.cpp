@@ -1,9 +1,7 @@
 #include "ConnectedTetriminoCubes.h"
 
 ConnectedTetriminoCubes::ConnectedTetriminoCubes()
-{
-    
-}
+{}
 
 void ConnectedTetriminoCubes::AddCubes(std::vector<std::shared_ptr<TetriminoCube>>& cubes)
 {

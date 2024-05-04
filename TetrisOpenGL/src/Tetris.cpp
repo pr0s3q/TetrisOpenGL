@@ -24,7 +24,8 @@ const int Tetris::s_width = 1600;
 //---------------------------------------------------------------
 
 Tetris::Tetris()
-    : m_scaleFactorX(70.0 / s_width), m_scaleFactorY(70.0 / s_height)
+    : m_scaleFactorX(70.0 / s_width)
+    , m_scaleFactorY(70.0 / s_height)
 {
     const char* title("Tetris OpenGL");
     if (!glfwInit())
@@ -155,9 +156,7 @@ void Tetris::CheckForRowToDelete()
             // Sort indices in descending order for correct deletion
             std::ranges::sort(indexToErase, std::ranges::greater());
             for (int i = 0; i < 11; i++)
-            {
                 m_cubes.erase(m_cubes.begin() + indexToErase[i]); // Remove cube from game board
-            }
 
             // Update score and set pointsAdded flag
             m_ImGuiWrapper->AddScore(); // Increment score
@@ -282,83 +281,104 @@ void Tetris::CreateBorder()
 
     std::vector<double> positions;
     positions.reserve(8);
-    positions.insert(positions.end(),
-                     {
-                         -6.45 * m_scaleFactorX, -11.45 * m_scaleFactorY,
-                         -5.55 * m_scaleFactorX, -11.45 * m_scaleFactorY,
-                         -5.55 * m_scaleFactorX, -10.55 * m_scaleFactorY,
-                         -6.45 * m_scaleFactorX, -10.55 * m_scaleFactorY
-                     });
+    positions.insert(
+        positions.end(),
+        { -6.45 * m_scaleFactorX,
+          -11.45 * m_scaleFactorY,
+          -5.55 * m_scaleFactorX,
+          -11.45 * m_scaleFactorY,
+          -5.55 * m_scaleFactorX,
+          -10.55 * m_scaleFactorY,
+          -6.45 * m_scaleFactorX,
+          -10.55 * m_scaleFactorY });
 
     std::vector<float> colors;
     colors.reserve(4);
-    colors.insert(colors.end(), {0.0f, 1.0f, 0.0f, 1.0f});
+    colors.insert(colors.end(), { 0.0f, 1.0f, 0.0f, 1.0f });
 
     m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
 
     positions.clear();
-    positions.insert(positions.end(),
-                     {
-                         -5.45 * m_scaleFactorX, -11.45 * m_scaleFactorY,
-                         5.45 * m_scaleFactorX, -11.45 * m_scaleFactorY,
-                         5.45 * m_scaleFactorX, -10.55 * m_scaleFactorY,
-                         -5.45 * m_scaleFactorX, -10.55 * m_scaleFactorY
-                     });
+    positions.insert(
+        positions.end(),
+        { -5.45 * m_scaleFactorX,
+          -11.45 * m_scaleFactorY,
+          5.45 * m_scaleFactorX,
+          -11.45 * m_scaleFactorY,
+          5.45 * m_scaleFactorX,
+          -10.55 * m_scaleFactorY,
+          -5.45 * m_scaleFactorX,
+          -10.55 * m_scaleFactorY });
 
     m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
 
     positions.clear();
-    positions.insert(positions.end(),
-                     {
-                         6.45 * m_scaleFactorX, -11.45 * m_scaleFactorY,
-                         5.55 * m_scaleFactorX, -11.45 * m_scaleFactorY,
-                         5.55 * m_scaleFactorX, -10.55 * m_scaleFactorY,
-                         6.45 * m_scaleFactorX, -10.55 * m_scaleFactorY
-                     });
+    positions.insert(
+        positions.end(),
+        { 6.45 * m_scaleFactorX,
+          -11.45 * m_scaleFactorY,
+          5.55 * m_scaleFactorX,
+          -11.45 * m_scaleFactorY,
+          5.55 * m_scaleFactorX,
+          -10.55 * m_scaleFactorY,
+          6.45 * m_scaleFactorX,
+          -10.55 * m_scaleFactorY });
 
     m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
 
     positions.clear();
-    positions.insert(positions.end(),
-                     {
-                         -6.45 * m_scaleFactorX, 11.45 * m_scaleFactorY,
-                         -5.55 * m_scaleFactorX, 11.45 * m_scaleFactorY,
-                         -5.55 * m_scaleFactorX, 10.55 * m_scaleFactorY,
-                         -6.45 * m_scaleFactorX, 10.55 * m_scaleFactorY
-                     });
+    positions.insert(
+        positions.end(),
+        { -6.45 * m_scaleFactorX,
+          11.45 * m_scaleFactorY,
+          -5.55 * m_scaleFactorX,
+          11.45 * m_scaleFactorY,
+          -5.55 * m_scaleFactorX,
+          10.55 * m_scaleFactorY,
+          -6.45 * m_scaleFactorX,
+          10.55 * m_scaleFactorY });
 
     m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
 
     positions.clear();
-    positions.insert(positions.end(),
-                     {
-                         6.45 * m_scaleFactorX, 11.45 * m_scaleFactorY,
-                         5.55 * m_scaleFactorX, 11.45 * m_scaleFactorY,
-                         5.55 * m_scaleFactorX, 10.55 * m_scaleFactorY,
-                         6.45 * m_scaleFactorX, 10.55 * m_scaleFactorY
-                     });
+    positions.insert(
+        positions.end(),
+        { 6.45 * m_scaleFactorX,
+          11.45 * m_scaleFactorY,
+          5.55 * m_scaleFactorX,
+          11.45 * m_scaleFactorY,
+          5.55 * m_scaleFactorX,
+          10.55 * m_scaleFactorY,
+          6.45 * m_scaleFactorX,
+          10.55 * m_scaleFactorY });
 
     m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
 
     positions.clear();
-    positions.insert(positions.end(),
-                     {
-                         -6.45 * m_scaleFactorX, -10.45 * m_scaleFactorY,
-                         -5.55 * m_scaleFactorX, -10.45 * m_scaleFactorY,
-                         -5.55 * m_scaleFactorX, 10.45 * m_scaleFactorY,
-                         -6.45 * m_scaleFactorX, 10.45 * m_scaleFactorY
-                     });
+    positions.insert(
+        positions.end(),
+        { -6.45 * m_scaleFactorX,
+          -10.45 * m_scaleFactorY,
+          -5.55 * m_scaleFactorX,
+          -10.45 * m_scaleFactorY,
+          -5.55 * m_scaleFactorX,
+          10.45 * m_scaleFactorY,
+          -6.45 * m_scaleFactorX,
+          10.45 * m_scaleFactorY });
 
     m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
 
     positions.clear();
-    positions.insert(positions.end(),
-                     {
-                         6.45 * m_scaleFactorX, -10.45 * m_scaleFactorY,
-                         5.55 * m_scaleFactorX, -10.45 * m_scaleFactorY,
-                         5.55 * m_scaleFactorX, 10.45 * m_scaleFactorY,
-                         6.45 * m_scaleFactorX, 10.45 * m_scaleFactorY
-                     });
+    positions.insert(
+        positions.end(),
+        { 6.45 * m_scaleFactorX,
+          -10.45 * m_scaleFactorY,
+          5.55 * m_scaleFactorX,
+          -10.45 * m_scaleFactorY,
+          5.55 * m_scaleFactorX,
+          10.45 * m_scaleFactorY,
+          6.45 * m_scaleFactorX,
+          10.45 * m_scaleFactorY });
 
     m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
 }
@@ -392,16 +412,12 @@ void Tetris::Loop()
         m_ImGuiWrapper->Frame();
 
         if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        {
             m_ImGuiWrapper->ShowMenu();
-        }
 
         if (m_ImGuiWrapper->PlayGame())
         {
             for (const auto& cube : m_cubes)
-            {
                 cube->Loop();
-            }
 
             CheckPressedKey(m_scaleFactorY, GLFW_KEY_S, Key::S);
             CheckPressedKey(m_scaleFactorY, GLFW_KEY_W, Key::W);

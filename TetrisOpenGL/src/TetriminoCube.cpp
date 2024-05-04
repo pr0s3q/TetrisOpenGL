@@ -1,21 +1,31 @@
 #include "GL/glew.h"
 
 #include "BoardManager.h"
+#include "ConnectedTetriminoCubes.h"
 #include "Enums.h"
 #include "TetriminoCube.h"
-#include "ConnectedTetriminoCubes.h"
 
 //---------------------------------------------------------------
 
-TetriminoCube::TetriminoCube(const std::shared_ptr<ConnectedTetriminoCubes>& connectedCubes, const std::vector<double>& positions, const std::vector<float>& colors, const int xLocation, const int yLocation)
-    : Cube(positions, colors), m_xLocation(xLocation), m_yLocation(yLocation)
+TetriminoCube::TetriminoCube(
+    const std::shared_ptr<ConnectedTetriminoCubes>& connectedCubes,
+    const std::vector<double>& positions,
+    const std::vector<float>& colors,
+    const int xLocation,
+    const int yLocation)
+    : Cube(positions, colors)
+    , m_xLocation(xLocation)
+    , m_yLocation(yLocation)
 {
     m_connectedCubes = connectedCubes;
 }
 
 //---------------------------------------------------------------
 
-void TetriminoCube::ApplyRotationPositions(const std::vector<double>& positions, const int xLocation, const int yLocation)
+void TetriminoCube::ApplyRotationPositions(
+    const std::vector<double>& positions,
+    const int xLocation,
+    const int yLocation)
 {
     m_positions[0] = positions[0];
     m_positions[1] = positions[1];
@@ -96,7 +106,7 @@ void TetriminoCube::Move(const double& scaleFactor, const Key keyPressed)
     {
         case Key::W:
         {
-            if(m_yLocation == 10)
+            if (m_yLocation == 10)
                 return;
 
             m_yLocation += 1;

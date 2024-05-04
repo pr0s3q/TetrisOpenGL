@@ -25,14 +25,14 @@ Cube::Cube(const bool staticImage, const std::vector<double>& positions, const s
 //---------------------------------------------------------------
 
 Cube::Cube(const std::vector<double>& positions, const std::vector<float>& colors)
-    : m_shouldMove(true), m_count(6), m_mode(GL_TRIANGLES)
+    : m_shouldMove(true)
+    , m_count(6)
+    , m_mode(GL_TRIANGLES)
 {
     m_colors = std::vector<float>();
     m_colors.reserve(colors.size());
     for (auto color : colors)
-    {
         m_colors.emplace_back(color);
-    }
 
     m_positions[0] = positions[0];
     m_positions[1] = positions[1];
@@ -50,7 +50,8 @@ Cube::Cube(const std::vector<double>& positions, const std::vector<float>& color
 
 //---------------------------------------------------------------
 
-void Cube::CheckShaderCompilation(const unsigned int shader) {
+void Cube::CheckShaderCompilation(const unsigned int shader)
+{
     int success;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
     if (!success)
@@ -63,7 +64,8 @@ void Cube::CheckShaderCompilation(const unsigned int shader) {
 
 //---------------------------------------------------------------
 
-void Cube::CheckProgramLinking(const unsigned int program) {
+void Cube::CheckProgramLinking(const unsigned int program)
+{
     int success;
     glGetProgramiv(program, GL_LINK_STATUS, &success);
     if (!success)
@@ -76,19 +78,23 @@ void Cube::CheckProgramLinking(const unsigned int program) {
 
 //---------------------------------------------------------------
 
-void Cube::CheckOpenGLError(const char* checkpoint) {
+void Cube::CheckOpenGLError(const char* checkpoint)
+{
     const unsigned int error = glGetError();
     if (error != GL_NO_ERROR)
-    {
         std::cerr << "OpenGL error (" << checkpoint << "): " << error << '\n';
-    }
 }
 
 //---------------------------------------------------------------
 
 void Cube::Color() const
 {
-    glUniform4f(glGetUniformLocation(s_shaderProgram, "triangleColor"), m_colors[0], m_colors[1], m_colors[2], m_colors[3]);
+    glUniform4f(
+        glGetUniformLocation(s_shaderProgram, "triangleColor"),
+        m_colors[0],
+        m_colors[1],
+        m_colors[2],
+        m_colors[3]);
 }
 
 //---------------------------------------------------------------
@@ -143,14 +149,12 @@ void Cube::Loop() const
 //---------------------------------------------------------------
 
 void Cube::Move(const double& /*scaleFactor*/, const Key /*keyPressed*/)
-{
-}
+{}
 
 //---------------------------------------------------------------
 
 void Cube::MoveForce(const double& /*scaleFactor*/)
-{
-}
+{}
 
 //---------------------------------------------------------------
 
