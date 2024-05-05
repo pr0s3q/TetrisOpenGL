@@ -4,7 +4,6 @@
 
 #include <string>
 
-#include "KeyboardManager.h"
 #include "TetriminoCubeGroup.h"
 
 class ImGuiWrapper;
@@ -107,13 +106,13 @@ private:
     std::vector<std::shared_ptr<Cube>> m_cubes;
     TetriminoCubeGroup m_cubeGroup;
     GLFWwindow* m_window;
-    KeyboardManager m_keyboardManager;
     double m_scaleFactorX;
     double m_scaleFactorY;
     std::shared_ptr<ImGuiWrapper> m_ImGuiWrapper;
 
     static const int s_height;
     static const int s_width;
+    static const double s_dtFactor;
 
     //---------------------------------------------------------------
 };

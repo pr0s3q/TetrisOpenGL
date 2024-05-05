@@ -92,7 +92,6 @@
     <ClCompile Include="ImGui\imgui_tables.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="src\JsonWrapper.cpp" />
-    <ClCompile Include="src\KeyboardManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="src\TetriminoCreator.cpp" />
     <ClCompile Include="src\TetriminoCube.cpp" />
@@ -115,7 +114,6 @@
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="include\JsonWrapper.h" />
-    <ClInclude Include="include\KeyboardManager.h" />
     <ClInclude Include="include\TetriminoCreator.h" />
     <ClInclude Include="include\TetriminoCube.h" />
     <ClInclude Include="include\TetriminoCubeGroup.h" />

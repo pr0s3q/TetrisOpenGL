@@ -20,6 +20,7 @@
 
 const int Tetris::s_height = 900;
 const int Tetris::s_width = 1600;
+const double Tetris::s_dtFactor = 0.1;
 
 //---------------------------------------------------------------
 
@@ -229,10 +230,6 @@ void Tetris::CheckPressedKey(const double& scaleFactor, const int& key, const Ke
 {
     if (glfwGetKey(m_window, key) == GLFW_PRESS)
     {
-        if (m_keyboardManager.IsPressed(key))
-            return;
-
-        m_keyboardManager.SetPressedToTrue(key);
         m_cubeGroup.MoveCubes(m_cubes, scaleFactor, keyPressed);
 
         if (m_cubeGroup.ShouldBeMovable(m_cubes))
@@ -243,10 +240,6 @@ void Tetris::CheckPressedKey(const double& scaleFactor, const int& key, const Ke
         CheckForRowToDelete();
         TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
     }
-    else
-    {
-        m_keyboardManager.SetPressedToFalse(key);
-    }
 }
 
 //---------------------------------------------------------------
@@ -254,17 +247,7 @@ void Tetris::CheckPressedKey(const double& scaleFactor, const int& key, const Ke
 void Tetris::CheckPressedKey(const int& key)
 {
     if (glfwGetKey(m_window, key) == GLFW_PRESS)
-    {
-        if (m_keyboardManager.IsPressed(key))
-            return;
-
-        m_keyboardManager.SetPressedToTrue(key);
         TetriminoCreator::RotateIfPossible(m_cubes, m_cubeGroup, m_scaleFactorX, m_scaleFactorY);
-    }
-    else
-    {
-        m_keyboardManager.SetPressedToFalse(key);
-    }
 }
 
 //---------------------------------------------------------------
@@ -397,6 +380,7 @@ void Tetris::Init()
 
 void Tetris::Loop()
 {
+    double lastTime = glfwGetTime();
     while (!ShouldTerminate())
     {
         // Set the clear color
@@ -419,26 +403,24 @@ void Tetris::Loop()
             for (const auto& cube : m_cubes)
                 cube->Loop();
 
-            CheckPressedKey(m_scaleFactorY, GLFW_KEY_S, Key::S);
-            CheckPressedKey(m_scaleFactorY, GLFW_KEY_W, Key::W);
-            CheckPressedKey(m_scaleFactorX, GLFW_KEY_A, Key::A);
-            CheckPressedKey(m_scaleFactorX, GLFW_KEY_D, Key::D);
-            CheckPressedKey(GLFW_KEY_Q);
+            const double currentTime = glfwGetTime();
+            const double dt = currentTime - lastTime;
+            if (dt >= s_dtFactor)
+            {
+                lastTime = currentTime;
+                CheckPressedKey(m_scaleFactorY, GLFW_KEY_S, Key::S);
+                CheckPressedKey(m_scaleFactorY, GLFW_KEY_W, Key::W);
+                CheckPressedKey(m_scaleFactorX, GLFW_KEY_A, Key::A);
+                CheckPressedKey(m_scaleFactorX, GLFW_KEY_D, Key::D);
+                CheckPressedKey(GLFW_KEY_Q);
 
 #ifdef _DEBUG // Extra feature for debug - L key is creating new TetriminoCube
-            if (glfwGetKey(m_window, GLFW_KEY_L) == GLFW_PRESS)
-            {
-                if (!m_keyboardManager.IsPressed(GLFW_KEY_L))
+                if (glfwGetKey(m_window, GLFW_KEY_L) == GLFW_PRESS)
                 {
-                    m_keyboardManager.SetPressedToTrue(GLFW_KEY_L);
                     m_cubeGroup.SetMove(false);
                     m_cubeGroup.ResetCubes();
                     TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
                 }
-            }
-            else
-            {
-                m_keyboardManager.SetPressedToFalse(GLFW_KEY_L);
             }
 #endif
         }
