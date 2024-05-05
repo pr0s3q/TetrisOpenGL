@@ -150,7 +150,7 @@ void ImGuiWrapper::GameScoreGuiView() const
     if (ImGui::Button(m_saveScore))
     {
         m_jsonWrapper->SaveToFile("Cris", m_score); // TODO: Create UI for username input (currently name is hardcoded)
-        // TODO: Reset game upon saving score
+                                                    // TODO: Reset game upon saving score
     }
 }
 
