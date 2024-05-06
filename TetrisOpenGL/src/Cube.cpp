@@ -37,22 +37,62 @@ Cube::Cube(const std::vector<double>& positions, const std::vector<float>& color
     for (auto color : colors)
         m_colors.emplace_back(color);
 
+    // Cube position
     m_positions[0] = positions[0];
     m_positions[1] = positions[1];
-    m_positions[2] = 0.0f;
-    m_positions[3] = 0.0f;
     m_positions[4] = positions[2];
     m_positions[5] = positions[3];
-    m_positions[6] = 1.0f;
-    m_positions[7] = 0.0f;
     m_positions[8] = positions[4];
     m_positions[9] = positions[5];
-    m_positions[10] = 0.0f;
-    m_positions[11] = 1.0f;
     m_positions[12] = positions[6];
     m_positions[13] = positions[7];
-    m_positions[14] = 1.0f;
-    m_positions[15] = 1.0f;
+
+    // Position of image
+    // (X, Y)
+    // (2, 3)   Left bottom
+    // (6, 7)   Right bottom
+    // (10, 11) Left top
+    // (14, 15) Right top
+
+    // Green
+    m_positions[2] = 0.0f;
+    m_positions[3] = 0.0f;
+    m_positions[6] = 0.5f;
+    m_positions[7] = 0.0f;
+    m_positions[10] = 0.0f;
+    m_positions[11] = 0.5f;
+    m_positions[14] = 0.5f;
+    m_positions[15] = 0.5f;
+
+    // Red
+    // m_positions[2] = 0.5f;
+    // m_positions[3] = 0.0f;
+    // m_positions[6] = 1.0f;
+    // m_positions[7] = 0.0f;
+    // m_positions[10] = 0.5f;
+    // m_positions[11] = 0.5f;
+    // m_positions[14] = 1.0f;
+    // m_positions[15] = 0.5f;
+
+    // Blue
+    // m_positions[2] = 0.0f;
+    // m_positions[3] = 0.5f;
+    // m_positions[6] = 0.5f;
+    // m_positions[7] = 0.5f;
+    // m_positions[10] = 0.0f;
+    // m_positions[11] = 1.0f;
+    // m_positions[14] = 0.5f;
+    // m_positions[15] = 1.0f;
+
+    // Yellow
+    // m_positions[2] = 0.5f;
+    // m_positions[3] = 0.5f;
+    // m_positions[6] = 1.0f;
+    // m_positions[7] = 0.5f;
+    // m_positions[10] = 0.5f;
+    // m_positions[11] = 1.0f;
+    // m_positions[14] = 1.0f;
+    // m_positions[15] = 1.0f;
 }
 
 //---------------------------------------------------------------

@@ -21,15 +21,15 @@
 
 //---------------------------------------------------------------
 
-const int Tetris::s_height = 900;
-const int Tetris::s_width = 1600;
+const int Tetris::s_height = 1800;
+const int Tetris::s_width = 3200;
 const double Tetris::s_dtFactor = 0.1;
 
 //---------------------------------------------------------------
 
 Tetris::Tetris()
-    : m_scaleFactorX(70.0 / s_width)
-    , m_scaleFactorY(70.0 / s_height)
+    : m_scaleFactorX(140.0 / s_width)
+    , m_scaleFactorY(140.0 / s_height)
     , m_targetFPS(150)
 {
     const char* title("Tetris OpenGL");
@@ -377,7 +377,8 @@ void Tetris::LimitFPS() const
     static std::chrono::time_point lastFrameTime(std::chrono::high_resolution_clock::now());
     const std::chrono::milliseconds frameDuration(1000 / m_targetFPS);
     const std::chrono::time_point currentTime(std::chrono::high_resolution_clock::now());
-    const std::chrono::duration elapsedTime(std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastFrameTime));
+    const std::chrono::duration elapsedTime(
+        std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastFrameTime));
     const std::chrono::duration sleepDuration(frameDuration - elapsedTime);
     if (sleepDuration > std::chrono::milliseconds::zero())
         std::this_thread::sleep_for(sleepDuration);
