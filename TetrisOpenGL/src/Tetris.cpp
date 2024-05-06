@@ -12,6 +12,9 @@
 #include "TetriminoCube.h"
 #include "Tetris.h"
 
+#include <chrono>
+#include <thread>
+
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_glfw.h"
 #include "ImGui/imgui_impl_opengl3.h"
@@ -27,6 +30,7 @@ const double Tetris::s_dtFactor = 0.1;
 Tetris::Tetris()
     : m_scaleFactorX(70.0 / s_width)
     , m_scaleFactorY(70.0 / s_height)
+    , m_targetFPS(150)
 {
     const char* title("Tetris OpenGL");
     if (!glfwInit())
@@ -368,6 +372,21 @@ void Tetris::CreateBorder()
 
 //---------------------------------------------------------------
 
+void Tetris::LimitFPS() const
+{
+    static auto lastFrameTime = std::chrono::high_resolution_clock::now();
+    const auto frameDuration = std::chrono::milliseconds(1000 / m_targetFPS);
+    const auto currentTime = std::chrono::high_resolution_clock::now();
+    const auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastFrameTime);
+    const auto sleepDuration = frameDuration - elapsedTime;
+    if (sleepDuration > std::chrono::milliseconds::zero())
+        std::this_thread::sleep_for(sleepDuration);
+
+    lastFrameTime = std::chrono::high_resolution_clock::now();
+}
+
+//---------------------------------------------------------------
+
 void Tetris::Init()
 {
     Tetris tetris;
@@ -425,6 +444,7 @@ void Tetris::Loop()
             }
         }
 
+        LimitFPS();
         // Swap front and back buffers
         glfwSwapBuffers(m_window);
     }

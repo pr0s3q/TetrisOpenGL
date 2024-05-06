@@ -80,6 +80,10 @@ private:
 
     //---------------------------------------------------------------
 
+    void LimitFPS() const;
+
+    //---------------------------------------------------------------
+
     /// <summary>
     /// Loop function. Responsible for events, generating graphic etc.
     /// </summary>
@@ -109,6 +113,7 @@ private:
     double m_scaleFactorX;
     double m_scaleFactorY;
     std::shared_ptr<ImGuiWrapper> m_ImGuiWrapper;
+    int m_targetFPS;
 
     static const int s_height;
     static const int s_width;
