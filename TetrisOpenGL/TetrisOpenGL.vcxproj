@@ -97,6 +97,7 @@
     <ClCompile Include="src\TetriminoCube.cpp" />
     <ClCompile Include="src\TetriminoCubeGroup.cpp" />
     <ClCompile Include="src\Tetris.cpp" />
+    <ClCompile Include="stb\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\BoardManager.h" />
@@ -119,6 +120,10 @@
     <ClInclude Include="include\TetriminoCubeGroup.h" />
     <ClInclude Include="include\Tetris.h" />
     <ClInclude Include="nlohmann\json.hpp" />
+    <ClInclude Include="stb\stb_image.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="res\textures\img.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

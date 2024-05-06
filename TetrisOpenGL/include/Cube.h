@@ -73,7 +73,7 @@ protected:
 
     //---------------------------------------------------------------
 
-    double m_positions[8];
+    double m_positions[16];
     bool m_shouldMove;
     bool m_staticImage = false;
     int m_count;
@@ -87,6 +87,7 @@ protected:
     static unsigned int s_shaderProgram;
     static unsigned int s_VAO;
     static unsigned int s_VBO;
+    static unsigned int s_texture;
 
     //---------------------------------------------------------------
 

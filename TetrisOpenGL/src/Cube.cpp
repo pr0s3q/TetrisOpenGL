@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+#include "stb/stb_image.h"
+
 //---------------------------------------------------------------
 
 unsigned int Cube::s_shaderProgram = 0;
@@ -13,6 +15,7 @@ unsigned int Cube::s_fragmentShader = 0;
 unsigned int Cube::s_vertexShader = 0;
 unsigned int Cube::s_VAO = 0;
 unsigned int Cube::s_VBO = 0;
+unsigned int Cube::s_texture = 0;
 
 //---------------------------------------------------------------
 
@@ -36,12 +39,20 @@ Cube::Cube(const std::vector<double>& positions, const std::vector<float>& color
 
     m_positions[0] = positions[0];
     m_positions[1] = positions[1];
-    m_positions[2] = positions[2];
-    m_positions[3] = positions[3];
-    m_positions[4] = positions[4];
-    m_positions[5] = positions[5];
-    m_positions[6] = positions[6];
-    m_positions[7] = positions[7];
+    m_positions[2] = 0.0f;
+    m_positions[3] = 0.0f;
+    m_positions[4] = positions[2];
+    m_positions[5] = positions[3];
+    m_positions[6] = 1.0f;
+    m_positions[7] = 0.0f;
+    m_positions[8] = positions[4];
+    m_positions[9] = positions[5];
+    m_positions[10] = 0.0f;
+    m_positions[11] = 1.0f;
+    m_positions[12] = positions[6];
+    m_positions[13] = positions[7];
+    m_positions[14] = 1.0f;
+    m_positions[15] = 1.0f;
 }
 
 //---------------------------------------------------------------
@@ -85,12 +96,13 @@ void Cube::CheckOpenGLError(const char* checkpoint)
 
 void Cube::Color() const
 {
-    glUniform4f(
-        glGetUniformLocation(s_shaderProgram, "triangleColor"),
-        m_colors[0],
-        m_colors[1],
-        m_colors[2],
-        m_colors[3]);
+    glBindTexture(GL_TEXTURE_2D, s_texture);
+    // glUniform4f(
+    //     glGetUniformLocation(s_shaderProgram, "triangleColor"),
+    //     m_colors[0],
+    //     m_colors[1],
+    //     m_colors[2],
+    //     m_colors[3]);
 }
 
 //---------------------------------------------------------------
@@ -115,9 +127,44 @@ void Cube::InitShader()
 
     glBindVertexArray(s_VAO);
     glBindBuffer(GL_ARRAY_BUFFER, s_VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(double) * 8, nullptr, GL_DYNAMIC_DRAW);
-    glVertexAttribPointer(0, 2, GL_DOUBLE, GL_FALSE, 2 * sizeof(double), nullptr);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(double) * 16, nullptr, GL_DYNAMIC_DRAW);
+
+    // Cube positions in m_positions (id 0, 1, 4, 5, 8, 9...)
+    glVertexAttribPointer(0, 2, GL_DOUBLE, GL_FALSE, 4 * sizeof(double), nullptr);
     glEnableVertexAttribArray(0);
+
+    // Image positions in m_positions (id 2, 3, 6, 7, 10, 11...)
+    glVertexAttribPointer(
+        1,
+        2,
+        GL_DOUBLE,
+        GL_FALSE,
+        4 * sizeof(double),
+        reinterpret_cast<const void*>(2 * sizeof(double)));
+    glEnableVertexAttribArray(1);
+
+    stbi_set_flip_vertically_on_load(1);
+    int width, height, channels;
+    unsigned char* image = stbi_load("res/textures/img.png", &width, &height, &channels, 4);
+    if (!image)
+        std::cerr << "Failed to load image" << '\n';
+
+    // Generate texture
+    glGenTextures(1, &s_texture);
+    glBindTexture(GL_TEXTURE_2D, s_texture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    stbi_image_free(image);
+
+    // Bind texture to sampler
+    glUseProgram(s_shaderProgram);
+    glUniform1i(glGetUniformLocation(s_shaderProgram, "u_Texture"), 0);
 }
 
 //---------------------------------------------------------------
@@ -178,17 +225,21 @@ void Cube::CompileShaders()
     s_vertexShaderSource = R"(
         #version 330 core
         layout (location = 0) in vec3 aPos;
+        layout (location = 1) in vec2 aTexCoord;
+        out vec2 v_TexCoord;
         void main() {
             gl_Position = vec4(aPos, 1.0);
+            v_TexCoord = aTexCoord;
         }
     )";
 
     s_fragmentShaderSource = R"(
         #version 330 core
         out vec4 FragColor;
-        uniform vec4 triangleColor;
+        in vec2 v_TexCoord;
+        uniform sampler2D u_Texture;
         void main() {
-            FragColor = triangleColor;
+            FragColor = texture(u_Texture, v_TexCoord);
         }
     )";
 

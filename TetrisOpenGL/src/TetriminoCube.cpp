@@ -29,12 +29,12 @@ void TetriminoCube::ApplyRotationPositions(
 {
     m_positions[0] = positions[0];
     m_positions[1] = positions[1];
-    m_positions[2] = positions[2];
-    m_positions[3] = positions[3];
-    m_positions[4] = positions[4];
-    m_positions[5] = positions[5];
-    m_positions[6] = positions[6];
-    m_positions[7] = positions[7];
+    m_positions[4] = positions[2];
+    m_positions[5] = positions[3];
+    m_positions[8] = positions[4];
+    m_positions[9] = positions[5];
+    m_positions[12] = positions[6];
+    m_positions[13] = positions[7];
 
     glBindBuffer(GL_ARRAY_BUFFER, s_VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_positions), m_positions);
@@ -109,9 +109,9 @@ void TetriminoCube::Move(const double& scaleFactor, const Key keyPressed)
 
             const auto yCoord = BoardManager::GetCoordinate(m_yLocation, scaleFactor);
             m_positions[1] = yCoord.first;
-            m_positions[3] = yCoord.first;
-            m_positions[5] = yCoord.second;
-            m_positions[7] = yCoord.second;
+            m_positions[5] = yCoord.first;
+            m_positions[9] = yCoord.second;
+            m_positions[13] = yCoord.second;
             break;
         }
         case Key::S:
@@ -123,9 +123,9 @@ void TetriminoCube::Move(const double& scaleFactor, const Key keyPressed)
 
             const auto yCoord = BoardManager::GetCoordinate(m_yLocation, scaleFactor);
             m_positions[1] = yCoord.first;
-            m_positions[3] = yCoord.first;
-            m_positions[5] = yCoord.second;
-            m_positions[7] = yCoord.second;
+            m_positions[5] = yCoord.first;
+            m_positions[9] = yCoord.second;
+            m_positions[13] = yCoord.second;
             break;
         }
         case Key::A:
@@ -137,9 +137,9 @@ void TetriminoCube::Move(const double& scaleFactor, const Key keyPressed)
 
             const auto xCoord = BoardManager::GetCoordinate(m_xLocation, scaleFactor);
             m_positions[0] = xCoord.second;
-            m_positions[2] = xCoord.first;
-            m_positions[4] = xCoord.second;
-            m_positions[6] = xCoord.first;
+            m_positions[4] = xCoord.first;
+            m_positions[8] = xCoord.second;
+            m_positions[12] = xCoord.first;
             break;
         }
         case Key::D:
@@ -151,9 +151,9 @@ void TetriminoCube::Move(const double& scaleFactor, const Key keyPressed)
 
             const auto xCoord = BoardManager::GetCoordinate(m_xLocation, scaleFactor);
             m_positions[0] = xCoord.second;
-            m_positions[2] = xCoord.first;
-            m_positions[4] = xCoord.second;
-            m_positions[6] = xCoord.first;
+            m_positions[4] = xCoord.first;
+            m_positions[8] = xCoord.second;
+            m_positions[12] = xCoord.first;
             break;
         }
     }
@@ -170,9 +170,9 @@ void TetriminoCube::MoveForce(const double& scaleFactor)
 
     const auto yCoord = BoardManager::GetCoordinate(m_yLocation, scaleFactor);
     m_positions[1] = yCoord.first;
-    m_positions[3] = yCoord.first;
-    m_positions[5] = yCoord.second;
-    m_positions[7] = yCoord.second;
+    m_positions[5] = yCoord.first;
+    m_positions[9] = yCoord.second;
+    m_positions[13] = yCoord.second;
 
     glBindBuffer(GL_ARRAY_BUFFER, s_VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_positions), m_positions);
