@@ -26,8 +26,8 @@ Cube::Cube(const bool staticImage, const std::vector<double>& positions, const s
 
 Cube::Cube(const std::vector<double>& positions, const std::vector<float>& colors)
     : m_shouldMove(true)
-    , m_count(6)
-    , m_mode(GL_TRIANGLES)
+    , m_count(4)
+    , m_mode(GL_TRIANGLE_STRIP)
 {
     m_colors = std::vector<float>();
     m_colors.reserve(colors.size());
@@ -40,12 +40,8 @@ Cube::Cube(const std::vector<double>& positions, const std::vector<float>& color
     m_positions[3] = positions[3];
     m_positions[4] = positions[4];
     m_positions[5] = positions[5];
-    m_positions[6] = positions[4];
-    m_positions[7] = positions[5];
-    m_positions[8] = positions[6];
-    m_positions[9] = positions[7];
-    m_positions[10] = positions[0];
-    m_positions[11] = positions[1];
+    m_positions[6] = positions[6];
+    m_positions[7] = positions[7];
 }
 
 //---------------------------------------------------------------
@@ -119,7 +115,7 @@ void Cube::InitShader()
 
     glBindVertexArray(s_VAO);
     glBindBuffer(GL_ARRAY_BUFFER, s_VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(double) * 12, nullptr, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(double) * 8, nullptr, GL_DYNAMIC_DRAW);
     glVertexAttribPointer(0, 2, GL_DOUBLE, GL_FALSE, 2 * sizeof(double), nullptr);
     glEnableVertexAttribArray(0);
 }

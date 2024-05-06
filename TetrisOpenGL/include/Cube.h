@@ -73,10 +73,10 @@ protected:
 
     //---------------------------------------------------------------
 
-    double m_positions[12];
+    double m_positions[8];
     bool m_shouldMove;
     bool m_staticImage = false;
-    unsigned int m_count;
+    int m_count;
     unsigned int m_mode;
     std::vector<float> m_colors;
 

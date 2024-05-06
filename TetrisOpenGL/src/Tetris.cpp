@@ -270,9 +270,9 @@ void Tetris::CreateBorder()
           -11.45 * m_scaleFactorY,
           -5.55 * m_scaleFactorX,
           -11.45 * m_scaleFactorY,
-          -5.55 * m_scaleFactorX,
-          -10.55 * m_scaleFactorY,
           -6.45 * m_scaleFactorX,
+          -10.55 * m_scaleFactorY,
+          -5.55 * m_scaleFactorX,
           -10.55 * m_scaleFactorY });
 
     std::vector<float> colors;
@@ -288,9 +288,9 @@ void Tetris::CreateBorder()
           -11.45 * m_scaleFactorY,
           5.45 * m_scaleFactorX,
           -11.45 * m_scaleFactorY,
-          5.45 * m_scaleFactorX,
-          -10.55 * m_scaleFactorY,
           -5.45 * m_scaleFactorX,
+          -10.55 * m_scaleFactorY,
+          5.45 * m_scaleFactorX,
           -10.55 * m_scaleFactorY });
 
     m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
@@ -298,9 +298,9 @@ void Tetris::CreateBorder()
     positions.clear();
     positions.insert(
         positions.end(),
-        { 6.45 * m_scaleFactorX,
+        { 5.55 * m_scaleFactorX,
           -11.45 * m_scaleFactorY,
-          5.55 * m_scaleFactorX,
+          6.45 * m_scaleFactorX,
           -11.45 * m_scaleFactorY,
           5.55 * m_scaleFactorX,
           -10.55 * m_scaleFactorY,
@@ -313,27 +313,27 @@ void Tetris::CreateBorder()
     positions.insert(
         positions.end(),
         { -6.45 * m_scaleFactorX,
-          11.45 * m_scaleFactorY,
-          -5.55 * m_scaleFactorX,
-          11.45 * m_scaleFactorY,
+          10.55 * m_scaleFactorY,
           -5.55 * m_scaleFactorX,
           10.55 * m_scaleFactorY,
           -6.45 * m_scaleFactorX,
-          10.55 * m_scaleFactorY });
+          11.45 * m_scaleFactorY,
+          -5.55 * m_scaleFactorX,
+          11.45 * m_scaleFactorY });
 
     m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
 
     positions.clear();
     positions.insert(
         positions.end(),
-        { 6.45 * m_scaleFactorX,
-          11.45 * m_scaleFactorY,
-          5.55 * m_scaleFactorX,
-          11.45 * m_scaleFactorY,
-          5.55 * m_scaleFactorX,
+        { 5.55 * m_scaleFactorX,
           10.55 * m_scaleFactorY,
           6.45 * m_scaleFactorX,
-          10.55 * m_scaleFactorY });
+          10.55 * m_scaleFactorY,
+          5.55 * m_scaleFactorX,
+          11.45 * m_scaleFactorY,
+          6.45 * m_scaleFactorX,
+          11.45 * m_scaleFactorY });
 
     m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
 
@@ -344,9 +344,9 @@ void Tetris::CreateBorder()
           -10.45 * m_scaleFactorY,
           -5.55 * m_scaleFactorX,
           -10.45 * m_scaleFactorY,
-          -5.55 * m_scaleFactorX,
-          10.45 * m_scaleFactorY,
           -6.45 * m_scaleFactorX,
+          10.45 * m_scaleFactorY,
+          -5.55 * m_scaleFactorX,
           10.45 * m_scaleFactorY });
 
     m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
@@ -354,9 +354,9 @@ void Tetris::CreateBorder()
     positions.clear();
     positions.insert(
         positions.end(),
-        { 6.45 * m_scaleFactorX,
+        { 5.55 * m_scaleFactorX,
           -10.45 * m_scaleFactorY,
-          5.55 * m_scaleFactorX,
+          6.45 * m_scaleFactorX,
           -10.45 * m_scaleFactorY,
           5.55 * m_scaleFactorX,
           10.45 * m_scaleFactorY,
@@ -421,8 +421,8 @@ void Tetris::Loop()
                     m_cubeGroup.ResetCubes();
                     TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
                 }
-            }
 #endif
+            }
         }
 
         // Swap front and back buffers

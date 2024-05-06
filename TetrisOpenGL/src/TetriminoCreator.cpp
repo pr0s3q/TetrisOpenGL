@@ -142,14 +142,14 @@ void TetriminoCreator::CreateTetriminoPositions(
         positions[i].reserve(8);
         positions[i].insert(
             positions[i].end(),
-            { xCoord.first,
-              yCoord.first,
-              xCoord.second,
-              yCoord.first,
-              xCoord.second,
+            { xCoord.second,
               yCoord.second,
               xCoord.first,
-              yCoord.second });
+              yCoord.second,
+              xCoord.second,
+              yCoord.first,
+              xCoord.first,
+              yCoord.first });
     }
 }
 
