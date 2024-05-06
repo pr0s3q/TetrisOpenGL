@@ -374,11 +374,11 @@ void Tetris::CreateBorder()
 
 void Tetris::LimitFPS() const
 {
-    static auto lastFrameTime = std::chrono::high_resolution_clock::now();
-    const auto frameDuration = std::chrono::milliseconds(1000 / m_targetFPS);
-    const auto currentTime = std::chrono::high_resolution_clock::now();
-    const auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastFrameTime);
-    const auto sleepDuration = frameDuration - elapsedTime;
+    static std::chrono::time_point lastFrameTime(std::chrono::high_resolution_clock::now());
+    const std::chrono::milliseconds frameDuration(1000 / m_targetFPS);
+    const std::chrono::time_point currentTime(std::chrono::high_resolution_clock::now());
+    const std::chrono::duration elapsedTime(std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastFrameTime));
+    const std::chrono::duration sleepDuration(frameDuration - elapsedTime);
     if (sleepDuration > std::chrono::milliseconds::zero())
         std::this_thread::sleep_for(sleepDuration);
 

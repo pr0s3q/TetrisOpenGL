@@ -127,7 +127,7 @@ void Cube::InitShader()
 
     glBindVertexArray(s_VAO);
     glBindBuffer(GL_ARRAY_BUFFER, s_VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(double) * 16, nullptr, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(m_positions), nullptr, GL_DYNAMIC_DRAW);
 
     // Cube positions in m_positions (id 0, 1, 4, 5, 8, 9...)
     glVertexAttribPointer(0, 2, GL_DOUBLE, GL_FALSE, 4 * sizeof(double), nullptr);
