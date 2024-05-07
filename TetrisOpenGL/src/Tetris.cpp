@@ -21,15 +21,15 @@
 
 //---------------------------------------------------------------
 
-const int Tetris::s_height = 1800;
-const int Tetris::s_width = 3200;
+const int Tetris::s_height = 900;
+const int Tetris::s_width = 1600;
 const double Tetris::s_dtFactor = 0.1;
 
 //---------------------------------------------------------------
 
 Tetris::Tetris()
-    : m_scaleFactorX(140.0 / s_width)
-    , m_scaleFactorY(140.0 / s_height)
+    : m_scaleFactorX(70.0 / s_width)
+    , m_scaleFactorY(70.0 / s_height)
     , m_targetFPS(150)
 {
     const char* title("Tetris OpenGL");
@@ -297,7 +297,7 @@ void Tetris::CreateBorder()
           5.45 * m_scaleFactorX,
           -10.55 * m_scaleFactorY });
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, 9));
 
     positions.clear();
     positions.insert(
@@ -353,7 +353,7 @@ void Tetris::CreateBorder()
           -5.55 * m_scaleFactorX,
           10.45 * m_scaleFactorY });
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, 8));
 
     positions.clear();
     positions.insert(
@@ -367,7 +367,7 @@ void Tetris::CreateBorder()
           6.45 * m_scaleFactorX,
           10.45 * m_scaleFactorY });
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, 8));
 }
 
 //---------------------------------------------------------------

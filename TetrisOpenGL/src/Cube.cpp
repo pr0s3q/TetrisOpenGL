@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+#include "ImageCoordManager.h"
 #include "stb/stb_image.h"
 
 //---------------------------------------------------------------
@@ -19,15 +20,19 @@ unsigned int Cube::s_texture = 0;
 
 //---------------------------------------------------------------
 
-Cube::Cube(const bool staticImage, const std::vector<double>& positions, const std::vector<float>& colors)
-    : Cube(positions, colors)
+Cube::Cube(
+    const bool staticImage,
+    const std::vector<double>& positions,
+    const std::vector<float>& colors,
+    const int imageId)
+    : Cube(positions, colors, imageId)
 {
     m_staticImage = staticImage;
 }
 
 //---------------------------------------------------------------
 
-Cube::Cube(const std::vector<double>& positions, const std::vector<float>& colors)
+Cube::Cube(const std::vector<double>& positions, const std::vector<float>& colors, const int imageId)
     : m_shouldMove(true)
     , m_count(4)
     , m_mode(GL_TRIANGLE_STRIP)
@@ -48,51 +53,23 @@ Cube::Cube(const std::vector<double>& positions, const std::vector<float>& color
     m_positions[13] = positions[7];
 
     // Position of image
-    // (X, Y)
-    // (2, 3)   Left bottom
-    // (6, 7)   Right bottom
+    // (X,  Y)
+    // (2,  3)  Left bottom
+    // (6,  7)  Right bottom
     // (10, 11) Left top
     // (14, 15) Right top
 
-    // Green
-    m_positions[2] = 0.0f;
-    m_positions[3] = 0.0f;
-    m_positions[6] = 0.5f;
-    m_positions[7] = 0.0f;
-    m_positions[10] = 0.0f;
-    m_positions[11] = 0.5f;
-    m_positions[14] = 0.5f;
-    m_positions[15] = 0.5f;
+    std::vector<double> imageCoords;
+    ImageCoordManager::GetImageCoords(imageId, imageCoords);
 
-    // Red
-    // m_positions[2] = 0.5f;
-    // m_positions[3] = 0.0f;
-    // m_positions[6] = 1.0f;
-    // m_positions[7] = 0.0f;
-    // m_positions[10] = 0.5f;
-    // m_positions[11] = 0.5f;
-    // m_positions[14] = 1.0f;
-    // m_positions[15] = 0.5f;
-
-    // Blue
-    // m_positions[2] = 0.0f;
-    // m_positions[3] = 0.5f;
-    // m_positions[6] = 0.5f;
-    // m_positions[7] = 0.5f;
-    // m_positions[10] = 0.0f;
-    // m_positions[11] = 1.0f;
-    // m_positions[14] = 0.5f;
-    // m_positions[15] = 1.0f;
-
-    // Yellow
-    // m_positions[2] = 0.5f;
-    // m_positions[3] = 0.5f;
-    // m_positions[6] = 1.0f;
-    // m_positions[7] = 0.5f;
-    // m_positions[10] = 0.5f;
-    // m_positions[11] = 1.0f;
-    // m_positions[14] = 1.0f;
-    // m_positions[15] = 1.0f;
+    m_positions[2] = imageCoords[0];
+    m_positions[3] = imageCoords[1];
+    m_positions[6] = imageCoords[2];
+    m_positions[7] = imageCoords[3];
+    m_positions[10] = imageCoords[4];
+    m_positions[11] = imageCoords[5];
+    m_positions[14] = imageCoords[6];
+    m_positions[15] = imageCoords[7];
 }
 
 //---------------------------------------------------------------

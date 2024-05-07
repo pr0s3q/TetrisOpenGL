@@ -10,11 +10,15 @@ public:
 
     //---------------------------------------------------------------
 
-    Cube(bool staticImage, const std::vector<double>& positions, const std::vector<float>& colors);
+    Cube(
+        bool staticImage,
+        const std::vector<double>& positions,
+        const std::vector<float>& colors,
+        const int imageId = 7);
 
     //---------------------------------------------------------------
 
-    Cube(const std::vector<double>& positions, const std::vector<float>& colors);
+    Cube(const std::vector<double>& positions, const std::vector<float>& colors, const int imageId = 7);
 
     //---------------------------------------------------------------
 
