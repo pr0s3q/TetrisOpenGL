@@ -105,6 +105,7 @@
     <ClInclude Include="include\ConnectedTetriminoCubes.h" />
     <ClInclude Include="include\Cube.h" />
     <ClInclude Include="include\Enums.h" />
+    <ClInclude Include="include\HelperDefinitions.h" />
     <ClInclude Include="include\ImageCoordManager.h" />
     <ClInclude Include="include\ImGuiWrapper.h" />
     <ClInclude Include="ImGui\imconfig.h" />

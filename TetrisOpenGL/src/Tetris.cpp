@@ -15,6 +15,7 @@
 #include <chrono>
 #include <thread>
 
+#include "HelperDefinitions.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_glfw.h"
 #include "ImGui/imgui_impl_opengl3.h"
@@ -297,7 +298,7 @@ void Tetris::CreateBorder()
           5.45 * m_scaleFactorX,
           -10.55 * m_scaleFactorY });
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, 9));
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, BAR_11_COLOR));
 
     positions.clear();
     positions.insert(
@@ -353,7 +354,7 @@ void Tetris::CreateBorder()
           -5.55 * m_scaleFactorX,
           10.45 * m_scaleFactorY });
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, 8));
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, BAR_21_COLOR));
 
     positions.clear();
     positions.insert(
@@ -367,7 +368,7 @@ void Tetris::CreateBorder()
           6.45 * m_scaleFactorX,
           10.45 * m_scaleFactorY });
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, 8));
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, BAR_21_COLOR));
 }
 
 //---------------------------------------------------------------
