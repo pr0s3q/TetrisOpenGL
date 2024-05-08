@@ -49,25 +49,25 @@ bool TetriminoCube::CanBeMoved(const Key keyPressed) const
 {
     switch (keyPressed)
     {
-        case Key::W:
+        case Key::UP:
         {
             if (m_yLocation == 10)
                 return false;
             break;
         }
-        case Key::S:
+        case Key::DOWN:
         {
             if (m_yLocation == -10)
                 return false;
             break;
         }
-        case Key::A:
+        case Key::LEFT:
         {
             if (m_xLocation == -5)
                 return false;
             break;
         }
-        case Key::D:
+        case Key::RIGHT:
         {
             if (m_xLocation == 5)
                 return false;
@@ -100,7 +100,7 @@ void TetriminoCube::Move(const double& scaleFactor, const Key keyPressed)
 
     switch (keyPressed)
     {
-        case Key::W:
+        case Key::UP:
         {
             if (m_yLocation == 10)
                 return;
@@ -114,7 +114,7 @@ void TetriminoCube::Move(const double& scaleFactor, const Key keyPressed)
             m_positions[13] = yCoord.first;
             break;
         }
-        case Key::S:
+        case Key::DOWN:
         {
             if (m_yLocation == -10)
                 return;
@@ -128,7 +128,7 @@ void TetriminoCube::Move(const double& scaleFactor, const Key keyPressed)
             m_positions[13] = yCoord.first;
             break;
         }
-        case Key::A:
+        case Key::LEFT:
         {
             if (m_xLocation == -5)
                 return;
@@ -142,7 +142,7 @@ void TetriminoCube::Move(const double& scaleFactor, const Key keyPressed)
             m_positions[12] = xCoord.first;
             break;
         }
-        case Key::D:
+        case Key::RIGHT:
         {
             if (m_xLocation == 5)
                 return;

@@ -60,7 +60,7 @@ private:
     /// <param name="scaleFactor"></param>
     /// <param name="key">GLFW key</param>
     /// <param name="keyPressed">Enum key</param>
-    void CheckPressedKey(const double& scaleFactor, const int& key, Key keyPressed);
+    bool CheckPressedKey(const double& scaleFactor, const int& key, Key keyPressed);
 
     //---------------------------------------------------------------
 

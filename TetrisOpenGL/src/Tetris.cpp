@@ -231,20 +231,24 @@ void Tetris::CheckForRowToDelete()
 
 //---------------------------------------------------------------
 
-void Tetris::CheckPressedKey(const double& scaleFactor, const int& key, const Key keyPressed)
+bool Tetris::CheckPressedKey(const double& scaleFactor, const int& key, const Key keyPressed)
 {
     if (glfwGetKey(m_window, key) == GLFW_PRESS)
     {
         m_cubeGroup.MoveCubes(m_cubes, scaleFactor, keyPressed);
 
         if (m_cubeGroup.ShouldBeMovable(m_cubes))
-            return;
+            return true;
 
         m_cubeGroup.SetMove(false);
         m_cubeGroup.ResetCubes();
         CheckForRowToDelete();
         TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
+        return true;
     }
+
+    // Key not pressed
+    return false;
 }
 
 //---------------------------------------------------------------
@@ -429,10 +433,18 @@ void Tetris::Loop()
             if (dt >= s_dtFactor)
             {
                 lastTime = currentTime;
-                CheckPressedKey(m_scaleFactorY, GLFW_KEY_S, Key::S);
-                CheckPressedKey(m_scaleFactorY, GLFW_KEY_W, Key::W);
-                CheckPressedKey(m_scaleFactorX, GLFW_KEY_A, Key::A);
-                CheckPressedKey(m_scaleFactorX, GLFW_KEY_D, Key::D);
+                if (!CheckPressedKey(m_scaleFactorY, GLFW_KEY_S, Key::DOWN))
+                    CheckPressedKey(m_scaleFactorY, GLFW_KEY_DOWN, Key::DOWN);
+
+                if (!CheckPressedKey(m_scaleFactorY, GLFW_KEY_W, Key::UP))
+                    CheckPressedKey(m_scaleFactorY, GLFW_KEY_UP, Key::UP);
+
+                if (!CheckPressedKey(m_scaleFactorX, GLFW_KEY_A, Key::LEFT))
+                    CheckPressedKey(m_scaleFactorX, GLFW_KEY_LEFT, Key::LEFT);
+
+                if (!CheckPressedKey(m_scaleFactorX, GLFW_KEY_D, Key::RIGHT))
+                    CheckPressedKey(m_scaleFactorX, GLFW_KEY_RIGHT, Key::RIGHT);
+
                 CheckPressedKey(GLFW_KEY_Q);
 
 #ifdef _DEBUG // Extra feature for debug - L key is creating new TetriminoCube

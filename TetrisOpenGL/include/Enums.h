@@ -17,11 +17,11 @@ enum class TetriminoType
 
 enum class Key
 {
-    W,
-    S,
-    A,
-    D,
-    Q
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    ROTATE
 };
 
 //---------------------------------------------------------------

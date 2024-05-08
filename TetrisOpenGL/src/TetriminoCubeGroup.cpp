@@ -69,13 +69,13 @@ bool TetriminoCubeGroup::CanBeMoved(const std::vector<std::shared_ptr<Cube>>& cu
             continue;
         for (const auto& tetriminoCube : m_tetriminoCubes)
         {
-            if (keyPressed == Key::A)
+            if (keyPressed == Key::LEFT)
             {
                 if (cubeEntity->GetYLocation() == tetriminoCube->GetYLocation() &&
                     cubeEntity->GetXLocation() == tetriminoCube->GetXLocation() - 1)
                     return false;
             }
-            if (keyPressed == Key::D)
+            if (keyPressed == Key::RIGHT)
             {
                 if (cubeEntity->GetYLocation() == tetriminoCube->GetYLocation() &&
                     cubeEntity->GetXLocation() == tetriminoCube->GetXLocation() + 1)
@@ -132,21 +132,21 @@ void TetriminoCubeGroup::MoveCubes(
         if (!cube->CanBeMoved(keyPressed))
             return;
 
-    if ((keyPressed == Key::A || keyPressed == Key::D) && !CanBeMoved(cubes, keyPressed))
+    if ((keyPressed == Key::LEFT || keyPressed == Key::RIGHT) && !CanBeMoved(cubes, keyPressed))
         return;
 
     switch (keyPressed)
     {
-        case Key::W:
+        case Key::UP:
             m_yMovingFactor += 1;
             break;
-        case Key::S:
+        case Key::DOWN:
             m_yMovingFactor -= 1;
             break;
-        case Key::A:
+        case Key::LEFT:
             m_xMovingFactor -= 1;
             break;
-        case Key::D:
+        case Key::RIGHT:
             m_xMovingFactor += 1;
             break;
     }
