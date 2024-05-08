@@ -108,10 +108,10 @@ void TetriminoCube::Move(const double& scaleFactor, const Key keyPressed)
             m_yLocation += 1;
 
             const auto yCoord = BoardManager::GetCoordinate(m_yLocation, scaleFactor);
-            m_positions[1] = yCoord.first;
-            m_positions[5] = yCoord.first;
-            m_positions[9] = yCoord.second;
-            m_positions[13] = yCoord.second;
+            m_positions[1] = yCoord.second;
+            m_positions[5] = yCoord.second;
+            m_positions[9] = yCoord.first;
+            m_positions[13] = yCoord.first;
             break;
         }
         case Key::S:
@@ -122,10 +122,10 @@ void TetriminoCube::Move(const double& scaleFactor, const Key keyPressed)
             m_yLocation -= 1;
 
             const auto yCoord = BoardManager::GetCoordinate(m_yLocation, scaleFactor);
-            m_positions[1] = yCoord.first;
-            m_positions[5] = yCoord.first;
-            m_positions[9] = yCoord.second;
-            m_positions[13] = yCoord.second;
+            m_positions[1] = yCoord.second;
+            m_positions[5] = yCoord.second;
+            m_positions[9] = yCoord.first;
+            m_positions[13] = yCoord.first;
             break;
         }
         case Key::A:
