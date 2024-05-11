@@ -2,9 +2,8 @@
 
 #include <memory>
 
-#include "Cube.h"
-
 class ConnectedTetriminoCubes;
+class Cube;
 
 class TetriminoCube : public Cube
 {

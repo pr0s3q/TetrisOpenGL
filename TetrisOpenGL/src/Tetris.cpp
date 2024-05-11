@@ -2,20 +2,20 @@
 #include "GLFW/glfw3.h"
 
 #include <algorithm>
-#include <ctime>
+#include <chrono>
 #include <stdexcept>
 #include <string>
+#include <thread>
 
 #include "Cube.h"
+#include "Enums.h"
+#include "HelperDefinitions.h"
 #include "ImGuiWrapper.h"
 #include "TetriminoCreator.h"
 #include "TetriminoCube.h"
+#include "TetriminoCubeGroup.h"
 #include "Tetris.h"
 
-#include <chrono>
-#include <thread>
-
-#include "HelperDefinitions.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_glfw.h"
 #include "ImGui/imgui_impl_opengl3.h"
@@ -69,6 +69,8 @@ Tetris::Tetris()
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     ImGui_ImplOpenGL3_Init("#version 130");
+
+    m_cubeGroup = std::make_shared<TetriminoCubeGroup>();
 }
 
 //---------------------------------------------------------------
@@ -235,13 +237,13 @@ bool Tetris::CheckPressedKey(const double& scaleFactor, const int& key, const Ke
 {
     if (glfwGetKey(m_window, key) == GLFW_PRESS)
     {
-        m_cubeGroup.MoveCubes(m_cubes, scaleFactor, keyPressed);
+        m_cubeGroup->MoveCubes(m_cubes, scaleFactor, keyPressed);
 
-        if (m_cubeGroup.ShouldBeMovable(m_cubes))
+        if (m_cubeGroup->ShouldBeMovable(m_cubes))
             return true;
 
-        m_cubeGroup.SetMove(false);
-        m_cubeGroup.ResetCubes();
+        m_cubeGroup->SetMove(false);
+        m_cubeGroup->ResetCubes();
         CheckForRowToDelete();
         TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
         return true;
@@ -253,7 +255,7 @@ bool Tetris::CheckPressedKey(const double& scaleFactor, const int& key, const Ke
 
 //---------------------------------------------------------------
 
-void Tetris::CheckPressedKey(const int& key)
+void Tetris::CheckPressedKey(const int& key) const
 {
     if (glfwGetKey(m_window, key) == GLFW_PRESS)
         TetriminoCreator::RotateIfPossible(m_cubes, m_cubeGroup, m_scaleFactorX, m_scaleFactorY);
@@ -450,8 +452,8 @@ void Tetris::Loop()
 #ifdef _DEBUG // Extra feature for debug - L key is creating new TetriminoCube
                 if (glfwGetKey(m_window, GLFW_KEY_L) == GLFW_PRESS)
                 {
-                    m_cubeGroup.SetMove(false);
-                    m_cubeGroup.ResetCubes();
+                    m_cubeGroup->SetMove(false);
+                    m_cubeGroup->ResetCubes();
                     TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
                 }
 #endif

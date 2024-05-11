@@ -3,10 +3,11 @@
 #include <memory>
 #include <vector>
 
-#include "Enums.h"
-
 class Cube;
 class TetriminoCube;
+
+enum class Key;
+enum class TetriminoType;
 
 class TetriminoCubeGroup
 {

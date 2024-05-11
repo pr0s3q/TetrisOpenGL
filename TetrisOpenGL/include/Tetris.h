@@ -2,11 +2,15 @@
 
 #include "GLFW/glfw3.h"
 
+#include <memory>
 #include <string>
+#include <vector>
 
-#include "TetriminoCubeGroup.h"
-
+class Cube;
 class ImGuiWrapper;
+class TetriminoCubeGroup;
+
+enum class Key;
 
 class Tetris
 {
@@ -69,7 +73,7 @@ private:
     /// Checks only keys responsible for rotating tetriminos
     /// </summary>
     /// <param name="key">GLFW key</param>
-    void CheckPressedKey(const int& key);
+    void CheckPressedKey(const int& key) const;
 
     //---------------------------------------------------------------
 
@@ -80,6 +84,9 @@ private:
 
     //---------------------------------------------------------------
 
+    /// <summary>
+    /// Limit FPS to the specific number (number specified in m_targetFPS)
+    /// </summary>
     void LimitFPS() const;
 
     //---------------------------------------------------------------
@@ -108,7 +115,7 @@ private:
     //---------------------------------------------------------------
 
     std::vector<std::shared_ptr<Cube>> m_cubes;
-    TetriminoCubeGroup m_cubeGroup;
+    std::shared_ptr<TetriminoCubeGroup> m_cubeGroup;
     GLFWwindow* m_window;
     double m_scaleFactorX;
     double m_scaleFactorY;

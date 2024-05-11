@@ -2,6 +2,7 @@
 
 #include "BoardManager.h"
 #include "ConnectedTetriminoCubes.h"
+#include "Cube.h"
 #include "Enums.h"
 #include "TetriminoCube.h"
 
@@ -169,10 +170,10 @@ void TetriminoCube::MoveForce(const double& scaleFactor)
     m_yLocation -= 1;
 
     const auto yCoord = BoardManager::GetCoordinate(m_yLocation, scaleFactor);
-    m_positions[1] = yCoord.first;
-    m_positions[5] = yCoord.first;
-    m_positions[9] = yCoord.second;
-    m_positions[13] = yCoord.second;
+    m_positions[1] = yCoord.second;
+    m_positions[5] = yCoord.second;
+    m_positions[9] = yCoord.first;
+    m_positions[13] = yCoord.first;
 
     glBindBuffer(GL_ARRAY_BUFFER, s_VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_positions), m_positions);

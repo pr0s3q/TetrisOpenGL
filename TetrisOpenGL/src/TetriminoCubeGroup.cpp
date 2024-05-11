@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "Cube.h"
+#include "Enums.h"
 #include "TetriminoCube.h"
 
 //---------------------------------------------------------------

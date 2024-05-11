@@ -2,10 +2,10 @@
 
 #include <vector>
 
-enum class TetriminoType;
-
 class Cube;
 class TetriminoCubeGroup;
+
+enum class TetriminoType;
 
 class TetriminoCreator
 {
@@ -14,16 +14,16 @@ public:
     //---------------------------------------------------------------
 
     static void Create(
-        TetriminoCubeGroup& cubeGroup,
+        const std::shared_ptr<TetriminoCubeGroup>& cubeGroup,
         std::vector<std::shared_ptr<Cube>>& cubes,
-        double scaleFactorX,
-        double scaleFactorY);
+        const double scaleFactorX,
+        const double scaleFactorY);
 
     //---------------------------------------------------------------
 
     static void RotateIfPossible(
         const std::vector<std::shared_ptr<Cube>>& cubes,
-        TetriminoCubeGroup& cubeGroup,
+        const std::shared_ptr<TetriminoCubeGroup>& cubeGroup,
         const double& scaleFactorX,
         const double& scaleFactorY);
 
@@ -54,7 +54,7 @@ private:
         const std::vector<std::shared_ptr<Cube>>& cubes,
         const std::vector<int>& xLocations,
         const std::vector<int>& yLocations,
-        TetriminoCubeGroup& cubeGroup);
+        const std::shared_ptr<TetriminoCubeGroup>& cubeGroup);
 
     //---------------------------------------------------------------
 };
