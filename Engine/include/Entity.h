@@ -4,7 +4,7 @@
 
 class Entity
 {
-friend class Game;
+    friend class Game;
 
     //---------------------------------------------------------------
 

@@ -1,14 +1,14 @@
 ﻿#include "GL/glew.h"
 #include "GLFW/glfw3.h"
 
+#include <iostream>
 #include <stdexcept>
 #include <string>
-#include <iostream>
 
 #include "Game.h"
 
 #include "Entity.h"
-#include "../stb/stb_image.h"
+#include "stb/stb_image.h"
 
 //---------------------------------------------------------------
 
@@ -76,7 +76,6 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
     CheckShaderCompilation(m_vertexShader);
     CheckShaderCompilation(m_fragmentShader);
 
-
     m_shaderProgram = glCreateProgram();
     glAttachShader(m_shaderProgram, m_vertexShader);
     glAttachShader(m_shaderProgram, m_fragmentShader);
@@ -93,7 +92,7 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
 
     glBindVertexArray(m_VAO);
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glBufferData(GL_ARRAY_BUFFER, 16*sizeof(double), nullptr, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 16 * sizeof(double), nullptr, GL_DYNAMIC_DRAW);
 
     // Cube positions in m_positions (id 0, 1, 4, 5, 8, 9...)
     glVertexAttribPointer(0, 2, GL_DOUBLE, GL_FALSE, 4 * sizeof(double), nullptr);
@@ -125,7 +124,6 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-    //glBindTexture(GL_TEXTURE_2D, 0);
     stbi_image_free(image);
 
     // Bind texture to sampler
@@ -186,7 +184,6 @@ void Game::DrawSquare(const std::shared_ptr<Entity>& entity) const
 
     glUseProgram(m_shaderProgram);
     CheckProgramLinking(m_shaderProgram);
-    //glBindTexture(GL_TEXTURE_2D, m_texture);
     glBindVertexArray(m_VAO);
     CheckOpenGLError("Before draw");
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
