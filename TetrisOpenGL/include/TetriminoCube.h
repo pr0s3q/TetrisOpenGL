@@ -36,11 +36,11 @@ public:
 
     //---------------------------------------------------------------
 
-    void Move(const double& scaleFactor, Key keyPressed) override;
+    virtual void Move(const double& scaleFactor, Key keyPressed) override;
 
     //---------------------------------------------------------------
 
-    void MoveForce(const double& scaleFactor) override;
+    virtual void MoveForce(const double& scaleFactor) override;
 
     //---------------------------------------------------------------
 

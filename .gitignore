@@ -2,6 +2,7 @@
 .vs
 TetrisOpenGL/x64
 Engine/x64
+Engine/Engine
 *.user
 .idea
 *.ini

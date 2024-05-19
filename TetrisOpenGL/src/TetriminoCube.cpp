@@ -37,9 +37,6 @@ void TetriminoCube::ApplyRotationPositions(
     m_positions[12] = positions[6];
     m_positions[13] = positions[7];
 
-    glBindBuffer(GL_ARRAY_BUFFER, s_VBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_positions), m_positions);
-
     m_xLocation = xLocation;
     m_yLocation = yLocation;
 }
@@ -158,9 +155,6 @@ void TetriminoCube::Move(const double& scaleFactor, const Key keyPressed)
             break;
         }
     }
-
-    glBindBuffer(GL_ARRAY_BUFFER, s_VBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_positions), m_positions);
 }
 
 //---------------------------------------------------------------
@@ -174,9 +168,6 @@ void TetriminoCube::MoveForce(const double& scaleFactor)
     m_positions[5] = yCoord.second;
     m_positions[9] = yCoord.first;
     m_positions[13] = yCoord.first;
-
-    glBindBuffer(GL_ARRAY_BUFFER, s_VBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(m_positions), m_positions);
 }
 
 //---------------------------------------------------------------

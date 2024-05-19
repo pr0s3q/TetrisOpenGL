@@ -3,8 +3,6 @@
 
 #include <algorithm>
 #include <chrono>
-#include <stdexcept>
-#include <string>
 #include <thread>
 
 #include "Cube.h"
@@ -22,50 +20,20 @@
 
 //---------------------------------------------------------------
 
-const int Tetris::s_height = 900;
-const int Tetris::s_width = 1600;
 const double Tetris::s_dtFactor = 0.1;
 
 //---------------------------------------------------------------
 
 Tetris::Tetris()
-    : m_scaleFactorX(70.0 / s_width)
-    , m_scaleFactorY(70.0 / s_height)
+    : Game(1600, 900, "Tetris OpenGL")
     , m_targetFPS(150)
 {
-    const char* title("Tetris OpenGL");
-    if (!glfwInit())
-    {
-        SetOutcome("Cannot initialize GLFW");
-        return;
-    }
-
-    m_window = glfwCreateWindow(s_width, s_height, title, nullptr, nullptr);
-    if (!m_window)
-    {
-        SetOutcome("Cannot create window");
-        glfwTerminate();
-        return;
-    }
-
-    // Make the window's context current
-    glfwMakeContextCurrent(m_window);
-    glfwSwapInterval(0);
-
-    if (glewInit() != GLEW_OK)
-    {
-        SetOutcome("Cannot initialize GLEW");
-        return;
-    }
-
-    Cube::InitShader();
-
     ImGui::CreateContext();
 
     ImGuiIO& io = ImGui::GetIO();
     (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    m_ImGuiWrapper = std::make_shared<ImGuiWrapper>(io, s_width, s_height);
+    m_ImGuiWrapper = std::make_shared<ImGuiWrapper>(io, m_width, m_height);
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(m_window, true);
     ImGui_ImplOpenGL3_Init("#version 130");
@@ -77,13 +45,9 @@ Tetris::Tetris()
 
 Tetris::~Tetris()
 {
-    Cube::TerminateShader();
-
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-
-    glfwTerminate();
 }
 
 //---------------------------------------------------------------
@@ -428,7 +392,7 @@ void Tetris::Loop()
         if (m_ImGuiWrapper->PlayGame())
         {
             for (const auto& cube : m_cubes)
-                cube->Loop();
+                DrawSquare(cube);
 
             const double currentTime = glfwGetTime();
             const double dt = currentTime - lastTime;
@@ -464,20 +428,6 @@ void Tetris::Loop()
         // Swap front and back buffers
         glfwSwapBuffers(m_window);
     }
-}
-
-//---------------------------------------------------------------
-
-void Tetris::SetOutcome(const std::string& errorMessage)
-{
-    throw std::runtime_error(errorMessage.c_str());
-}
-
-//---------------------------------------------------------------
-
-bool Tetris::ShouldTerminate() const
-{
-    return glfwWindowShouldClose(m_window);
 }
 
 //---------------------------------------------------------------

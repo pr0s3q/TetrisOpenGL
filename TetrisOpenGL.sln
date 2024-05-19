@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TetrisOpenGL", "TetrisOpenGL\TetrisOpenGL.vcxproj", "{466E3A1C-92DA-434D-A1C6-C7BAC44E712F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{578D0A35-A8F9-4DF6-88EA-3CEF0C20FE8F} = {578D0A35-A8F9-4DF6-88EA-3CEF0C20FE8F}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Engine.vcxproj", "{578D0A35-A8F9-4DF6-88EA-3CEF0C20FE8F}"
 EndProject
