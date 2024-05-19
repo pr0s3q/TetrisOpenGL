@@ -33,7 +33,8 @@ Cube::Cube(
 //---------------------------------------------------------------
 
 Cube::Cube(const std::vector<double>& positions, const std::vector<float>& colors, const int imageId)
-    : m_shouldMove(true)
+    : Entity(positions, imageId)
+    , m_shouldMove(true)
     , m_count(4)
     , m_mode(GL_TRIANGLE_STRIP)
 {
@@ -41,35 +42,6 @@ Cube::Cube(const std::vector<double>& positions, const std::vector<float>& color
     m_colors.reserve(colors.size());
     for (auto color : colors)
         m_colors.emplace_back(color);
-
-    // Cube position
-    m_positions[0] = positions[0];
-    m_positions[1] = positions[1];
-    m_positions[4] = positions[2];
-    m_positions[5] = positions[3];
-    m_positions[8] = positions[4];
-    m_positions[9] = positions[5];
-    m_positions[12] = positions[6];
-    m_positions[13] = positions[7];
-
-    // Position of image
-    // (X,  Y)
-    // (2,  3)  Left bottom
-    // (6,  7)  Right bottom
-    // (10, 11) Left top
-    // (14, 15) Right top
-
-    std::vector<double> imageCoords;
-    ImageCoordManager::GetImageCoords(imageId, imageCoords);
-
-    m_positions[2] = imageCoords[0];
-    m_positions[3] = imageCoords[1];
-    m_positions[6] = imageCoords[2];
-    m_positions[7] = imageCoords[3];
-    m_positions[10] = imageCoords[4];
-    m_positions[11] = imageCoords[5];
-    m_positions[14] = imageCoords[6];
-    m_positions[15] = imageCoords[7];
 }
 
 //---------------------------------------------------------------

@@ -2,11 +2,12 @@
 
 #include <vector>
 
+#include "Entity.h"
 #include "HelperDefinitions.h"
 
 enum class Key;
 
-class Cube
+class Cube : public Entity
 {
 public:
 
@@ -24,7 +25,7 @@ public:
 
     //---------------------------------------------------------------
 
-    virtual ~Cube() = default;
+    virtual ~Cube() override = default;
 
     //---------------------------------------------------------------
 
@@ -55,7 +56,7 @@ public:
 
     //---------------------------------------------------------------
 
-    void Loop() const;
+    virtual void Loop() const override;
 
     //---------------------------------------------------------------
 
@@ -79,7 +80,6 @@ protected:
 
     //---------------------------------------------------------------
 
-    double m_positions[16];
     bool m_shouldMove;
     bool m_staticImage = false;
     int m_count;
