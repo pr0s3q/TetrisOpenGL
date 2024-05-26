@@ -21,8 +21,8 @@
 Game::Game(const int screenWidth, const int screenHeight, const char* title)
     : m_height(screenHeight)
     , m_width(screenWidth)
-    , m_scaleFactorX(70.0 / m_width)
-    , m_scaleFactorY(70.0 / m_height)
+    , m_scaleFactorX(140.0 / m_width)
+    , m_scaleFactorY(140.0 / m_height)
     , m_dtFactor(0.1)
     , m_lastTime(0)
 {
@@ -118,22 +118,57 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
 
     stbi_set_flip_vertically_on_load(1);
     int width, height, channels;
-    unsigned char* image = stbi_load("res/textures/img.png", &width, &height, &channels, 4);
+    unsigned char* image = stbi_load("res/textures/img2.png", &width, &height, &channels, 4);
     if (!image)
         std::cerr << "Failed to load image" << '\n';
 
-    // Generate texture
-    glGenTextures(1, &m_texture);
-    glBindTexture(GL_TEXTURE_2D, m_texture);
+    constexpr int tileSize = 256;
+    const int noOfRows = height / tileSize;
+    const int noOfCols = width / tileSize;
+    const int noOfTextures = noOfRows * noOfCols;
+    unsigned int* textureIDs = new unsigned int[noOfTextures];
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    // Generate textures
+    glGenTextures(noOfTextures, textureIDs);
+    unsigned char* imageData = new unsigned char[tileSize * tileSize * 4]; // Allocate memory for a 256x256 texture
+    for (int i = 0; i < noOfTextures; ++i)
+    {
+        glBindTexture(GL_TEXTURE_2D, textureIDs[i]);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+        const int row = i / 2;
+        const int col = i % 2;
+
+        for (int y = 0; y < tileSize; ++y)
+        {
+            for (int x = 0; x < tileSize; ++x)
+            {
+                // Calculate the position in the original image
+                const int originalX = col * tileSize + x;
+                const int originalY = row * tileSize + y;
+
+                // Calculate the position in the current texture
+                const int textureIndex = (y * tileSize + x) * 4;
+                const int imageIndex = (originalY * width + originalX) * 4;
+
+                // Copy pixel data
+                for (int channel = 0; channel < 4; ++channel)
+                    imageData[textureIndex + channel] = image[imageIndex + channel];
+            }
+        }
+
+        // Load the texture data
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, tileSize, tileSize, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+    }
+    delete[] imageData;
     stbi_image_free(image);
 
+    // Example: Bind and use the fourth texture
+    glBindTexture(GL_TEXTURE_2D, textureIDs[0]);
     // Bind texture to sampler
     glUseProgram(m_shaderProgram);
     glUniform1i(glGetUniformLocation(m_shaderProgram, "u_Texture"), 0);

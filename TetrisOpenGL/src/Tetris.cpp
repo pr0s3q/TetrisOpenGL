@@ -18,7 +18,7 @@ const double Tetris::s_dtFactor = 0.1;
 //---------------------------------------------------------------
 
 Tetris::Tetris()
-    : Game(1600, 900, "Tetris OpenGL")
+    : Game(3200, 1800, "Tetris OpenGL")
     , m_targetFPS(150)
 {
     m_ImGuiWrapper = std::make_shared<ImGuiWrapper>(InitImGui(), m_width, m_height);
