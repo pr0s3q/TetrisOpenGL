@@ -7,7 +7,13 @@
 
 #include "Game.h"
 
+#include <algorithm>
+
+#include "EngineEnums.h"
 #include "Entity.h"
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_glfw.h"
+#include "ImGui/imgui_impl_opengl3.h"
 #include "stb/stb_image.h"
 
 //---------------------------------------------------------------
@@ -17,6 +23,8 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
     , m_width(screenWidth)
     , m_scaleFactorX(70.0 / m_width)
     , m_scaleFactorY(70.0 / m_height)
+    , m_dtFactor(0.1)
+    , m_lastTime(0)
 {
     if (!glfwInit())
     {
@@ -136,6 +144,9 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
 Game::~Game()
 {
     glfwTerminate();
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 }
 
 //---------------------------------------------------------------
@@ -150,6 +161,21 @@ void Game::CheckShaderCompilation(const unsigned int shader)
         glGetShaderInfoLog(shader, 512, nullptr, infoLog);
         std::cerr << "Shader compilation error:\n" << infoLog << '\n';
     }
+}
+
+//---------------------------------------------------------------
+
+bool Game::CheckTime()
+{
+    const double currentTime = glfwGetTime();
+    const double dt = currentTime - m_lastTime;
+    if (dt >= m_dtFactor)
+    {
+        m_lastTime = currentTime;
+        return true;
+    }
+
+    return false;
 }
 
 //---------------------------------------------------------------
@@ -177,6 +203,18 @@ void Game::CheckOpenGLError(const char* checkpoint)
 
 //---------------------------------------------------------------
 
+bool Game::CheckPressedKey(const Key key) const
+{
+    const std::vector<int> glfwKeys = GetGLFWKeys(key);
+
+    return std::ranges::any_of(
+        glfwKeys.begin(),
+        glfwKeys.end(),
+        [&](const int glfwKey) { return glfwGetKey(m_window, glfwKey) == GLFW_PRESS; });
+}
+
+//---------------------------------------------------------------
+
 void Game::DrawSquare(const std::shared_ptr<Entity>& entity) const
 {
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
@@ -187,6 +225,98 @@ void Game::DrawSquare(const std::shared_ptr<Entity>& entity) const
     glBindVertexArray(m_VAO);
     CheckOpenGLError("Before draw");
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
+
+//---------------------------------------------------------------
+
+ImGuiIO& Game::InitImGui() const
+{
+    ImGui::CreateContext();
+
+    ImGuiIO& io = ImGui::GetIO();
+    (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+    ImGui_ImplOpenGL3_Init("#version 130");
+
+    return io;
+}
+
+//---------------------------------------------------------------
+
+void Game::Loop()
+{
+    m_lastTime = glfwGetTime();
+    while (!ShouldTerminate())
+    {
+        // Set the clear color
+        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // Poll for and process events
+        glfwPollEvents();
+
+        if (InternalLoop())
+            break;
+
+        // Swap front and back buffers
+        glfwSwapBuffers(m_window);
+    }
+}
+
+//---------------------------------------------------------------
+
+std::vector<int> Game::GetGLFWKeys(const Key key)
+{
+    std::vector<int> glfwKeys;
+    switch (key)
+    {
+        case Key::UP:
+        {
+            glfwKeys.reserve(2);
+            glfwKeys.insert(glfwKeys.end(), { GLFW_KEY_W, GLFW_KEY_UP });
+            break;
+        }
+        case Key::DOWN:
+        {
+            glfwKeys.reserve(2);
+            glfwKeys.insert(glfwKeys.end(), { GLFW_KEY_S, GLFW_KEY_DOWN });
+            break;
+        }
+        case Key::LEFT:
+        {
+            glfwKeys.reserve(2);
+            glfwKeys.insert(glfwKeys.end(), { GLFW_KEY_A, GLFW_KEY_LEFT });
+            break;
+        }
+        case Key::RIGHT:
+        {
+            glfwKeys.reserve(2);
+            glfwKeys.insert(glfwKeys.end(), { GLFW_KEY_D, GLFW_KEY_RIGHT });
+            break;
+        }
+        case Key::ROTATE:
+        {
+            glfwKeys.reserve(1);
+            glfwKeys.insert(glfwKeys.end(), { GLFW_KEY_Q });
+            break;
+        }
+        case Key::DEBUG_KEY_1:
+        {
+            glfwKeys.reserve(1);
+            glfwKeys.insert(glfwKeys.end(), { GLFW_KEY_L });
+            break;
+        }
+        case Key::ESC:
+        {
+            glfwKeys.reserve(1);
+            glfwKeys.insert(glfwKeys.end(), { GLFW_KEY_ESCAPE });
+            break;
+        }
+    }
+
+    return glfwKeys;
 }
 
 //---------------------------------------------------------------

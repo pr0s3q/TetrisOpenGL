@@ -1,9 +1,14 @@
 ﻿#pragma once
 
+#include <vector>
 #include <xstring>
 
 class Entity;
+
+enum class Key;
+
 struct GLFWwindow;
+struct ImGuiIO;
 
 class Game
 {
@@ -15,7 +20,7 @@ public:
 
     //---------------------------------------------------------------
 
-    ~Game();
+    virtual ~Game();
 
     //---------------------------------------------------------------
 
@@ -26,15 +31,11 @@ public:
 
     //---------------------------------------------------------------
 
-    static void CheckShaderCompilation(unsigned int shader);
+    bool CheckPressedKey(Key key) const;
 
     //---------------------------------------------------------------
 
-    static void CheckProgramLinking(unsigned int program);
-
-    //---------------------------------------------------------------
-
-    static void CheckOpenGLError(const char* checkpoint);
+    bool CheckTime();
 
     //---------------------------------------------------------------
 
@@ -42,15 +43,18 @@ public:
 
     //---------------------------------------------------------------
 
-    /// <summary>
-    /// Throws std::runtime_error with specific error message
-    /// </summary>
-    /// <param name="errorMessage"></param>
-    static void SetOutcome(const std::string& errorMessage);
+    ImGuiIO& InitImGui() const;
 
     //---------------------------------------------------------------
 
-    void TerminateShader() const;
+    virtual bool InternalLoop() = 0;
+
+    //---------------------------------------------------------------
+
+    /// <summary>
+    /// Loop function. Responsible for events, generating graphic etc.
+    /// </summary>
+    void Loop();
 
     //---------------------------------------------------------------
 
@@ -81,4 +85,39 @@ protected:
     unsigned int m_texture;
 
     //---------------------------------------------------------------
+
+private:
+
+    //---------------------------------------------------------------
+
+    static void CheckOpenGLError(const char* checkpoint);
+
+    //---------------------------------------------------------------
+
+    static void CheckProgramLinking(unsigned int program);
+
+    //---------------------------------------------------------------
+
+    static void CheckShaderCompilation(unsigned int shader);
+
+    //---------------------------------------------------------------
+
+    static std::vector<int> GetGLFWKeys(Key key);
+
+    //---------------------------------------------------------------
+
+    /// <summary>
+    /// Throws std::runtime_error with specific error message
+    /// </summary>
+    /// <param name="errorMessage"></param>
+    static void SetOutcome(const std::string& errorMessage);
+
+    //---------------------------------------------------------------
+
+    void TerminateShader() const;
+
+    //---------------------------------------------------------------
+
+    double m_dtFactor;
+    double m_lastTime;
 };

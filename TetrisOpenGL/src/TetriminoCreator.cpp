@@ -6,10 +6,10 @@
 #include "BoardManager.h"
 #include "ConnectedTetriminoCubes.h"
 #include "Cube.h"
-#include "Enums.h"
 #include "TetriminoCreator.h"
 #include "TetriminoCube.h"
 #include "TetriminocubeGroup.h"
+#include "TetrisEnums.h"
 
 //---------------------------------------------------------------
 

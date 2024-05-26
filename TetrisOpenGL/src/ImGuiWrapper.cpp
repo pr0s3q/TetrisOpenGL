@@ -118,7 +118,7 @@ void ImGuiWrapper::ScoreboardView() const
     ImGui::PushFont(m_font);
 
     const std::vector<Score>* scores = m_jsonWrapper->GetScores();
-    for (size_t i = 0; i < scores->capacity() && i < 10; ++i)
+    for (size_t i = 0; i < scores->size() && i < 10; ++i)
     {
         std::string text = scores->at(i).playerName + " " + std::to_string(scores->at(i).score);
         const ImVec2 label_size = ImGui::CalcTextSize(text.c_str(), nullptr, true);

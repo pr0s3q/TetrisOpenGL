@@ -31,6 +31,10 @@ public:
 
     //---------------------------------------------------------------
 
+    virtual bool InternalLoop() override;
+
+    //---------------------------------------------------------------
+
 private:
 
     //---------------------------------------------------------------
@@ -45,7 +49,7 @@ private:
     /// <summary>
     /// Destructor - cleans up memory, terminate ImGui and glfw
     /// </summary>
-    ~Tetris();
+    virtual ~Tetris() override = default;
 
     //---------------------------------------------------------------
 
@@ -63,23 +67,7 @@ private:
 
     //---------------------------------------------------------------
 
-    /// <summary>
-    /// Check if key is pressed, and moves cube in direction specific for pressed key.
-    /// Checks only keys responsible for moving tetriminos
-    /// </summary>
-    /// <param name="scaleFactor"></param>
-    /// <param name="key">GLFW key</param>
-    /// <param name="keyPressed">Enum key</param>
-    bool CheckPressedKey(const double& scaleFactor, const int& key, Key keyPressed);
-
-    //---------------------------------------------------------------
-
-    /// <summary>
-    /// Check if key is pressed, and rotates cube in direction specific for pressed key.
-    /// Checks only keys responsible for rotating tetriminos
-    /// </summary>
-    /// <param name="key">GLFW key</param>
-    void CheckPressedKey(const int& key) const;
+    void CheckPressedKey(const Key keyPressed, const double& scaleFactor = 0.0);
 
     //---------------------------------------------------------------
 
@@ -94,13 +82,6 @@ private:
     /// Limit FPS to the specific number (number specified in m_targetFPS)
     /// </summary>
     void LimitFPS() const;
-
-    //---------------------------------------------------------------
-
-    /// <summary>
-    /// Loop function. Responsible for events, generating graphic etc.
-    /// </summary>
-    void Loop();
 
     //---------------------------------------------------------------
 

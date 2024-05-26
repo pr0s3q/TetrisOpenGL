@@ -1,22 +1,15 @@
-#include "GL/glew.h"
-#include "GLFW/glfw3.h"
-
 #include <algorithm>
 #include <chrono>
 #include <thread>
 
 #include "Cube.h"
-#include "Enums.h"
+#include "EngineEnums.h"
 #include "HelperDefinitions.h"
 #include "ImGuiWrapper.h"
 #include "TetriminoCreator.h"
 #include "TetriminoCube.h"
 #include "TetriminoCubeGroup.h"
 #include "Tetris.h"
-
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_glfw.h"
-#include "ImGui/imgui_impl_opengl3.h"
 
 //---------------------------------------------------------------
 
@@ -28,26 +21,9 @@ Tetris::Tetris()
     : Game(1600, 900, "Tetris OpenGL")
     , m_targetFPS(150)
 {
-    ImGui::CreateContext();
-
-    ImGuiIO& io = ImGui::GetIO();
-    (void)io;
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    m_ImGuiWrapper = std::make_shared<ImGuiWrapper>(io, m_width, m_height);
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(m_window, true);
-    ImGui_ImplOpenGL3_Init("#version 130");
+    m_ImGuiWrapper = std::make_shared<ImGuiWrapper>(InitImGui(), m_width, m_height);
 
     m_cubeGroup = std::make_shared<TetriminoCubeGroup>();
-}
-
-//---------------------------------------------------------------
-
-Tetris::~Tetris()
-{
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
 }
 
 //---------------------------------------------------------------
@@ -197,32 +173,47 @@ void Tetris::CheckForRowToDelete()
 
 //---------------------------------------------------------------
 
-bool Tetris::CheckPressedKey(const double& scaleFactor, const int& key, const Key keyPressed)
+void Tetris::CheckPressedKey(const Key keyPressed, const double& scaleFactor)
 {
-    if (glfwGetKey(m_window, key) == GLFW_PRESS)
+    if (!Game::CheckPressedKey(keyPressed))
+        return;
+
+    switch (keyPressed)
     {
-        m_cubeGroup->MoveCubes(m_cubes, scaleFactor, keyPressed);
+        case Key::UP:
+        case Key::DOWN:
+        case Key::LEFT:
+        case Key::RIGHT:
+        {
+            m_cubeGroup->MoveCubes(m_cubes, scaleFactor, keyPressed);
 
-        if (m_cubeGroup->ShouldBeMovable(m_cubes))
-            return true;
+            if (m_cubeGroup->ShouldBeMovable(m_cubes))
+                return;
 
-        m_cubeGroup->SetMove(false);
-        m_cubeGroup->ResetCubes();
-        CheckForRowToDelete();
-        TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
-        return true;
+            m_cubeGroup->SetMove(false);
+            m_cubeGroup->ResetCubes();
+            CheckForRowToDelete();
+            TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
+            break;
+        }
+        case Key::ROTATE:
+        {
+            TetriminoCreator::RotateIfPossible(m_cubes, m_cubeGroup, m_scaleFactorX, m_scaleFactorY);
+            break;
+        }
+        case Key::DEBUG_KEY_1:
+        {
+            m_cubeGroup->SetMove(false);
+            m_cubeGroup->ResetCubes();
+            TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
+            break;
+        }
+        case Key::ESC:
+        {
+            m_ImGuiWrapper->ShowMenu();
+            break;
+        }
     }
-
-    // Key not pressed
-    return false;
-}
-
-//---------------------------------------------------------------
-
-void Tetris::CheckPressedKey(const int& key) const
-{
-    if (glfwGetKey(m_window, key) == GLFW_PRESS)
-        TetriminoCreator::RotateIfPossible(m_cubes, m_cubeGroup, m_scaleFactorX, m_scaleFactorY);
 }
 
 //---------------------------------------------------------------
@@ -369,65 +360,36 @@ void Tetris::Init()
 
 //---------------------------------------------------------------
 
-void Tetris::Loop()
+bool Tetris::InternalLoop()
 {
-    double lastTime = glfwGetTime();
-    while (!ShouldTerminate())
+    if (m_ImGuiWrapper->Exit())
+        return true;
+
+    m_ImGuiWrapper->Frame();
+
+    CheckPressedKey(Key::ESC);
+
+    if (m_ImGuiWrapper->PlayGame())
     {
-        // Set the clear color
-        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        for (const auto& cube : m_cubes)
+            DrawSquare(cube);
 
-        // Poll for and process events
-        glfwPollEvents();
-
-        if (m_ImGuiWrapper->Exit())
-            break;
-
-        m_ImGuiWrapper->Frame();
-
-        if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-            m_ImGuiWrapper->ShowMenu();
-
-        if (m_ImGuiWrapper->PlayGame())
+        if (CheckTime())
         {
-            for (const auto& cube : m_cubes)
-                DrawSquare(cube);
-
-            const double currentTime = glfwGetTime();
-            const double dt = currentTime - lastTime;
-            if (dt >= s_dtFactor)
-            {
-                lastTime = currentTime;
-                if (!CheckPressedKey(m_scaleFactorY, GLFW_KEY_S, Key::DOWN))
-                    CheckPressedKey(m_scaleFactorY, GLFW_KEY_DOWN, Key::DOWN);
-
-                if (!CheckPressedKey(m_scaleFactorY, GLFW_KEY_W, Key::UP))
-                    CheckPressedKey(m_scaleFactorY, GLFW_KEY_UP, Key::UP);
-
-                if (!CheckPressedKey(m_scaleFactorX, GLFW_KEY_A, Key::LEFT))
-                    CheckPressedKey(m_scaleFactorX, GLFW_KEY_LEFT, Key::LEFT);
-
-                if (!CheckPressedKey(m_scaleFactorX, GLFW_KEY_D, Key::RIGHT))
-                    CheckPressedKey(m_scaleFactorX, GLFW_KEY_RIGHT, Key::RIGHT);
-
-                CheckPressedKey(GLFW_KEY_Q);
+            CheckPressedKey(Key::DOWN, m_scaleFactorY);
+            CheckPressedKey(Key::UP, m_scaleFactorY);
+            CheckPressedKey(Key::LEFT, m_scaleFactorX);
+            CheckPressedKey(Key::RIGHT, m_scaleFactorX);
+            CheckPressedKey(Key::ROTATE);
 
 #ifdef _DEBUG // Extra feature for debug - L key is creating new TetriminoCube
-                if (glfwGetKey(m_window, GLFW_KEY_L) == GLFW_PRESS)
-                {
-                    m_cubeGroup->SetMove(false);
-                    m_cubeGroup->ResetCubes();
-                    TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
-                }
+            CheckPressedKey(Key::DEBUG_KEY_1);
 #endif
-            }
         }
-
-        LimitFPS();
-        // Swap front and back buffers
-        glfwSwapBuffers(m_window);
     }
+
+    LimitFPS();
+    return false;
 }
 
 //---------------------------------------------------------------
