@@ -1,10 +1,8 @@
-#include "GL/glew.h"
-
+#include "TetriminoCube.h"
 #include "BoardManager.h"
 #include "ConnectedTetriminoCubes.h"
 #include "Cube.h"
 #include "Enums.h"
-#include "TetriminoCube.h"
 
 //---------------------------------------------------------------
 
