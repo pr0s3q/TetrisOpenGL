@@ -17,7 +17,6 @@ public:
     TetriminoCube(
         const std::shared_ptr<ConnectedTetriminoCubes>& connectedCubes,
         const std::vector<double>& positions,
-        const std::vector<float>& colors,
         int xLocation,
         int yLocation,
         const double scaleFactorX,

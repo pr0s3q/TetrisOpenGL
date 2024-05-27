@@ -43,9 +43,6 @@ void TetriminoCreator::Create(
     std::vector<std::vector<double>> positions;
     std::vector<int> xLocations;
     std::vector<int> yLocations;
-    std::vector<float> colors;
-    colors.reserve(4);
-    colors.insert(colors.end(), { 1.0f, 0.0f, 0.0f, 1.0f });
 
     GetTypeLocations(xLocations, yLocations, 0, type);
     CreateTetriminoPositions(positions, xLocations, yLocations);
@@ -59,7 +56,6 @@ void TetriminoCreator::Create(
         auto cube = std::make_shared<TetriminoCube>(
             connectedCubes,
             positions[i],
-            colors,
             xLocations[i],
             yLocations[i],
             scaleFactorX,

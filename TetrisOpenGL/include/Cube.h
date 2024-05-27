@@ -16,7 +16,6 @@ public:
     Cube(
         bool staticImage,
         const std::vector<double>& positions,
-        const std::vector<float>& colors,
         const double scaleFactorX,
         const double scaleFactorY,
         const int imageId = CUBE_COLOR);
@@ -25,7 +24,6 @@ public:
 
     Cube(
         const std::vector<double>& positions,
-        const std::vector<float>& colors,
         const double scaleFactorX,
         const double scaleFactorY,
         const int imageId = CUBE_COLOR);
@@ -58,5 +56,4 @@ protected:
 
     bool m_shouldMove;
     bool m_staticImage = false;
-    std::vector<float> m_colors;
 };

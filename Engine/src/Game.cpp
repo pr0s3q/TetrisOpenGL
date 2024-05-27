@@ -119,7 +119,7 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
 
     stbi_set_flip_vertically_on_load(1);
     int width, height, channels;
-    unsigned char* image = stbi_load("res/textures/img2.png", &width, &height, &channels, 4);
+    unsigned char* image = stbi_load("res/textures/img.png", &width, &height, &channels, 4);
     if (!image)
         std::cerr << "Failed to load image" << '\n';
 
@@ -131,7 +131,9 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
 
     // Generate textures
     glGenTextures(noOfTextures, m_textureIDs.get());
-    unsigned char* imageData = new unsigned char[tileSize * tileSize * 4]; // Allocate memory for a 256x256 texture
+    constexpr int noOfBlocks = tileSize * tileSize;
+    constexpr int size = noOfBlocks * 4;
+    unsigned char* imageData = new unsigned char[size]; // Allocate memory for a 256x256 texture
     for (int i = 0; i < noOfTextures; ++i)
     {
         glBindTexture(GL_TEXTURE_2D, m_textureIDs[i]);
@@ -158,7 +160,14 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
 
                 // Copy pixel data
                 for (int channel = 0; channel < 4; ++channel)
-                    imageData[textureIndex + channel] = image[imageIndex + channel];
+                {
+                    // Calculation to prevent texture from being mirrored
+                    const int arrIndex = textureIndex + channel;
+                    const int blockIndex = arrIndex / 4;
+                    const int indexInBlock = arrIndex % 4;
+                    const int internalTextureIntex = (noOfBlocks - 1 - blockIndex) * 4 + indexInBlock;
+                    imageData[internalTextureIntex] = image[imageIndex + channel];
+                }
             }
         }
 

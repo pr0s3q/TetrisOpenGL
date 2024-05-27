@@ -230,43 +230,60 @@ void Tetris::CreateBorder()
 
     std::vector<double> positions;
     positions.reserve(8);
+
+    // Bottom left cube
     positions.insert(positions.end(), { -6.5, -11.5, -5.5, -11.5, -6.5, -10.5, -5.5, -10.5 });
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY));
 
-    std::vector<float> colors;
-    colors.reserve(4);
-    colors.insert(colors.end(), { 0.0f, 1.0f, 0.0f, 1.0f });
-
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, m_scaleFactorX, m_scaleFactorY));
-
+    // Bottom bar
     positions.clear();
-    positions.insert(positions.end(), { -5.5, -11.5, 5.5, -11.5, -5.5, -10.5, 5.5, -10.5 });
+    positions.insert(positions.end(), { -4.5, -11.5, 4.5, -11.5, -4.5, -10.5, 4.5, -10.5 });
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, MIDDLE_COLOR));
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, m_scaleFactorX, m_scaleFactorY, BAR_11_COLOR));
-
+    // Bottom right cube
     positions.clear();
     positions.insert(positions.end(), { 5.5, -11.5, 6.5, -11.5, 5.5, -10.5, 6.5, -10.5 });
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY));
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, m_scaleFactorX, m_scaleFactorY));
-
+    // Top left cube
     positions.clear();
     positions.insert(positions.end(), { -6.5, 10.5, -5.5, 10.5, -6.5, 11.5, -5.5, 11.5 });
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY));
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, m_scaleFactorX, m_scaleFactorY));
-
+    // Top right cube
     positions.clear();
     positions.insert(positions.end(), { 5.5, 10.5, 6.5, 10.5, 5.5, 11.5, 6.5, 11.5 });
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY));
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, m_scaleFactorX, m_scaleFactorY));
-
+    // Left bar
     positions.clear();
-    positions.insert(positions.end(), { -6.5, -10.5, -5.5, -10.5, -6.5, 10.5, -5.5, 10.5 });
+    positions.insert(positions.end(), { -6.5, -9.5, -5.5, -9.5, -6.5, 9.5, -5.5, 9.5 });
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, MIDDLE_COLOR));
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, m_scaleFactorX, m_scaleFactorY, BAR_21_COLOR));
-
+    // Left bar - top part
     positions.clear();
-    positions.insert(positions.end(), { 5.5, -10.5, 6.5, -10.5, 5.5, 10.5, 6.5, 10.5 });
+    positions.insert(positions.end(), { -6.5, 9.5, -5.5, 9.5, -6.5, 10.5, -5.5, 10.5 });
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, TOP_COLOR));
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, m_scaleFactorX, m_scaleFactorY, BAR_21_COLOR));
+    // Left bar - bottom part
+    positions.clear();
+    positions.insert(positions.end(), { -6.5, -9.5, -5.5, -9.5, -6.5, -10.5, -5.5, -10.5 });
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, BOTTOM_COLOR));
+
+    // Right bar
+    positions.clear();
+    positions.insert(positions.end(), { 5.5, -9.5, 6.5, -9.5, 5.5, 9.5, 6.5, 9.5 });
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, MIDDLE_COLOR));
+
+    // Right bar - top part
+    positions.clear();
+    positions.insert(positions.end(), { 5.5, 10.5, 6.5, 10.5, 5.5, 9.5, 6.5, 9.5 });
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, TOP_COLOR));
+
+    // Right bar - bottom part
+    positions.clear();
+    positions.insert(positions.end(), { 5.5, -10.5, 6.5, -10.5, 5.5, -9.5, 6.5, -9.5 });
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, BOTTOM_COLOR));
 }
 
 //---------------------------------------------------------------

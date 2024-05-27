@@ -9,12 +9,11 @@
 TetriminoCube::TetriminoCube(
     const std::shared_ptr<ConnectedTetriminoCubes>& connectedCubes,
     const std::vector<double>& positions,
-    const std::vector<float>& colors,
     const int xLocation,
     const int yLocation,
     const double scaleFactorX,
     const double scaleFactorY)
-    : Cube(positions, colors, scaleFactorX, scaleFactorY)
+    : Cube(positions, scaleFactorX, scaleFactorY)
     , m_xLocation(xLocation)
     , m_yLocation(yLocation)
 {

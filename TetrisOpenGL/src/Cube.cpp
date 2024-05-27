@@ -7,11 +7,10 @@
 Cube::Cube(
     const bool staticImage,
     const std::vector<double>& positions,
-    const std::vector<float>& colors,
     const double scaleFactorX,
     const double scaleFactorY,
     const int imageId)
-    : Cube(positions, colors, scaleFactorX, scaleFactorY, imageId)
+    : Cube(positions, scaleFactorX, scaleFactorY, imageId)
 {
     m_staticImage = staticImage;
 }
@@ -20,18 +19,12 @@ Cube::Cube(
 
 Cube::Cube(
     const std::vector<double>& positions,
-    const std::vector<float>& colors,
     const double scaleFactorX,
     const double scaleFactorY,
     const int imageId)
     : Entity(positions, imageId, scaleFactorX, scaleFactorY)
     , m_shouldMove(true)
-{
-    m_colors = std::vector<float>();
-    m_colors.reserve(colors.size());
-    for (auto color : colors)
-        m_colors.emplace_back(color);
-}
+{}
 
 //---------------------------------------------------------------
 
