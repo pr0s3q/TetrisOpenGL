@@ -38,12 +38,14 @@ void TetriminoCubeGroup::ApplyRotationPositions(
     const std::vector<std::vector<double>>& positions,
     const std::vector<int>& xLocations,
     const std::vector<int>& yLocations,
-    const int& rotation)
+    const int& rotation,
+    const double& scaleFactorX,
+    const double& scaleFactorY)
 {
-    m_tetriminoCubes[0]->ApplyRotationPositions(positions[0], xLocations[0], yLocations[0]);
-    m_tetriminoCubes[1]->ApplyRotationPositions(positions[1], xLocations[1], yLocations[1]);
-    m_tetriminoCubes[2]->ApplyRotationPositions(positions[2], xLocations[2], yLocations[2]);
-    m_tetriminoCubes[3]->ApplyRotationPositions(positions[3], xLocations[3], yLocations[3]);
+    m_tetriminoCubes[0]->ApplyRotationPositions(positions[0], xLocations[0], yLocations[0], scaleFactorX, scaleFactorY);
+    m_tetriminoCubes[1]->ApplyRotationPositions(positions[1], xLocations[1], yLocations[1], scaleFactorX, scaleFactorY);
+    m_tetriminoCubes[2]->ApplyRotationPositions(positions[2], xLocations[2], yLocations[2], scaleFactorX, scaleFactorY);
+    m_tetriminoCubes[3]->ApplyRotationPositions(positions[3], xLocations[3], yLocations[3], scaleFactorX, scaleFactorY);
     m_rotation = rotation;
 }
 

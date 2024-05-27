@@ -12,7 +12,7 @@ public:
 
     //---------------------------------------------------------------
 
-    static std::pair<double, double> GetCoordinate(int position, double scaleFactor);
+    static std::pair<double, double> GetCoordinate(int position);
 
     //---------------------------------------------------------------
 

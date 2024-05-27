@@ -36,9 +36,7 @@ private:
     static void CreateTetriminoPositions(
         std::vector<std::vector<double>>& positions,
         const std::vector<int>& xPositions,
-        const std::vector<int>& yPositions,
-        double scaleFactorX,
-        double scaleFactorY);
+        const std::vector<int>& yPositions);
 
     //---------------------------------------------------------------
 

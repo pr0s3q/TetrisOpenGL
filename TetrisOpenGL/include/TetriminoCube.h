@@ -19,11 +19,18 @@ public:
         const std::vector<double>& positions,
         const std::vector<float>& colors,
         int xLocation,
-        int yLocation);
+        int yLocation,
+        const double scaleFactorX,
+        const double scaleFactorY);
 
     //---------------------------------------------------------------
 
-    void ApplyRotationPositions(const std::vector<double>& positions, int xLocation, int yLocation);
+    void ApplyRotationPositions(
+        const std::vector<double>& positions,
+        int xLocation,
+        int yLocation,
+        const double& scaleFactorX,
+        const double& scaleFactorY);
 
     //---------------------------------------------------------------
 

@@ -2,7 +2,7 @@
 
 enum
 {
-    CUBE_COLOR = 7,
-    BAR_21_COLOR = 8,
-    BAR_11_COLOR = 9
+    CUBE_COLOR = 0,
+    BAR_21_COLOR = 2,
+    BAR_11_COLOR = 8
 };

@@ -230,106 +230,43 @@ void Tetris::CreateBorder()
 
     std::vector<double> positions;
     positions.reserve(8);
-    positions.insert(
-        positions.end(),
-        { -6.45 * m_scaleFactorX,
-          -11.45 * m_scaleFactorY,
-          -5.55 * m_scaleFactorX,
-          -11.45 * m_scaleFactorY,
-          -6.45 * m_scaleFactorX,
-          -10.55 * m_scaleFactorY,
-          -5.55 * m_scaleFactorX,
-          -10.55 * m_scaleFactorY });
+    positions.insert(positions.end(), { -6.5, -11.5, -5.5, -11.5, -6.5, -10.5, -5.5, -10.5 });
 
     std::vector<float> colors;
     colors.reserve(4);
     colors.insert(colors.end(), { 0.0f, 1.0f, 0.0f, 1.0f });
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, m_scaleFactorX, m_scaleFactorY));
 
     positions.clear();
-    positions.insert(
-        positions.end(),
-        { -5.45 * m_scaleFactorX,
-          -11.45 * m_scaleFactorY,
-          5.45 * m_scaleFactorX,
-          -11.45 * m_scaleFactorY,
-          -5.45 * m_scaleFactorX,
-          -10.55 * m_scaleFactorY,
-          5.45 * m_scaleFactorX,
-          -10.55 * m_scaleFactorY });
+    positions.insert(positions.end(), { -5.5, -11.5, 5.5, -11.5, -5.5, -10.5, 5.5, -10.5 });
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, BAR_11_COLOR));
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, m_scaleFactorX, m_scaleFactorY, BAR_11_COLOR));
 
     positions.clear();
-    positions.insert(
-        positions.end(),
-        { 5.55 * m_scaleFactorX,
-          -11.45 * m_scaleFactorY,
-          6.45 * m_scaleFactorX,
-          -11.45 * m_scaleFactorY,
-          5.55 * m_scaleFactorX,
-          -10.55 * m_scaleFactorY,
-          6.45 * m_scaleFactorX,
-          -10.55 * m_scaleFactorY });
+    positions.insert(positions.end(), { 5.5, -11.5, 6.5, -11.5, 5.5, -10.5, 6.5, -10.5 });
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, m_scaleFactorX, m_scaleFactorY));
 
     positions.clear();
-    positions.insert(
-        positions.end(),
-        { -6.45 * m_scaleFactorX,
-          10.55 * m_scaleFactorY,
-          -5.55 * m_scaleFactorX,
-          10.55 * m_scaleFactorY,
-          -6.45 * m_scaleFactorX,
-          11.45 * m_scaleFactorY,
-          -5.55 * m_scaleFactorX,
-          11.45 * m_scaleFactorY });
+    positions.insert(positions.end(), { -6.5, 10.5, -5.5, 10.5, -6.5, 11.5, -5.5, 11.5 });
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, m_scaleFactorX, m_scaleFactorY));
 
     positions.clear();
-    positions.insert(
-        positions.end(),
-        { 5.55 * m_scaleFactorX,
-          10.55 * m_scaleFactorY,
-          6.45 * m_scaleFactorX,
-          10.55 * m_scaleFactorY,
-          5.55 * m_scaleFactorX,
-          11.45 * m_scaleFactorY,
-          6.45 * m_scaleFactorX,
-          11.45 * m_scaleFactorY });
+    positions.insert(positions.end(), { 5.5, 10.5, 6.5, 10.5, 5.5, 11.5, 6.5, 11.5 });
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors));
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, m_scaleFactorX, m_scaleFactorY));
 
     positions.clear();
-    positions.insert(
-        positions.end(),
-        { -6.45 * m_scaleFactorX,
-          -10.45 * m_scaleFactorY,
-          -5.55 * m_scaleFactorX,
-          -10.45 * m_scaleFactorY,
-          -6.45 * m_scaleFactorX,
-          10.45 * m_scaleFactorY,
-          -5.55 * m_scaleFactorX,
-          10.45 * m_scaleFactorY });
+    positions.insert(positions.end(), { -6.5, -10.5, -5.5, -10.5, -6.5, 10.5, -5.5, 10.5 });
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, BAR_21_COLOR));
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, m_scaleFactorX, m_scaleFactorY, BAR_21_COLOR));
 
     positions.clear();
-    positions.insert(
-        positions.end(),
-        { 5.55 * m_scaleFactorX,
-          -10.45 * m_scaleFactorY,
-          6.45 * m_scaleFactorX,
-          -10.45 * m_scaleFactorY,
-          5.55 * m_scaleFactorX,
-          10.45 * m_scaleFactorY,
-          6.45 * m_scaleFactorX,
-          10.45 * m_scaleFactorY });
+    positions.insert(positions.end(), { 5.5, -10.5, 6.5, -10.5, 5.5, 10.5, 6.5, 10.5 });
 
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, BAR_21_COLOR));
+    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, colors, m_scaleFactorX, m_scaleFactorY, BAR_21_COLOR));
 }
 
 //---------------------------------------------------------------

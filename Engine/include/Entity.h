@@ -12,7 +12,11 @@ public:
 
     //---------------------------------------------------------------
 
-    Entity(const std::vector<double>& positions, const int imageId);
+    Entity(
+        const std::vector<double>& positions,
+        const int imageId,
+        const double scaleFactorX,
+        const double scaleFactorY);
 
     //---------------------------------------------------------------
 
@@ -32,7 +36,7 @@ private:
 
     //---------------------------------------------------------------
 
-    static void GetImageCoords(int imageID, std::vector<double>& coords);
+    int m_imageID;
 
     //---------------------------------------------------------------
 };

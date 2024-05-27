@@ -48,7 +48,7 @@ void TetriminoCreator::Create(
     colors.insert(colors.end(), { 1.0f, 0.0f, 0.0f, 1.0f });
 
     GetTypeLocations(xLocations, yLocations, 0, type);
-    CreateTetriminoPositions(positions, xLocations, yLocations, scaleFactorX, scaleFactorY);
+    CreateTetriminoPositions(positions, xLocations, yLocations);
 
     auto connectedCubes = std::make_shared<ConnectedTetriminoCubes>();
     std::vector<std::shared_ptr<TetriminoCube>> tetriminoCubes;
@@ -56,7 +56,14 @@ void TetriminoCreator::Create(
 
     for (int i = 0; i < 4; i++)
     {
-        auto cube = std::make_shared<TetriminoCube>(connectedCubes, positions[i], colors, xLocations[i], yLocations[i]);
+        auto cube = std::make_shared<TetriminoCube>(
+            connectedCubes,
+            positions[i],
+            colors,
+            xLocations[i],
+            yLocations[i],
+            scaleFactorX,
+            scaleFactorY);
         cubes.emplace_back(cube);
         tetriminoCubes.emplace_back(cube);
         cubeGroup->AddCube(cube);
@@ -118,8 +125,8 @@ void TetriminoCreator::RotateIfPossible(
     if (IsCollidingWithOtherCubes(cubes, xLocations, yLocations, cubeGroup))
         return;
 
-    CreateTetriminoPositions(positions, xLocations, yLocations, scaleFactorX, scaleFactorY);
-    cubeGroup->ApplyRotationPositions(positions, xLocations, yLocations, rotation);
+    CreateTetriminoPositions(positions, xLocations, yLocations);
+    cubeGroup->ApplyRotationPositions(positions, xLocations, yLocations, rotation, scaleFactorX, scaleFactorY);
 }
 
 //---------------------------------------------------------------
@@ -127,9 +134,7 @@ void TetriminoCreator::RotateIfPossible(
 void TetriminoCreator::CreateTetriminoPositions(
     std::vector<std::vector<double>>& positions,
     const std::vector<int>& xPositions,
-    const std::vector<int>& yPositions,
-    const double scaleFactorX,
-    const double scaleFactorY)
+    const std::vector<int>& yPositions)
 {
     positions.reserve(4);
     positions.insert(
@@ -138,8 +143,8 @@ void TetriminoCreator::CreateTetriminoPositions(
 
     for (int i = 0; i < 4; i++)
     {
-        auto xCoord = BoardManager::GetCoordinate(xPositions[i], scaleFactorX);
-        auto yCoord = BoardManager::GetCoordinate(yPositions[i], scaleFactorY);
+        auto xCoord = BoardManager::GetCoordinate(xPositions[i]);
+        auto yCoord = BoardManager::GetCoordinate(yPositions[i]);
         positions[i].reserve(8);
         positions[i].insert(
             positions[i].end(),

@@ -27,7 +27,9 @@ public:
         const std::vector<std::vector<double>>& positions,
         const std::vector<int>& xLocations,
         const std::vector<int>& yLocations,
-        const int& rotation);
+        const int& rotation,
+        const double& scaleFactorX,
+        const double& scaleFactorY);
 
     //---------------------------------------------------------------
 

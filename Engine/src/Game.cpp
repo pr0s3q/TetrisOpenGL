@@ -25,6 +25,7 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
     , m_scaleFactorY(140.0 / m_height)
     , m_dtFactor(0.1)
     , m_lastTime(0)
+    , m_bindedTexture(0)
 {
     if (!glfwInit())
     {
@@ -126,22 +127,22 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
     const int noOfRows = height / tileSize;
     const int noOfCols = width / tileSize;
     const int noOfTextures = noOfRows * noOfCols;
-    unsigned int* textureIDs = new unsigned int[noOfTextures];
+    m_textureIDs = std::make_unique<unsigned int[]>(noOfTextures);
 
     // Generate textures
-    glGenTextures(noOfTextures, textureIDs);
+    glGenTextures(noOfTextures, m_textureIDs.get());
     unsigned char* imageData = new unsigned char[tileSize * tileSize * 4]; // Allocate memory for a 256x256 texture
     for (int i = 0; i < noOfTextures; ++i)
     {
-        glBindTexture(GL_TEXTURE_2D, textureIDs[i]);
+        glBindTexture(GL_TEXTURE_2D, m_textureIDs[i]);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-        const int row = i / 2;
-        const int col = i % 2;
+        const int row = i / noOfRows;
+        const int col = i % noOfCols;
 
         for (int y = 0; y < tileSize; ++y)
         {
@@ -167,8 +168,6 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
     delete[] imageData;
     stbi_image_free(image);
 
-    // Example: Bind and use the fourth texture
-    glBindTexture(GL_TEXTURE_2D, textureIDs[0]);
     // Bind texture to sampler
     glUseProgram(m_shaderProgram);
     glUniform1i(glGetUniformLocation(m_shaderProgram, "u_Texture"), 0);
@@ -250,8 +249,14 @@ bool Game::CheckPressedKey(const Key key) const
 
 //---------------------------------------------------------------
 
-void Game::DrawSquare(const std::shared_ptr<Entity>& entity) const
+void Game::DrawSquare(const std::shared_ptr<Entity>& entity)
 {
+    if (m_bindedTexture != entity->m_imageID)
+    {
+        glBindTexture(GL_TEXTURE_2D, m_textureIDs[entity->m_imageID]);
+        m_bindedTexture = entity->m_imageID;
+    }
+
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(entity->m_positions), entity->m_positions);
 

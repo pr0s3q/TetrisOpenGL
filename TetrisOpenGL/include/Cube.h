@@ -17,11 +17,18 @@ public:
         bool staticImage,
         const std::vector<double>& positions,
         const std::vector<float>& colors,
+        const double scaleFactorX,
+        const double scaleFactorY,
         const int imageId = CUBE_COLOR);
 
     //---------------------------------------------------------------
 
-    Cube(const std::vector<double>& positions, const std::vector<float>& colors, const int imageId = CUBE_COLOR);
+    Cube(
+        const std::vector<double>& positions,
+        const std::vector<float>& colors,
+        const double scaleFactorX,
+        const double scaleFactorY,
+        const int imageId = CUBE_COLOR);
 
     //---------------------------------------------------------------
 
