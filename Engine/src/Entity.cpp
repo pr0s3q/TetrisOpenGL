@@ -26,30 +26,90 @@ Entity::Entity(
     // (10, 11) Left top
     // (14, 15) Right top
 
-    const double noOfXRepetition = positions[0] - positions[2];
-    const double noOfYRepetition = positions[1] - positions[5];
+    m_noOfXRepetition = positions[0] - positions[2];
+    m_noOfYRepetition = positions[1] - positions[5];
 
-    std::vector<double> imageCoords;
-    imageCoords.reserve(8);
-    imageCoords.insert(
-        imageCoords.end(),
-        { 0.0,
-          0.0,
-          1.0 * noOfXRepetition,
-          0.0,
-          0.0,
-          1.0 * noOfYRepetition,
-          1.0 * noOfXRepetition,
-          1.0 * noOfYRepetition });
+    m_baseImageCoords.reserve(8);
+    m_baseImageCoords.insert(m_baseImageCoords.end(), { 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0 });
 
-    m_positions[2] = imageCoords[0];
-    m_positions[3] = imageCoords[1];
-    m_positions[6] = imageCoords[2];
-    m_positions[7] = imageCoords[3];
-    m_positions[10] = imageCoords[4];
-    m_positions[11] = imageCoords[5];
-    m_positions[14] = imageCoords[6];
-    m_positions[15] = imageCoords[7];
+    AssignImageCoords();
+}
+
+//---------------------------------------------------------------
+
+void Entity::Mirror()
+{
+    double temp1 = m_positions[2];
+    double temp2 = m_positions[3];
+    m_positions[2] = m_positions[6];
+    m_positions[3] = m_positions[7];
+    m_positions[6] = temp1;
+    m_positions[7] = temp2;
+    temp1 = m_positions[10];
+    temp2 = m_positions[11];
+    m_positions[10] = m_positions[14];
+    m_positions[11] = m_positions[15];
+    m_positions[14] = temp1;
+    m_positions[15] = temp2;
+}
+
+//---------------------------------------------------------------
+
+void Entity::RotateCounterClockwise()
+{
+    AssignImageCoords();
+
+    const double temp1 = m_positions[2];
+    const double temp2 = m_positions[3];
+    m_positions[2] = m_positions[10];
+    m_positions[3] = m_positions[11];
+    m_positions[10] = m_positions[14];
+    m_positions[11] = m_positions[15];
+    m_positions[14] = m_positions[6];
+    m_positions[15] = m_positions[7];
+    m_positions[6] = temp1;
+    m_positions[7] = temp2;
+}
+
+//---------------------------------------------------------------
+
+void Entity::RotateClockwise()
+{
+    const double rotationTemp = m_noOfXRepetition;
+    m_noOfXRepetition = m_noOfYRepetition;
+    m_noOfYRepetition = rotationTemp;
+
+    AssignImageCoords();
+
+    const double temp1 = m_positions[2];
+    const double temp2 = m_positions[3];
+    m_positions[2] = m_positions[6];
+    m_positions[3] = m_positions[7];
+    m_positions[6] = m_positions[14];
+    m_positions[7] = m_positions[15];
+    m_positions[14] = m_positions[10];
+    m_positions[15] = m_positions[11];
+    m_positions[10] = temp1;
+    m_positions[11] = temp2;
+}
+
+//---------------------------------------------------------------
+
+void Entity::AssignImageCoords()
+{
+    m_positions[2] = m_baseImageCoords[0];
+    m_positions[3] = m_baseImageCoords[1];
+    m_positions[6] = m_baseImageCoords[2];
+    m_positions[7] = m_baseImageCoords[3];
+    m_positions[10] = m_baseImageCoords[4];
+    m_positions[11] = m_baseImageCoords[5];
+    m_positions[14] = m_baseImageCoords[6];
+    m_positions[15] = m_baseImageCoords[7];
+
+    m_positions[6] *= m_noOfXRepetition;
+    m_positions[11] *= m_noOfYRepetition;
+    m_positions[14] *= m_noOfXRepetition;
+    m_positions[15] *= m_noOfYRepetition;
 }
 
 //---------------------------------------------------------------

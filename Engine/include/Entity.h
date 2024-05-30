@@ -24,6 +24,21 @@ public:
 
     //---------------------------------------------------------------
 
+    // Mirror image texture
+    void Mirror();
+
+    //---------------------------------------------------------------
+
+    // Rotate counterclockwise image texture
+    void RotateCounterClockwise();
+
+    //---------------------------------------------------------------
+
+    // Rotate clockwise image texture
+    void RotateClockwise();
+
+    //---------------------------------------------------------------
+
 protected:
 
     //---------------------------------------------------------------
@@ -36,7 +51,14 @@ private:
 
     //---------------------------------------------------------------
 
+    void AssignImageCoords();
+
+    //---------------------------------------------------------------
+
     int m_imageID;
+    double m_noOfXRepetition;
+    double m_noOfYRepetition;
+    std::vector<double> m_baseImageCoords;
 
     //---------------------------------------------------------------
 };

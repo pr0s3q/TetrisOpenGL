@@ -238,7 +238,25 @@ void Tetris::CreateBorder()
     // Bottom bar
     positions.clear();
     positions.insert(positions.end(), { -4.5, -11.5, 4.5, -11.5, -4.5, -10.5, 4.5, -10.5 });
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, MIDDLE_COLOR));
+    std::shared_ptr<Cube> cube = std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, MIDDLE_COLOR);
+    cube->RotateClockwise();
+    m_cubes.emplace_back(cube);
+
+    // Bottom bar - left part
+    positions.clear();
+    positions.insert(positions.end(), { -5.5, -11.5, -4.5, -11.5, -5.5, -10.5, -4.5, -10.5 });
+    cube = std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, TOP_COLOR);
+    cube->RotateClockwise();
+    cube->Mirror();
+    m_cubes.emplace_back(cube);
+
+    // Bottom bar - right
+    positions.clear();
+    positions.insert(positions.end(), { 4.5, -11.5, 5.5, -11.5, 4.5, -10.5, 5.5, -10.5 });
+    cube = std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, BOTTOM_COLOR);
+    cube->RotateClockwise();
+    cube->Mirror();
+    m_cubes.emplace_back(cube);
 
     // Bottom right cube
     positions.clear();
