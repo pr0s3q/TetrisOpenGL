@@ -2,7 +2,5 @@
 
 int main()
 {
-    Tetris::Init();
-
-    return 0;
+    Tetris::Play();
 }

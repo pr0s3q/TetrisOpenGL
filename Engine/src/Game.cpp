@@ -180,6 +180,8 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
     // Bind texture to sampler
     glUseProgram(m_shaderProgram);
     glUniform1i(glGetUniformLocation(m_shaderProgram, "u_Texture"), 0);
+
+    m_guiManager.AddFont(InitImGui());
 }
 
 //---------------------------------------------------------------

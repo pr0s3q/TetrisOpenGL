@@ -101,6 +101,7 @@
   <ItemGroup>
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\GuiManager.cpp" />
     <ClCompile Include="stb\stb_image.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="include\Entity.h" />
     <ClInclude Include="include\EngineEnums.h" />
     <ClInclude Include="include\Game.h" />
+    <ClInclude Include="include\GuiManager.h" />
     <ClInclude Include="stb\stb_image.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />

@@ -3,6 +3,8 @@
 #include <vector>
 #include <xstring>
 
+#include "GuiManager.h"
+
 class Entity;
 
 enum class Key;
@@ -16,6 +18,9 @@ public:
 
     //---------------------------------------------------------------
 
+    /// <summary>
+    /// Constructor - Initialize glfw, crate window, initialize glew, shader and ImGui
+    /// </summary>
     Game(const int screenWidth, const int screenHeight, const char* title);
 
     //---------------------------------------------------------------
@@ -61,7 +66,7 @@ public:
     /// <summary>
     /// Check, whether program should terminate
     /// </summary>
-    /// <returns>True if should terminate, false otherwise</returns>
+    /// <returns>True, if game should terminate, false otherwise</returns>
     bool ShouldTerminate() const;
 
     //---------------------------------------------------------------
@@ -82,6 +87,7 @@ protected:
     unsigned int m_shaderProgram;
     unsigned int m_VAO;
     unsigned int m_VBO;
+    GuiManager m_guiManager;
 
     //---------------------------------------------------------------
 

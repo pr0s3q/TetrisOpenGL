@@ -5,15 +5,16 @@
 #include "Cube.h"
 #include "EngineEnums.h"
 #include "HelperDefinitions.h"
-#include "ImGuiWrapper.h"
 #include "TetriminoCreator.h"
 #include "TetriminoCube.h"
 #include "TetriminoCubeGroup.h"
 #include "Tetris.h"
 
+#include "ImGui/imgui.h"
+
 //---------------------------------------------------------------
 
-const double Tetris::s_dtFactor = 0.1;
+const char* Tetris::s_name = "TetrisOpenGL";
 
 //---------------------------------------------------------------
 
@@ -21,9 +22,13 @@ Tetris::Tetris()
     : Game(3200, 1800, "Tetris OpenGL")
     , m_targetFPS(150)
 {
-    m_ImGuiWrapper = std::make_shared<ImGuiWrapper>(InitImGui(), m_width, m_height);
+    m_jsonWrapper.LoadFromFile();
 
     m_cubeGroup = std::make_shared<TetriminoCubeGroup>();
+
+    m_guiManager.AddFunction(MenuGui());
+    m_guiManager.AddFunction(ScoreboardGui());
+    m_guiManager.AddFunction(GameScoreGui());
 }
 
 //---------------------------------------------------------------
@@ -76,7 +81,7 @@ void Tetris::CheckForRowToDelete()
             if (rowEmpty)
             {
                 if (pointsAdded)
-                    m_ImGuiWrapper->ResetCombo(); // Reset combo if points were added
+                    m_scoreCombo = 1; // Reset combo if points were added
                 return;
             }
 
@@ -107,7 +112,7 @@ void Tetris::CheckForRowToDelete()
                 m_cubes.erase(m_cubes.begin() + indexToErase[i]); // Remove cube from game board
 
             // Update score and set pointsAdded flag
-            m_ImGuiWrapper->AddScore(); // Increment score
+            AddScore(); // Increment score
             pointsAdded = true;
             ++yCoord; // Move to the next row
 
@@ -210,7 +215,8 @@ void Tetris::CheckPressedKey(const Key keyPressed, const double& scaleFactor)
         }
         case Key::ESC:
         {
-            m_ImGuiWrapper->ShowMenu();
+            m_guiManager.SetFunctionId(0);
+            m_playGame = false;
             break;
         }
     }
@@ -322,7 +328,94 @@ void Tetris::LimitFPS() const
 
 //---------------------------------------------------------------
 
-void Tetris::Init()
+std::function<void()> Tetris::MenuGui()
+{
+    return [this]
+    {
+        static constexpr char m_scoreboardText[13] = " Scoreboard ";
+        static constexpr char m_exitText[19] = "       Exit       ";
+        static constexpr char m_playText[19] = "       Play       ";
+
+        m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name);
+
+        ImVec2 label_size = ImGui::CalcTextSize(m_playText, nullptr, true);
+        ImGui::SetCursorPos({ (static_cast<float>(m_width) - label_size.x) / 2, 100 });
+        if (ImGui::Button(m_playText))
+        {
+            m_playGame = true;
+            m_guiManager.SetFunctionId(2);
+        }
+
+        label_size = ImGui::CalcTextSize(m_scoreboardText, nullptr, true);
+        ImGui::SetCursorPos({ (static_cast<float>(m_width) - label_size.x) / 2, 200 });
+        if (ImGui::Button(m_scoreboardText))
+            m_guiManager.SetFunctionId(1);
+
+        label_size = ImGui::CalcTextSize(m_exitText, nullptr, true);
+        ImGui::SetCursorPos({ (static_cast<float>(m_width) - label_size.x) / 2, 300 });
+        if (ImGui::Button(m_exitText))
+            m_exitClicked = true;
+    };
+}
+
+//---------------------------------------------------------------
+
+std::function<void()> Tetris::ScoreboardGui()
+{
+    return [this]
+    {
+        m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name);
+
+        const std::vector<Score>* scores = m_jsonWrapper.GetScores();
+        for (size_t i = 0; i < scores->size() && i < 10; ++i)
+        {
+            std::string text = scores->at(i).playerName + " " + std::to_string(scores->at(i).score);
+            const ImVec2 label_size = ImGui::CalcTextSize(text.c_str(), nullptr, true);
+            ImGui::SetCursorPos({ (static_cast<float>(m_width) - label_size.x) / 2, static_cast<float>(50 * i + 100) });
+            ImGui::Text("%s", text.c_str());
+        }
+    };
+}
+
+//---------------------------------------------------------------
+
+std::function<void()> Tetris::GameScoreGui()
+{
+    return [this]
+    {
+        constexpr char m_scoreText[8] = "Score: ";
+        constexpr char m_saveScore[11] = "Save Score";
+
+        m_guiManager.CreateWindow(static_cast<float>(m_width) / 3, static_cast<float>(m_height), s_name);
+
+        ImGui::SetCursorPos({ 10, 10 });
+        ImGui::Text("%s", m_scoreText); // %s - string data type (format specifier in C )
+
+        const ImVec2 label_size = ImGui::CalcTextSize(m_scoreText, nullptr, true);
+        ImGui::SetCursorPos({ 10 + label_size.x, 10 });
+        ImGui::Text("%i", m_score); // %i - integer data type (format specifier in C )
+
+        if (ImGui::Button(m_saveScore))
+        {
+            m_jsonWrapper.SaveToFile(
+                "Cris",
+                m_score); // TODO: Create UI for username input (currently name is hardcoded)
+            // TODO: Reset game upon saving score
+        }
+    };
+}
+
+//---------------------------------------------------------------
+
+void Tetris::AddScore()
+{
+    m_score += m_scoreCombo * 100;
+    ++m_scoreCombo;
+}
+
+//---------------------------------------------------------------
+
+void Tetris::Play()
 {
     Tetris tetris;
     tetris.CreateBorder();
@@ -334,14 +427,14 @@ void Tetris::Init()
 
 bool Tetris::InternalLoop()
 {
-    if (m_ImGuiWrapper->Exit())
+    if (m_exitClicked)
         return true;
 
-    m_ImGuiWrapper->Frame();
+    m_guiManager.Loop();
 
     CheckPressedKey(Key::ESC);
 
-    if (m_ImGuiWrapper->PlayGame())
+    if (m_playGame)
     {
         for (const auto& cube : m_cubes)
             DrawSquare(cube);

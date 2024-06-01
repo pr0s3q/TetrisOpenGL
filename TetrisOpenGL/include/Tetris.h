@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Game.h"
+#include "JsonWrapper.h"
 
 class Cube;
 class ImGuiWrapper;
@@ -25,9 +26,9 @@ public:
     //---------------------------------------------------------------
 
     /// <summary>
-    /// Initialize Tetris
+    /// Launch Tetris
     /// </summary>
-    static void Init();
+    static void Play();
 
     //---------------------------------------------------------------
 
@@ -39,9 +40,6 @@ private:
 
     //---------------------------------------------------------------
 
-    /// <summary>
-    /// Constructor - Initialize glfw, crate window, initialize glew, shader and ImGui
-    /// </summary>
     Tetris();
 
     //---------------------------------------------------------------
@@ -83,14 +81,24 @@ private:
     /// </summary>
     void LimitFPS() const;
 
+    std::function<void()> MenuGui();
+    std::function<void()> ScoreboardGui();
+    std::function<void()> GameScoreGui();
+    void AddScore();
+
     //---------------------------------------------------------------
 
+    JsonWrapper m_jsonWrapper;
     std::vector<std::shared_ptr<Cube>> m_cubes;
     std::shared_ptr<TetriminoCubeGroup> m_cubeGroup;
     std::shared_ptr<ImGuiWrapper> m_ImGuiWrapper;
     int m_targetFPS;
+    bool m_playGame;
+    bool m_exitClicked;
+    int m_score;
+    int m_scoreCombo;
 
-    static const double s_dtFactor;
+    static const char* s_name;
 
     //---------------------------------------------------------------
 };
