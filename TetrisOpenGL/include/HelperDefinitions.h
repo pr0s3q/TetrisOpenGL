@@ -3,7 +3,7 @@
 enum
 {
     CUBE_COLOR = 0,
-    TOP_COLOR = 5,
+    TOP_COLOR = 6,
     BOTTOM_COLOR = 1,
-    MIDDLE_COLOR = 4
+    MIDDLE_COLOR = 5
 };

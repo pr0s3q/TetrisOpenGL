@@ -1,22 +1,20 @@
 all:
 	msbuild TetrisOpenGL.sln /p:Configuration=Debug /p:Platform=x64
 	@echo "Copying .ttf and .png files"
-	@cp "TetrisOpenGL\OpenSans-Light.ttf" "x64\Debug\OpenSans-Light.ttf"
-	@mkdir -p "x64\Debug\res\textures"
-	@cp "TetrisOpenGL\res\textures\img.png" "x64\Debug\res\textures\img.png"
+	@powershell ./copy.ps1 Debug
 
 allRelease:
 	msbuild TetrisOpenGL.sln /p:Configuration=Release /p:Platform=x64
 	@echo "Copying .ttf and .png files"
-	@cp "TetrisOpenGL\OpenSans-Light.ttf" "x64\Release\OpenSans-Light.ttf"
-	@mkdir -p "x64\Release\res\textures"
-	@cp "TetrisOpenGL\res\textures\img.png" "x64\Release\res\textures\img.png"
+	@powershell ./copy.ps1 Release
 
 clean:
 	msbuild TetrisOpenGL.sln /t:Clean /p:Configuration=Debug /p:Platform=x64
-	rm -rf "x64/Debug"
+	@echo "Removing .ttf and .png files from Debug"
+	@powershell ./clean.ps1 Debug
+	@echo "Removing .ttf and .png files from Release"
 	msbuild TetrisOpenGL.sln /t:Clean /p:Configuration=Release /p:Platform=x64
-	rm -rf "x64/Release"
+	@powershell ./clean.ps1 Release
 
 rebuild: clean all
 
