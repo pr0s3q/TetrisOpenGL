@@ -127,4 +127,6 @@ private:
     double m_lastTime;
     std::unique_ptr<unsigned int[]> m_textureIDs;
     int m_bindedTexture;
+
+    //---------------------------------------------------------------
 };

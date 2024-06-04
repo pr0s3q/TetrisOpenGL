@@ -3,6 +3,7 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_glfw.h"
 #include "ImGui/imgui_impl_opengl3.h"
+#include "Vector2.h"
 
 //---------------------------------------------------------------
 
@@ -28,6 +29,42 @@ void GuiManager::AddFont(const ImGuiIO& io)
 void GuiManager::AddFunction(const std::function<void()>& function)
 {
     m_functions.emplace_back(function);
+}
+
+//---------------------------------------------------------------
+
+Vector2 GuiManager::CalculateTextSize(const char* text)
+{
+    return { ImGui::CalcTextSize(text, nullptr, true) };
+}
+
+//---------------------------------------------------------------
+
+void GuiManager::CreateButton(
+    const float posX,
+    const float posY,
+    const char* text,
+    const std::function<void()>& onClickFunction)
+{
+    ImGui::SetCursorPos({ posX, posY });
+    if (ImGui::Button(text))
+        onClickFunction();
+}
+
+//---------------------------------------------------------------
+
+void GuiManager::CreateLabel(const float posX, const float posY, const char* text)
+{
+    ImGui::SetCursorPos({ posX, posY });
+    ImGui::Text("%s", text); // %s - string data type (format specifier in C )
+}
+
+//---------------------------------------------------------------
+
+void GuiManager::CreateLabel(const float posX, const float posY, const int number)
+{
+    ImGui::SetCursorPos({ posX, posY });
+    ImGui::Text("%i", number); // %i - integer data type (format specifier in C )
 }
 
 //---------------------------------------------------------------

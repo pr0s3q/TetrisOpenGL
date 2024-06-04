@@ -2,8 +2,8 @@
 
 enum
 {
-    CUBE_COLOR = 0,
-    TOP_COLOR = 6,
-    BOTTOM_COLOR = 1,
-    MIDDLE_COLOR = 5
+    CUBE_COLOR = 2,
+    TOP_COLOR = 8,
+    BOTTOM_COLOR = 3,
+    MIDDLE_COLOR = 7
 };

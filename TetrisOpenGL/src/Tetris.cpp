@@ -10,8 +10,6 @@
 #include "TetriminoCubeGroup.h"
 #include "Tetris.h"
 
-#include "ImGui/imgui.h"
-
 //---------------------------------------------------------------
 
 const char* Tetris::s_name = "TetrisOpenGL";
@@ -21,6 +19,7 @@ const char* Tetris::s_name = "TetrisOpenGL";
 Tetris::Tetris()
     : Game(3200, 1800, "Tetris OpenGL")
     , m_targetFPS(150)
+    , m_scoreCombo(1)
 {
     m_jsonWrapper.LoadFromFile();
 
@@ -338,23 +337,30 @@ std::function<void()> Tetris::MenuGui()
 
         m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name);
 
-        ImVec2 label_size = ImGui::CalcTextSize(m_playText, nullptr, true);
-        ImGui::SetCursorPos({ (static_cast<float>(m_width) - label_size.x) / 2, 100 });
-        if (ImGui::Button(m_playText))
-        {
-            m_playGame = true;
-            m_guiManager.SetFunctionId(2);
-        }
+        Vector2 labelSize = GuiManager::CalculateTextSize(m_playText);
+        GuiManager::CreateButton(
+            (static_cast<float>(m_width) - labelSize.X()) / 2,
+            100,
+            m_playText,
+            [this]
+            {
+                m_playGame = true;
+                m_guiManager.SetFunctionId(2);
+            });
 
-        label_size = ImGui::CalcTextSize(m_scoreboardText, nullptr, true);
-        ImGui::SetCursorPos({ (static_cast<float>(m_width) - label_size.x) / 2, 200 });
-        if (ImGui::Button(m_scoreboardText))
-            m_guiManager.SetFunctionId(1);
+        labelSize = GuiManager::CalculateTextSize(m_scoreboardText);
+        GuiManager::CreateButton(
+            (static_cast<float>(m_width) - labelSize.X()) / 2,
+            200,
+            m_scoreboardText,
+            [this] { m_guiManager.SetFunctionId(1); });
 
-        label_size = ImGui::CalcTextSize(m_exitText, nullptr, true);
-        ImGui::SetCursorPos({ (static_cast<float>(m_width) - label_size.x) / 2, 300 });
-        if (ImGui::Button(m_exitText))
-            m_exitClicked = true;
+        labelSize = GuiManager::CalculateTextSize(m_exitText);
+        GuiManager::CreateButton(
+            (static_cast<float>(m_width) - labelSize.X()) / 2,
+            300,
+            m_exitText,
+            [this] { m_exitClicked = true; });
     };
 }
 
@@ -370,9 +376,11 @@ std::function<void()> Tetris::ScoreboardGui()
         for (size_t i = 0; i < scores->size() && i < 10; ++i)
         {
             std::string text = scores->at(i).playerName + " " + std::to_string(scores->at(i).score);
-            const ImVec2 label_size = ImGui::CalcTextSize(text.c_str(), nullptr, true);
-            ImGui::SetCursorPos({ (static_cast<float>(m_width) - label_size.x) / 2, static_cast<float>(50 * i + 100) });
-            ImGui::Text("%s", text.c_str());
+            const Vector2 labelSize = GuiManager::CalculateTextSize(text.c_str());
+            GuiManager::CreateLabel(
+                (static_cast<float>(m_width) - labelSize.X()) / 2,
+                static_cast<float>(50 * i + 100),
+                text.c_str());
         }
     };
 }
@@ -388,20 +396,14 @@ std::function<void()> Tetris::GameScoreGui()
 
         m_guiManager.CreateWindow(static_cast<float>(m_width) / 3, static_cast<float>(m_height), s_name);
 
-        ImGui::SetCursorPos({ 10, 10 });
-        ImGui::Text("%s", m_scoreText); // %s - string data type (format specifier in C )
+        GuiManager::CreateLabel(10, 10, m_scoreText);
 
-        const ImVec2 label_size = ImGui::CalcTextSize(m_scoreText, nullptr, true);
-        ImGui::SetCursorPos({ 10 + label_size.x, 10 });
-        ImGui::Text("%i", m_score); // %i - integer data type (format specifier in C )
+        const Vector2 labelSize = GuiManager::CalculateTextSize(m_scoreText);
+        GuiManager::CreateLabel(10 + labelSize.X(), 10, m_score);
 
-        if (ImGui::Button(m_saveScore))
-        {
-            m_jsonWrapper.SaveToFile(
-                "Cris",
-                m_score); // TODO: Create UI for username input (currently name is hardcoded)
-            // TODO: Reset game upon saving score
-        }
+        GuiManager::CreateButton(10, 70, m_saveScore, [this] { m_jsonWrapper.SaveToFile("Cris", m_score); });
+        // TODO: Create UI for username input (currently name is hardcoded)
+        // TODO: Reset game upon saving score
     };
 }
 
