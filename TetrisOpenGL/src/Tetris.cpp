@@ -20,6 +20,9 @@ Tetris::Tetris()
     : Game(3200, 1800, "Tetris OpenGL")
     , m_targetFPS(150)
     , m_scoreCombo(1)
+    , m_score(0)
+    , m_playGame(false)
+    , m_exitClicked(false)
 {
     m_jsonWrapper.LoadFromFile();
 

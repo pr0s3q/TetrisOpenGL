@@ -8,7 +8,7 @@
 #include "Cube.h"
 #include "TetriminoCreator.h"
 #include "TetriminoCube.h"
-#include "TetriminocubeGroup.h"
+#include "TetriminoCubeGroup.h"
 #include "TetrisEnums.h"
 
 //---------------------------------------------------------------

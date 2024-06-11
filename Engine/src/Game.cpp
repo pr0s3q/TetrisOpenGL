@@ -26,6 +26,9 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
     , m_dtFactor(0.1)
     , m_lastTime(0)
     , m_bindedTexture(0)
+    , m_VAO()
+    , m_VBO()
+    , m_guiManager()
 {
     if (!glfwInit())
     {
@@ -121,7 +124,10 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
     int width, height, channels;
     unsigned char* image = stbi_load("res/textures/img.png", &width, &height, &channels, 4);
     if (!image)
+    {
         std::cerr << "Failed to load image" << '\n';
+        return;
+    }
 
     constexpr int tileSize = 256;
     const int noOfRows = height / tileSize;

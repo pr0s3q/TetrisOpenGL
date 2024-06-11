@@ -1,7 +1,8 @@
 ﻿#pragma once
 
 #include <vector>
-#include <xstring>
+#include <string>
+#include <memory>
 
 #include "GuiManager.h"
 

@@ -1,9 +1,15 @@
+# Directories
 /x64
 .vs
 TetrisOpenGL/x64
 Engine/x64
 Engine/Engine
-*.user
+cmake-build-debug
+cmake-build-release
 .idea
+
+# FIles with extension
+*.user
 *.ini
 *.json
+*.diff
