@@ -32,7 +32,7 @@ public:
 
     //---------------------------------------------------------------
 
-    virtual bool InternalLoop() override;
+    bool InternalLoop() override;
 
     //---------------------------------------------------------------
 
@@ -47,7 +47,7 @@ private:
     /// <summary>
     /// Destructor - cleans up memory, terminate ImGui and glfw
     /// </summary>
-    virtual ~Tetris() override = default;
+    ~Tetris() override = default;
 
     //---------------------------------------------------------------
 
@@ -65,7 +65,7 @@ private:
 
     //---------------------------------------------------------------
 
-    void CheckPressedKey(const Key keyPressed, const double& scaleFactor = 0.0);
+    void CheckPressedKey(Key keyPressed, const double& scaleFactor = 0.0);
 
     //---------------------------------------------------------------
 
@@ -81,9 +81,14 @@ private:
     /// </summary>
     void LimitFPS() const;
 
+    //---------------------------------------------------------------
+
     std::function<void()> MenuGui();
     std::function<void()> ScoreboardGui();
     std::function<void()> GameScoreGui();
+
+    //---------------------------------------------------------------
+
     void AddScore();
 
     //---------------------------------------------------------------

@@ -20,7 +20,7 @@ void GuiManager::AddFont(const ImGuiIO& io)
     {
         m_font = io.Fonts->AddFontFromFileTTF("OpenSans-Light.ttf", 50.0f);
         io.Fonts->Build();
-        IM_ASSERT(m_font != NULL);
+        IM_ASSERT(m_font);
     }
 }
 
@@ -35,7 +35,7 @@ void GuiManager::AddFunction(const std::function<void()>& function)
 
 Vector2 GuiManager::CalculateTextSize(const char* text)
 {
-    return { ImGui::CalcTextSize(text, nullptr, true) };
+    return Vector2(ImGui::CalcTextSize(text, nullptr, true));
 }
 
 //---------------------------------------------------------------

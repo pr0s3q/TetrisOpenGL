@@ -1,8 +1,10 @@
-#include "TetriminoCube.h"
+#include <iostream>
+
 #include "BoardManager.h"
 #include "ConnectedTetriminoCubes.h"
 #include "Cube.h"
 #include "EngineEnums.h"
+#include "TetriminoCube.h"
 
 //---------------------------------------------------------------
 
@@ -72,6 +74,12 @@ bool TetriminoCube::CanBeMoved(const Key keyPressed) const
                 return false;
             break;
         }
+        default:
+#ifdef _DEBUG
+            std::cerr << "How did we end up here? Key: " << KeyToString(keyPressed) << ' ' << __FILE__ << ' '
+                      << __func__ << '\n';
+#endif
+            break;
     }
     return true;
 }
@@ -155,6 +163,12 @@ void TetriminoCube::Move(const double& scaleFactor, const Key keyPressed)
             m_positions[12] = xCoord.first * scaleFactor;
             break;
         }
+        default:
+#ifdef _DEBUG
+            std::cerr << "How did we end up here? Key: " << KeyToString(keyPressed) << ' ' << __FILE__ << ' '
+                      << __func__ << '\n';
+#endif
+            break;
     }
 }
 
@@ -169,20 +183,6 @@ void TetriminoCube::MoveForce(const double& scaleFactor)
     m_positions[5] = yCoord.second * scaleFactor;
     m_positions[9] = yCoord.first * scaleFactor;
     m_positions[13] = yCoord.first * scaleFactor;
-}
-
-//---------------------------------------------------------------
-
-void TetriminoCube::SetXLocation(const int location)
-{
-    m_xLocation = location;
-}
-
-//---------------------------------------------------------------
-
-void TetriminoCube::SetYLocation(const int location)
-{
-    m_yLocation = location;
 }
 
 //---------------------------------------------------------------

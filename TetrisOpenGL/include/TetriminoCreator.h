@@ -17,8 +17,8 @@ public:
     static void Create(
         const std::shared_ptr<TetriminoCubeGroup>& cubeGroup,
         std::vector<std::shared_ptr<Cube>>& cubes,
-        const double scaleFactorX,
-        const double scaleFactorY);
+        double scaleFactorX,
+        double scaleFactorY);
 
     //---------------------------------------------------------------
 

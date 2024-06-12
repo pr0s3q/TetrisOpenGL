@@ -22,7 +22,7 @@ public:
     /// <summary>
     /// Constructor - Initialize glfw, crate window, initialize glew, shader and ImGui
     /// </summary>
-    Game(const int screenWidth, const int screenHeight, const char* title);
+    Game(int screenWidth, int screenHeight, const char* title);
 
     //---------------------------------------------------------------
 

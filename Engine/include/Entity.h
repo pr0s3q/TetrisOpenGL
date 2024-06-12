@@ -4,6 +4,8 @@
 
 class Entity
 {
+    //---------------------------------------------------------------
+
     friend class Game;
 
     //---------------------------------------------------------------
@@ -12,11 +14,7 @@ public:
 
     //---------------------------------------------------------------
 
-    Entity(
-        const std::vector<double>& positions,
-        const int imageId,
-        const double scaleFactorX,
-        const double scaleFactorY);
+    Entity(const std::vector<double>& positions, int imageId, double scaleFactorX, double scaleFactorY);
 
     //---------------------------------------------------------------
 

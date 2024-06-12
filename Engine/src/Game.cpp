@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <stdexcept>
-#include <string>
 
 #include "Game.h"
 
@@ -139,7 +138,7 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
     glGenTextures(noOfTextures, m_textureIDs.get());
     constexpr int noOfBlocks = tileSize * tileSize;
     constexpr int size = noOfBlocks * 4;
-    unsigned char* imageData = new unsigned char[size]; // Allocate memory for a 256x256 texture
+    auto* imageData = new unsigned char[size]; // Allocate memory for a 256x256 texture
     for (int i = 0; i < noOfTextures; ++i)
     {
         glBindTexture(GL_TEXTURE_2D, m_textureIDs[i]);
@@ -194,6 +193,7 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
 
 Game::~Game()
 {
+    TerminateShader();
     glfwTerminate();
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
