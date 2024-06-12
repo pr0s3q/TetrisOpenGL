@@ -35,6 +35,8 @@ inline const char* KeyToString(const Key key)
             return "DEBUG_KEY_1";
         case Key::ESC:
             return "ESC";
+        default:
+            return "UNKNOWN";
     }
 }
 

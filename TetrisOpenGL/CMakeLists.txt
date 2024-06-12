@@ -11,7 +11,7 @@ add_executable(${PROJECT_NAME} Main.cpp
         src/TetriminoCreator.cpp
         src/JsonWrapper.cpp
         src/TetriminoCube.cpp
-        src/ConnectedTetriminoCubes.cpp)
+)
 
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 target_include_directories(${PROJECT_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/")

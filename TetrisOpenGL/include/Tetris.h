@@ -3,7 +3,8 @@
 #include <memory>
 #include <vector>
 
-#include "Game.h"
+#include <Game.h>
+
 #include "JsonWrapper.h"
 
 class Cube;
