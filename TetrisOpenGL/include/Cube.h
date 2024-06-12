@@ -2,7 +2,8 @@
 
 #include <vector>
 
-#include "Entity.h"
+#include <Entity.h>
+
 #include "HelperDefinitions.h"
 
 enum class Key;

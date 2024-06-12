@@ -15,7 +15,6 @@ public:
     //---------------------------------------------------------------
 
     TetriminoCube(
-        const std::shared_ptr<ConnectedTetriminoCubes>& connectedCubes,
         const std::vector<double>& positions,
         int xLocation,
         int yLocation,
@@ -61,7 +60,6 @@ private:
 
     //---------------------------------------------------------------
 
-    std::shared_ptr<ConnectedTetriminoCubes> m_connectedCubes;
     int m_xLocation;
     int m_yLocation;
 

@@ -2,8 +2,9 @@
 #include <chrono>
 #include <thread>
 
+#include <EngineEnums.h>
+
 #include "Cube.h"
-#include "EngineEnums.h"
 #include "HelperDefinitions.h"
 #include "TetriminoCreator.h"
 #include "TetriminoCube.h"

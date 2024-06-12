@@ -1,8 +1,9 @@
 #include <iostream>
 #include <memory>
 
+#include <EngineEnums.h>
+
 #include "Cube.h"
-#include "EngineEnums.h"
 #include "TetriminoCube.h"
 #include "TetriminoCubeGroup.h"
 

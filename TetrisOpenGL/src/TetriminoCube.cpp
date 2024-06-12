@@ -1,15 +1,14 @@
 #include <iostream>
 
+#include <EngineEnums.h>
+
 #include "BoardManager.h"
-#include "ConnectedTetriminoCubes.h"
 #include "Cube.h"
-#include "EngineEnums.h"
 #include "TetriminoCube.h"
 
 //---------------------------------------------------------------
 
 TetriminoCube::TetriminoCube(
-    const std::shared_ptr<ConnectedTetriminoCubes>& connectedCubes,
     const std::vector<double>& positions,
     const int xLocation,
     const int yLocation,
@@ -19,7 +18,6 @@ TetriminoCube::TetriminoCube(
     , m_xLocation(xLocation)
     , m_yLocation(yLocation)
 {
-    m_connectedCubes = connectedCubes;
 }
 
 //---------------------------------------------------------------
