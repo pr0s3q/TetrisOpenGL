@@ -28,9 +28,13 @@ Tetris::Tetris()
 
     m_cubeGroup = std::make_shared<TetriminoCubeGroup>();
 
+    // m_guiManager is initialized in Game class constructor
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "NotInitializedField"
     m_guiManager.AddFunction(MenuGui());
     m_guiManager.AddFunction(ScoreboardGui());
     m_guiManager.AddFunction(GameScoreGui());
+#pragma clang diagnostic pop
 }
 
 //---------------------------------------------------------------
@@ -210,9 +214,11 @@ void Tetris::CheckPressedKey(const Key keyPressed, const double& scaleFactor)
         }
         case Key::DEBUG_KEY_1:
         {
+#ifdef _DEBUG
             m_cubeGroup->SetMove(false);
             m_cubeGroup->ResetCubes();
             TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
+#endif
             break;
         }
         case Key::ESC:
@@ -319,8 +325,7 @@ void Tetris::LimitFPS() const
     static std::chrono::time_point lastFrameTime(std::chrono::high_resolution_clock::now());
     const std::chrono::milliseconds frameDuration(1000 / m_targetFPS);
     const std::chrono::time_point currentTime(std::chrono::high_resolution_clock::now());
-    const std::chrono::duration elapsedTime(
-        std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastFrameTime));
+    const auto elapsedTime(std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastFrameTime));
     const std::chrono::duration sleepDuration(frameDuration - elapsedTime);
     if (sleepDuration > std::chrono::milliseconds::zero())
         std::this_thread::sleep_for(sleepDuration);

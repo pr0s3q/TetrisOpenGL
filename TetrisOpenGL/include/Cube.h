@@ -16,21 +16,17 @@ public:
     Cube(
         bool staticImage,
         const std::vector<double>& positions,
-        const double scaleFactorX,
-        const double scaleFactorY,
-        const int imageId = CUBE_COLOR);
+        double scaleFactorX,
+        double scaleFactorY,
+        int imageId = CUBE_COLOR);
 
     //---------------------------------------------------------------
 
-    Cube(
-        const std::vector<double>& positions,
-        const double scaleFactorX,
-        const double scaleFactorY,
-        const int imageId = CUBE_COLOR);
+    Cube(const std::vector<double>& positions, double scaleFactorX, double scaleFactorY, int imageId = CUBE_COLOR);
 
     //---------------------------------------------------------------
 
-    virtual ~Cube() override = default;
+    ~Cube() override = default;
 
     //---------------------------------------------------------------
 
@@ -56,4 +52,6 @@ protected:
 
     bool m_shouldMove;
     bool m_staticImage = false;
+
+    //---------------------------------------------------------------
 };

@@ -8,6 +8,7 @@ Entity::Entity(
     const double scaleFactorX,
     const double scaleFactorY)
     : m_imageID(imageId)
+    , m_positions()
 {
     // Cube position
     m_positions[0] = positions[0] * scaleFactorX;

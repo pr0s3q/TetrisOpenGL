@@ -1,10 +1,10 @@
-#include "TetriminoCubeGroup.h"
-
+#include <iostream>
 #include <memory>
 
 #include "Cube.h"
 #include "EngineEnums.h"
 #include "TetriminoCube.h"
+#include "TetriminoCubeGroup.h"
 
 //---------------------------------------------------------------
 
@@ -151,6 +151,12 @@ void TetriminoCubeGroup::MoveCubes(
             break;
         case Key::RIGHT:
             m_xMovingFactor += 1;
+            break;
+        default:
+#ifdef _DEBUG
+            std::cerr << "How did we end up here? Key: " << KeyToString(keyPressed) << ' ' << __FILE__ << ' '
+                      << __func__ << '\n';
+#endif
             break;
     }
 

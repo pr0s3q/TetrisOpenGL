@@ -19,8 +19,8 @@ public:
         const std::vector<double>& positions,
         int xLocation,
         int yLocation,
-        const double scaleFactorX,
-        const double scaleFactorY);
+        double scaleFactorX,
+        double scaleFactorY);
 
     //---------------------------------------------------------------
 
@@ -45,19 +45,15 @@ public:
 
     //---------------------------------------------------------------
 
-    virtual void Move(const double& scaleFactor, Key keyPressed) override;
+    void Move(const double& scaleFactor, Key keyPressed) override;
 
     //---------------------------------------------------------------
 
-    virtual void MoveForce(const double& scaleFactor) override;
+    void MoveForce(const double& scaleFactor) override;
 
     //---------------------------------------------------------------
 
-    void SetXLocation(int location);
-
     //---------------------------------------------------------------
-
-    void SetYLocation(int location);
 
     //---------------------------------------------------------------
 

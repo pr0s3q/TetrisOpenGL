@@ -31,19 +31,19 @@ public:
     //---------------------------------------------------------------
 
     static void CreateButton(
-        const float posX,
-        const float posY,
+        float posX,
+        float posY,
         const char* text,
         const std::function<void()>& onClickFunction);
 
     //---------------------------------------------------------------
 
-    static void CreateLabel(const float posX, const float posY, const char* text);
-    static void CreateLabel(const float posX, const float posY, const int number);
+    static void CreateLabel(float posX, float posY, const char* text);
+    static void CreateLabel(float posX, float posY, int number);
 
     //---------------------------------------------------------------
 
-    void CreateWindow(const float width, const float height, const char* name) const;
+    void CreateWindow(float width, float height, const char* name) const;
 
     //---------------------------------------------------------------
 
@@ -55,7 +55,7 @@ public:
 
     //---------------------------------------------------------------
 
-    bool SetFunctionId(const unsigned long long functionId);
+    bool SetFunctionId(unsigned long long functionId);
 
     //---------------------------------------------------------------
 

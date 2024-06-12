@@ -5,6 +5,7 @@
 
 //---------------------------------------------------------------
 
+// TODO: Make struct internal, within JsonWrapper class?
 struct Score
 {
     std::string playerName;

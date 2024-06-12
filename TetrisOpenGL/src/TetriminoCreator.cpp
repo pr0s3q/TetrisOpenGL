@@ -37,7 +37,7 @@ void TetriminoCreator::Create(
         1812433253>
         rng_engine(clock() + std::hash<std::thread::id>()(std::this_thread::get_id()));
     auto generator = std::bind(uid, rng_engine);
-    const TetriminoType type = static_cast<TetriminoType>(generator());
+    const auto type = static_cast<TetriminoType>(generator());
     cubeGroup->SetType(type);
 
     std::vector<std::vector<double>> positions;
