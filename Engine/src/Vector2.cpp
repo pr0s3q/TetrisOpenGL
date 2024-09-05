@@ -1,6 +1,6 @@
-#include <Engine/Vector2.hpp>
-
 #include <ImGui/imgui.h>
+
+#include <Engine/Vector2.hpp>
 
 //---------------------------------------------------------------
 

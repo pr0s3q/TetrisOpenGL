@@ -1,14 +1,14 @@
-#include <functional>
-#include <random>
-#include <thread>
-#include <vector>
-
 #include <Tetris/BoardManager.hpp>
 #include <Tetris/Cube.hpp>
 #include <Tetris/TetriminoCreator.hpp>
 #include <Tetris/TetriminoCube.hpp>
 #include <Tetris/TetriminoCubeGroup.hpp>
 #include <Tetris/TetrisEnums.hpp>
+
+#include <functional>
+#include <random>
+#include <thread>
+#include <vector>
 
 //---------------------------------------------------------------
 

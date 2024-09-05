@@ -1,10 +1,10 @@
 ﻿#pragma once
 
-#include <vector>
-
 #include <Engine/Entity.hpp>
 
 #include <Tetris/HelperDefinitions.hpp>
+
+#include <vector>
 
 enum class Key;
 

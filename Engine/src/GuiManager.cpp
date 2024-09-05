@@ -1,11 +1,10 @@
-#include <Engine/GuiManager.hpp>
-
-#include <Engine/Color.hpp>
-#include <Engine/Vector2.hpp>
-
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
 #include <ImGui/imgui_impl_opengl3.h>
+
+#include <Engine/Color.hpp>
+#include <Engine/GuiManager.hpp>
+#include <Engine/Vector2.hpp>
 
 //---------------------------------------------------------------
 

@@ -1,10 +1,10 @@
 ﻿#pragma once
 
+#include <Engine/GuiManager.hpp>
+
 #include <memory>
 #include <string>
 #include <vector>
-
-#include <Engine/GuiManager.hpp>
 
 class Entity;
 

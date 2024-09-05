@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
-
 #include <Tetris/Cube.hpp>
+
+#include <vector>
 
 enum class Key;
 class ConnectedTetriminoCubes;

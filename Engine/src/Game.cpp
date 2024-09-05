@@ -1,19 +1,19 @@
 ﻿#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include <iostream>
-#include <stdexcept>
+#include <ImGui/imgui.h>
+#include <ImGui/imgui_impl_glfw.h>
+#include <ImGui/imgui_impl_opengl3.h>
+
+#include <stb/stb_image.h>
 
 #include <Engine/EngineEnums.hpp>
 #include <Engine/Entity.hpp>
 #include <Engine/Game.hpp>
 
 #include <algorithm>
-
-#include <ImGui/imgui.h>
-#include <ImGui/imgui_impl_glfw.h>
-#include <ImGui/imgui_impl_opengl3.h>
-#include <stb/stb_image.h>
+#include <iostream>
+#include <stdexcept>
 
 //---------------------------------------------------------------
 

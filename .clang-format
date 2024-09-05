@@ -49,13 +49,27 @@ ContinuationIndentWidth: 4
 Cpp11BracedListStyle : false
 EmptyLineAfterAccessModifier: Always
 EmptyLineBeforeAccessModifier: Always
-IncludeCategories: 
-  - Regex: '^<.*'
+IncludeCategories:
+  - Regex: '<GL.*'
     Priority: 1
-  - Regex: '^".*'
+  - Regex: '<GLFW.*'
     Priority: 2
-  - Regex: '.*'
+  - Regex: '<ImGui.*'
     Priority: 3
+  - Regex: '<stb.*'
+    Priority: 4
+  - Regex: '<nlohmann.*'
+    Priority: 5
+  - Regex: '<Engine.*'
+    Priority: 6
+  - Regex: '<Tetris.*'
+    Priority: 7
+  - Regex: '^<.*'
+    Priority: 8
+  - Regex: '^".*'
+    Priority: 9
+  - Regex: '.*'
+    Priority: 10
 IncludeIsMainRegex: '([-_](test|unittest))?$'
 IndentAccessModifiers: false
 IndentCaseLabels: true

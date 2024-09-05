@@ -1,9 +1,9 @@
 #pragma once
 
+#include <Engine/Vector2.hpp>
+
 #include <functional>
 #include <vector>
-
-#include <Engine/Vector2.hpp>
 
 class Color;
 struct ImFont;

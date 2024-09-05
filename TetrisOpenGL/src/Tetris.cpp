@@ -1,7 +1,3 @@
-#include <algorithm>
-#include <chrono>
-#include <thread>
-
 #include <Engine/Color.hpp>
 #include <Engine/EngineEnums.hpp>
 
@@ -12,6 +8,10 @@
 #include <Tetris/TetriminoCube.hpp>
 #include <Tetris/TetriminoCubeGroup.hpp>
 #include <Tetris/Tetris.hpp>
+
+#include <algorithm>
+#include <chrono>
+#include <thread>
 
 //---------------------------------------------------------------
 
