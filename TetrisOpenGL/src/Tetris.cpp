@@ -2,17 +2,16 @@
 #include <chrono>
 #include <thread>
 
-#include <EngineEnums.hpp>
+#include <Engine/Color.hpp>
+#include <Engine/EngineEnums.hpp>
 
-#include <Cube.hpp>
-#include <HelperDefinitions.hpp>
-#include <JsonWrapper.hpp>
-#include <TetriminoCreator.hpp>
-#include <TetriminoCube.hpp>
-#include <TetriminoCubeGroup.hpp>
-#include <Tetris.hpp>
-
-#include <Color.hpp>
+#include <Tetris/Cube.hpp>
+#include <Tetris/HelperDefinitions.hpp>
+#include <Tetris/JsonWrapper.hpp>
+#include <Tetris/TetriminoCreator.hpp>
+#include <Tetris/TetriminoCube.hpp>
+#include <Tetris/TetriminoCubeGroup.hpp>
+#include <Tetris/Tetris.hpp>
 
 //---------------------------------------------------------------
 

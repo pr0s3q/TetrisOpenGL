@@ -1,7 +1,7 @@
-#include <GuiManager.hpp>
+#include <Engine/GuiManager.hpp>
 
-#include <Color.hpp>
-#include <Vector2.hpp>
+#include <Engine/Color.hpp>
+#include <Engine/Vector2.hpp>
 
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>

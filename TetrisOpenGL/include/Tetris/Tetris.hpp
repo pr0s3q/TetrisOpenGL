@@ -3,9 +3,9 @@
 #include <memory>
 #include <vector>
 
-#include <Color.hpp>
-#include <Game.hpp>
-#include <JsonWrapper.hpp>
+#include <Engine/Color.hpp>
+#include <Engine/Game.hpp>
+#include <Tetris/JsonWrapper.hpp>
 
 class Cube;
 class ImGuiWrapper;

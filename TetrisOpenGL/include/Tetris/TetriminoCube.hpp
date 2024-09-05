@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include <Cube.hpp>
+#include <Tetris/Cube.hpp>
 
 enum class Key;
 class ConnectedTetriminoCubes;

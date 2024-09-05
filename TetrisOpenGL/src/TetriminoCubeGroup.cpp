@@ -1,10 +1,10 @@
 #include <memory>
 
-#include <EngineEnums.hpp>
+#include <Engine/EngineEnums.hpp>
 
-#include <Cube.hpp>
-#include <TetriminoCube.hpp>
-#include <TetriminoCubeGroup.hpp>
+#include <Tetris/Cube.hpp>
+#include <Tetris/TetriminoCube.hpp>
+#include <Tetris/TetriminoCubeGroup.hpp>
 
 //---------------------------------------------------------------
 

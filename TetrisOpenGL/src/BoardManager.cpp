@@ -1,4 +1,4 @@
-#include <BoardManager.hpp>
+#include <Tetris/BoardManager.hpp>
 
 //---------------------------------------------------------------
 

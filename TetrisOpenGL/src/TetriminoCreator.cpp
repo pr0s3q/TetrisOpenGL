@@ -3,12 +3,12 @@
 #include <thread>
 #include <vector>
 
-#include <BoardManager.hpp>
-#include <Cube.hpp>
-#include <TetriminoCreator.hpp>
-#include <TetriminoCube.hpp>
-#include <TetriminoCubeGroup.hpp>
-#include <TetrisEnums.hpp>
+#include <Tetris/BoardManager.hpp>
+#include <Tetris/Cube.hpp>
+#include <Tetris/TetriminoCreator.hpp>
+#include <Tetris/TetriminoCube.hpp>
+#include <Tetris/TetriminoCubeGroup.hpp>
+#include <Tetris/TetrisEnums.hpp>
 
 //---------------------------------------------------------------
 

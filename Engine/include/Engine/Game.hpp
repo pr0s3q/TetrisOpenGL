@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include <GuiManager.hpp>
+#include <Engine/GuiManager.hpp>
 
 class Entity;
 

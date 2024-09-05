@@ -2,9 +2,9 @@
 
 #include <vector>
 
-#include <Entity.hpp>
+#include <Engine/Entity.hpp>
 
-#include <HelperDefinitions.hpp>
+#include <Tetris/HelperDefinitions.hpp>
 
 enum class Key;
 

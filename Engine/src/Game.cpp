@@ -4,9 +4,9 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <EngineEnums.hpp>
-#include <Entity.hpp>
-#include <Game.hpp>
+#include <Engine/EngineEnums.hpp>
+#include <Engine/Entity.hpp>
+#include <Engine/Game.hpp>
 
 #include <algorithm>
 

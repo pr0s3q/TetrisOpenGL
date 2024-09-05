@@ -1,8 +1,8 @@
-#include <EngineEnums.hpp>
+#include <Engine/EngineEnums.hpp>
 
-#include <BoardManager.hpp>
-#include <Cube.hpp>
-#include <TetriminoCube.hpp>
+#include <Tetris/BoardManager.hpp>
+#include <Tetris/Cube.hpp>
+#include <Tetris/TetriminoCube.hpp>
 
 //---------------------------------------------------------------
 
