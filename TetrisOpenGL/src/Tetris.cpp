@@ -21,13 +21,13 @@ const char* Tetris::s_name = "TetrisOpenGL";
 
 Tetris::Tetris()
     : Game(3200, 1800, "Tetris OpenGL")
-      , m_buttonColor(Color::Turquoise())
-      , m_buttonTextColor(Color::Red())
-      , m_targetFPS(150)
-      , m_playGame(false)
-      , m_exitClicked(false)
-      , m_score(0)
-      , m_scoreCombo(1)
+    , m_buttonColor(Color::Turquoise())
+    , m_buttonTextColor(Color::Red())
+    , m_targetFPS(150)
+    , m_playGame(false)
+    , m_exitClicked(false)
+    , m_score(0)
+    , m_scoreCombo(1)
 {
     m_jsonWrapper.LoadFromFile();
 
@@ -367,10 +367,7 @@ std::function<void()> Tetris::MenuGui()
             250.0f,
             200.0f,
             m_scoreboardText,
-            [this]
-            {
-                m_guiManager.SetFunctionId(1);
-            },
+            [this] { m_guiManager.SetFunctionId(1); },
             m_buttonColor,
             m_buttonTextColor,
             true);
@@ -379,10 +376,7 @@ std::function<void()> Tetris::MenuGui()
             250.0f,
             300.0f,
             m_exitText,
-            [this]
-            {
-                m_exitClicked = true;
-            },
+            [this] { m_exitClicked = true; },
             m_buttonColor,
             m_buttonTextColor,
             true);
@@ -402,12 +396,7 @@ std::function<void()> Tetris::ScoreboardGui()
         {
             std::string text = scores->at(i).playerName + " " + std::to_string(scores->at(i).score);
             const Vector2 labelSize = m_guiManager.CalculateTextSize(text.c_str());
-            m_guiManager.CreateLabel(
-                labelSize.X(),
-                50.0f * static_cast<float>(i),
-                text.c_str(),
-                true,
-                true);
+            m_guiManager.CreateLabel(labelSize.X(), 50.0f * static_cast<float>(i), text.c_str(), true, true);
         }
     };
 }
@@ -432,10 +421,7 @@ std::function<void()> Tetris::GameScoreGui()
             10.0f,
             50.0f,
             m_saveScore,
-            [this]
-            {
-                m_jsonWrapper.SaveToFile("Cris", m_score);
-            },
+            [this] { m_jsonWrapper.SaveToFile("Cris", m_score); },
             m_buttonColor,
             m_buttonTextColor);
         // TODO: Create UI for username input (currently name is hardcoded)

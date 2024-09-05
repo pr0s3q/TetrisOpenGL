@@ -15,8 +15,7 @@ TetriminoCube::TetriminoCube(
     : Cube(positions, scaleFactorX, scaleFactorY)
     , m_xLocation(xLocation)
     , m_yLocation(yLocation)
-{
-}
+{}
 
 //---------------------------------------------------------------
 

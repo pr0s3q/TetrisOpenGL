@@ -42,8 +42,7 @@ public:
 
     //---------------------------------------------------------------
 
-    void CreateLabel(float sizeX,
-    float posY, const char* text, float offsetX = 0.0f, bool center = false) const;
+    void CreateLabel(float sizeX, float posY, const char* text, float offsetX = 0.0f, bool center = false) const;
     void CreateLabel(float posX, int number);
 
     //---------------------------------------------------------------

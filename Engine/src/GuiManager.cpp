@@ -78,8 +78,12 @@ void GuiManager::CreateButton(
 
 //---------------------------------------------------------------
 
-void GuiManager::CreateLabel(const float sizeX,
-    const float posY, const char* text, const float offsetX, const bool center) const
+void GuiManager::CreateLabel(
+    const float sizeX,
+    const float posY,
+    const char* text,
+    const float offsetX,
+    const bool center) const
 {
     float xPos;
     if (center)
@@ -87,7 +91,7 @@ void GuiManager::CreateLabel(const float sizeX,
     else
         xPos = offsetX * m_scale;
 
-    ImGui::SetCursorPos({ xPos , posY * m_scale });
+    ImGui::SetCursorPos({ xPos, posY * m_scale });
     ImGui::Text("%s", text); // %s - string data type (format specifier in C )
 }
 

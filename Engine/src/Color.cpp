@@ -2,15 +2,11 @@
 
 //---------------------------------------------------------------
 
-Color::Color(
-    const unsigned char red,
-    const unsigned char green,
-    const unsigned char blue,
-    const unsigned char alpha)
-    : m_r(red),
-      m_g(green),
-      m_b(blue),
-      m_a(alpha)
+Color::Color(const unsigned char red, const unsigned char green, const unsigned char blue, const unsigned char alpha)
+    : m_r(red)
+    , m_g(green)
+    , m_b(blue)
+    , m_a(alpha)
 {}
 
 //---------------------------------------------------------------

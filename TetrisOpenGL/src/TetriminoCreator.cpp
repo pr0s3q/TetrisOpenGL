@@ -51,12 +51,8 @@ void TetriminoCreator::Create(
 
     for (int i = 0; i < 4; i++)
     {
-        auto cube = std::make_shared<TetriminoCube>(
-            positions[i],
-            xLocations[i],
-            yLocations[i],
-            scaleFactorX,
-            scaleFactorY);
+        auto cube =
+            std::make_shared<TetriminoCube>(positions[i], xLocations[i], yLocations[i], scaleFactorX, scaleFactorY);
         cubes.emplace_back(cube);
         tetriminoCubes.emplace_back(cube);
         cubeGroup->AddCube(cube);
