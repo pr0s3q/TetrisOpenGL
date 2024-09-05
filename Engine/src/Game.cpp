@@ -24,10 +24,10 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
     , m_scaleFactorY(70.0 * m_height / 900 / m_height)
     , m_VAO()
     , m_VBO()
+    , m_guiManager(static_cast<float>(m_width) / 1600)
     , m_dtFactor(0.1)
     , m_lastTime(0)
     , m_bindedTexture(0)
-    , m_guiManager(static_cast<float>(m_width) / 1600)
 {
     if (!glfwInit())
     {
