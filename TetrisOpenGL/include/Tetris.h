@@ -6,7 +6,7 @@
 
 #include <Game.h>
 
-#include "JsonWrapper.h"
+#include <JsonWrapper.h>
 
 class Cube;
 class ImGuiWrapper;

@@ -4,7 +4,7 @@
 
 #include <Entity.h>
 
-#include "HelperDefinitions.h"
+#include <HelperDefinitions.h>
 
 enum class Key;
 

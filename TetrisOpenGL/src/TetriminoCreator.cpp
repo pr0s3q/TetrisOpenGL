@@ -3,12 +3,12 @@
 #include <thread>
 #include <vector>
 
-#include "BoardManager.h"
-#include "Cube.h"
-#include "TetriminoCreator.h"
-#include "TetriminoCube.h"
-#include "TetriminoCubeGroup.h"
-#include "TetrisEnums.h"
+#include <BoardManager.h>
+#include <Cube.h>
+#include <TetriminoCreator.h>
+#include <TetriminoCube.h>
+#include <TetriminoCubeGroup.h>
+#include <TetrisEnums.h>
 
 //---------------------------------------------------------------
 

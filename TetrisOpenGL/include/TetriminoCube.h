@@ -1,9 +1,8 @@
 #pragma once
 
-#include <memory>
 #include <vector>
 
-#include "Cube.h"
+#include <Cube.h>
 
 enum class Key;
 class ConnectedTetriminoCubes;

@@ -4,12 +4,12 @@
 
 #include <EngineEnums.h>
 
-#include "Cube.h"
-#include "HelperDefinitions.h"
-#include "TetriminoCreator.h"
-#include "TetriminoCube.h"
-#include "TetriminoCubeGroup.h"
-#include "Tetris.h"
+#include <Cube.h>
+#include <HelperDefinitions.h>
+#include <TetriminoCreator.h>
+#include <TetriminoCube.h>
+#include <TetriminoCubeGroup.h>
+#include <Tetris.h>
 
 #include <Color.h>
 

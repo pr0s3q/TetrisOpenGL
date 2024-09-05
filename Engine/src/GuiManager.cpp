@@ -1,11 +1,11 @@
-#include "GuiManager.h"
+#include <GuiManager.h>
 
 #include <Color.h>
 
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_glfw.h"
-#include "ImGui/imgui_impl_opengl3.h"
-#include "Vector2.h"
+#include <ImGui/imgui.h>
+#include <ImGui/imgui_impl_glfw.h>
+#include <ImGui/imgui_impl_opengl3.h>
+#include <Vector2.h>
 
 //---------------------------------------------------------------
 

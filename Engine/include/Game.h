@@ -4,7 +4,7 @@
 #include <string>
 #include <memory>
 
-#include "GuiManager.h"
+#include <GuiManager.h>
 
 class Entity;
 
