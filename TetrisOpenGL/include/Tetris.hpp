@@ -1,12 +1,11 @@
 #pragma once
 
-#include <Color.h>
 #include <memory>
 #include <vector>
 
-#include <Game.h>
-
-#include <JsonWrapper.h>
+#include <Color.hpp>
+#include <Game.hpp>
+#include <JsonWrapper.hpp>
 
 class Cube;
 class ImGuiWrapper;

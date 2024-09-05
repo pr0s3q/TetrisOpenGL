@@ -1,66 +1,58 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
 
-#include <Cube.h>
+#include <Entity.hpp>
+
+#include <HelperDefinitions.hpp>
 
 enum class Key;
-class ConnectedTetriminoCubes;
 
-class TetriminoCube : public Cube
+class Cube : public Entity
 {
 public:
 
     //---------------------------------------------------------------
 
-    TetriminoCube(
+    Cube(
+        bool staticImage,
         const std::vector<double>& positions,
-        int xLocation,
-        int yLocation,
         double scaleFactorX,
-        double scaleFactorY);
+        double scaleFactorY,
+        int imageId = CUBE_COLOR);
 
     //---------------------------------------------------------------
 
-    void ApplyRotationPositions(
-        const std::vector<double>& positions,
-        int xLocation,
-        int yLocation,
-        const double& scaleFactorX,
-        const double& scaleFactorY);
+    Cube(const std::vector<double>& positions, double scaleFactorX, double scaleFactorY, int imageId = CUBE_COLOR);
 
     //---------------------------------------------------------------
 
-    bool CanBeMoved(Key keyPressed) const;
+    ~Cube() override = default;
 
     //---------------------------------------------------------------
 
-    int GetXLocation() const;
+    virtual bool IsStatic();
 
     //---------------------------------------------------------------
 
-    int GetYLocation() const;
+    virtual void Move(const double& /*scaleFactor*/, Key /*keyPressed*/);
 
     //---------------------------------------------------------------
 
-    void Move(const double& scaleFactor, Key keyPressed) override;
+    virtual void MoveForce(const double& /*scaleFactor*/);
 
     //---------------------------------------------------------------
 
-    void MoveForce(const double& scaleFactor) override;
+    void SetMove(bool shouldMove);
 
     //---------------------------------------------------------------
 
-    //---------------------------------------------------------------
+protected:
 
     //---------------------------------------------------------------
 
-private:
-
-    //---------------------------------------------------------------
-
-    int m_xLocation;
-    int m_yLocation;
+    bool m_shouldMove;
+    bool m_staticImage = false;
 
     //---------------------------------------------------------------
 };

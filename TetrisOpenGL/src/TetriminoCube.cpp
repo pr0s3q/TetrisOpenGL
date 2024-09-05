@@ -1,8 +1,8 @@
-#include <EngineEnums.h>
+#include <EngineEnums.hpp>
 
-#include <BoardManager.h>
-#include <Cube.h>
-#include <TetriminoCube.h>
+#include <BoardManager.hpp>
+#include <Cube.hpp>
+#include <TetriminoCube.hpp>
 
 //---------------------------------------------------------------
 

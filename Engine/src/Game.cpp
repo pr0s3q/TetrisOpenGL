@@ -4,12 +4,12 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <Game.h>
+#include <EngineEnums.hpp>
+#include <Entity.hpp>
+#include <Game.hpp>
 
 #include <algorithm>
 
-#include <EngineEnums.h>
-#include <Entity.h>
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
 #include <ImGui/imgui_impl_opengl3.h>
