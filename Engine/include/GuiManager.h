@@ -5,6 +5,7 @@
 
 #include "Vector2.h"
 
+class Color;
 struct ImFont;
 struct ImGuiIO;
 
@@ -14,7 +15,7 @@ public:
 
     //---------------------------------------------------------------
 
-    GuiManager();
+    explicit GuiManager(float scale);
 
     //---------------------------------------------------------------
 
@@ -26,20 +27,24 @@ public:
 
     //---------------------------------------------------------------
 
-    static Vector2 CalculateTextSize(const char* text);
+    Vector2 CalculateTextSize(const char* text);
 
     //---------------------------------------------------------------
 
-    static void CreateButton(
-        float posX,
+    void CreateButton(
+        float sizeX,
         float posY,
         const char* text,
-        const std::function<void()>& onClickFunction);
+        const std::function<void()>& onClickFunction,
+        const Color& buttonColor,
+        const Color& buttonTextColor,
+        bool center = false) const;
 
     //---------------------------------------------------------------
 
-    static void CreateLabel(float posX, float posY, const char* text);
-    static void CreateLabel(float posX, float posY, int number);
+    void CreateLabel(float sizeX,
+    float posY, const char* text, float offsetX = 0.0f, bool center = false) const;
+    void CreateLabel(float posX, int number);
 
     //---------------------------------------------------------------
 
@@ -66,6 +71,7 @@ private:
     ImFont* m_font;
     std::vector<std::function<void()>> m_functions;
     unsigned long long m_functionId;
+    float m_scale;
 
     //---------------------------------------------------------------
 };

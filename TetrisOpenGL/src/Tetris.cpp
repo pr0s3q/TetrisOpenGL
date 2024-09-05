@@ -11,6 +11,8 @@
 #include "TetriminoCubeGroup.h"
 #include "Tetris.h"
 
+#include <Color.h>
+
 //---------------------------------------------------------------
 
 const char* Tetris::s_name = "TetrisOpenGL";
@@ -19,11 +21,13 @@ const char* Tetris::s_name = "TetrisOpenGL";
 
 Tetris::Tetris()
     : Game(3200, 1800, "Tetris OpenGL")
-    , m_targetFPS(150)
-    , m_scoreCombo(1)
-    , m_score(0)
-    , m_playGame(false)
-    , m_exitClicked(false)
+      , m_buttonColor(Color::Turquoise())
+      , m_buttonTextColor(Color::Red())
+      , m_targetFPS(150)
+      , m_playGame(false)
+      , m_exitClicked(false)
+      , m_score(0)
+      , m_scoreCombo(1)
 {
     m_jsonWrapper.LoadFromFile();
 
@@ -340,36 +344,48 @@ std::function<void()> Tetris::MenuGui()
 {
     return [this]
     {
-        static constexpr char m_scoreboardText[13] = " Scoreboard ";
-        static constexpr char m_exitText[19] = "       Exit       ";
-        static constexpr char m_playText[19] = "       Play       ";
+        static constexpr char m_scoreboardText[11] = "Scoreboard";
+        static constexpr char m_exitText[5] = "Exit";
+        static constexpr char m_playText[5] = "Play";
 
         m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name);
 
-        Vector2 labelSize = GuiManager::CalculateTextSize(m_playText);
-        GuiManager::CreateButton(
-            (static_cast<float>(m_width) - labelSize.X()) / 2,
-            100,
+        m_guiManager.CreateButton(
+            250.0f,
+            100.0f,
             m_playText,
             [this]
             {
                 m_playGame = true;
                 m_guiManager.SetFunctionId(2);
-            });
+            },
+            m_buttonColor,
+            m_buttonTextColor,
+            true);
 
-        labelSize = GuiManager::CalculateTextSize(m_scoreboardText);
-        GuiManager::CreateButton(
-            (static_cast<float>(m_width) - labelSize.X()) / 2,
-            200,
+        m_guiManager.CreateButton(
+            250.0f,
+            200.0f,
             m_scoreboardText,
-            [this] { m_guiManager.SetFunctionId(1); });
+            [this]
+            {
+                m_guiManager.SetFunctionId(1);
+            },
+            m_buttonColor,
+            m_buttonTextColor,
+            true);
 
-        labelSize = GuiManager::CalculateTextSize(m_exitText);
-        GuiManager::CreateButton(
-            (static_cast<float>(m_width) - labelSize.X()) / 2,
-            300,
+        m_guiManager.CreateButton(
+            250.0f,
+            300.0f,
             m_exitText,
-            [this] { m_exitClicked = true; });
+            [this]
+            {
+                m_exitClicked = true;
+            },
+            m_buttonColor,
+            m_buttonTextColor,
+            true);
     };
 }
 
@@ -385,11 +401,13 @@ std::function<void()> Tetris::ScoreboardGui()
         for (size_t i = 0; i < scores->size() && i < 10; ++i)
         {
             std::string text = scores->at(i).playerName + " " + std::to_string(scores->at(i).score);
-            const Vector2 labelSize = GuiManager::CalculateTextSize(text.c_str());
-            GuiManager::CreateLabel(
-                (static_cast<float>(m_width) - labelSize.X()) / 2,
-                static_cast<float>(50 * i + 100),
-                text.c_str());
+            const Vector2 labelSize = m_guiManager.CalculateTextSize(text.c_str());
+            m_guiManager.CreateLabel(
+                labelSize.X(),
+                50.0f * static_cast<float>(i),
+                text.c_str(),
+                true,
+                true);
         }
     };
 }
@@ -405,12 +423,21 @@ std::function<void()> Tetris::GameScoreGui()
 
         m_guiManager.CreateWindow(static_cast<float>(m_width) / 3, static_cast<float>(m_height), s_name);
 
-        GuiManager::CreateLabel(10, 10, m_scoreText);
+        m_guiManager.CreateLabel(10.0f, 0.0f, m_scoreText, 10.0f);
 
-        const Vector2 labelSize = GuiManager::CalculateTextSize(m_scoreText);
-        GuiManager::CreateLabel(10 + labelSize.X(), 10, m_score);
+        const Vector2 labelSize = m_guiManager.CalculateTextSize(m_scoreText);
+        m_guiManager.CreateLabel(20.0f + labelSize.X(), m_score);
 
-        GuiManager::CreateButton(10, 70, m_saveScore, [this] { m_jsonWrapper.SaveToFile("Cris", m_score); });
+        m_guiManager.CreateButton(
+            10.0f,
+            50.0f,
+            m_saveScore,
+            [this]
+            {
+                m_jsonWrapper.SaveToFile("Cris", m_score);
+            },
+            m_buttonColor,
+            m_buttonTextColor);
         // TODO: Create UI for username input (currently name is hardcoded)
         // TODO: Reset game upon saving score
     };

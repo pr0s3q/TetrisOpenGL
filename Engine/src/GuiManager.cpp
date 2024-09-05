@@ -1,5 +1,7 @@
 #include "GuiManager.h"
 
+#include <Color.h>
+
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_glfw.h"
 #include "ImGui/imgui_impl_opengl3.h"
@@ -7,9 +9,10 @@
 
 //---------------------------------------------------------------
 
-GuiManager::GuiManager()
+GuiManager::GuiManager(const float scale)
     : m_font(nullptr)
     , m_functionId(0)
+    , m_scale(scale)
 {}
 
 //---------------------------------------------------------------
@@ -18,7 +21,7 @@ void GuiManager::AddFont(const ImGuiIO& io)
 {
     if (m_font == nullptr)
     {
-        m_font = io.Fonts->AddFontFromFileTTF("OpenSans-Light.ttf", 50.0f);
+        m_font = io.Fonts->AddFontFromFileTTF("OpenSans-Light.ttf", 50.0f * m_scale);
         io.Fonts->Build();
         IM_ASSERT(m_font);
     }
@@ -41,29 +44,58 @@ Vector2 GuiManager::CalculateTextSize(const char* text)
 //---------------------------------------------------------------
 
 void GuiManager::CreateButton(
-    const float posX,
+    const float sizeX,
     const float posY,
     const char* text,
-    const std::function<void()>& onClickFunction)
+    const std::function<void()>& onClickFunction,
+    const Color& buttonColor,
+    const Color& buttonTextColor,
+    const bool center) const
 {
-    ImGui::SetCursorPos({ posX, posY });
-    if (ImGui::Button(text))
+    const float cornerRadius = 10.0f * m_scale;
+    float xPos;
+    if (center)
+        xPos = (1600.0f - sizeX) / 2.0f;
+    else
+        xPos = cornerRadius / 2.0f;
+
+    ImGui::SetCursorPos({ xPos * m_scale, posY * m_scale });
+
+    // Button radius
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, cornerRadius);
+    // Button BG color
+    ImGui::PushStyleColor(ImGuiCol_Button, buttonColor.ToImVec4());
+    // Button text color
+    ImGui::PushStyleColor(ImGuiCol_Text, buttonTextColor.ToImVec4());
+
+    if (ImGui::Button(text, ImVec2(250.0f * m_scale, 60.0f * m_scale)))
         onClickFunction();
+
+    // Popping styles
+    ImGui::PopStyleVar(1);
+    ImGui::PopStyleColor(2);
 }
 
 //---------------------------------------------------------------
 
-void GuiManager::CreateLabel(const float posX, const float posY, const char* text)
+void GuiManager::CreateLabel(const float sizeX,
+    const float posY, const char* text, const float offsetX, const bool center) const
 {
-    ImGui::SetCursorPos({ posX, posY });
+    float xPos;
+    if (center)
+        xPos = (1600.0f * m_scale - sizeX) / 2.0f;
+    else
+        xPos = offsetX * m_scale;
+
+    ImGui::SetCursorPos({ xPos , posY * m_scale });
     ImGui::Text("%s", text); // %s - string data type (format specifier in C )
 }
 
 //---------------------------------------------------------------
 
-void GuiManager::CreateLabel(const float posX, const float posY, const int number)
+void GuiManager::CreateLabel(const float posX, const int number)
 {
-    ImGui::SetCursorPos({ posX, posY });
+    ImGui::SetCursorPos({ posX, 0.0f });
     ImGui::Text("%i", number); // %i - integer data type (format specifier in C )
 }
 

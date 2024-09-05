@@ -16,6 +16,7 @@ add_library(${PROJECT_NAME} STATIC src/Entity.cpp
         src/Game.cpp
         src/GuiManager.cpp
         src/Vector2.cpp
+        src/Color.cpp
         ImGui/imgui_widgets.cpp
         ImGui/imgui_tables.cpp
         ImGui/imgui_impl_opengl3.cpp

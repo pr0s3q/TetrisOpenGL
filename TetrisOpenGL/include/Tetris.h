@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Color.h>
 #include <memory>
 #include <vector>
 
@@ -95,14 +96,16 @@ private:
     //---------------------------------------------------------------
 
     JsonWrapper m_jsonWrapper;
+    Color m_buttonColor;
+    Color m_buttonTextColor;
     std::vector<std::shared_ptr<Cube>> m_cubes;
     std::shared_ptr<TetriminoCubeGroup> m_cubeGroup;
     std::shared_ptr<ImGuiWrapper> m_ImGuiWrapper;
     int m_targetFPS;
-    bool m_playGame;
-    bool m_exitClicked;
     int m_score;
     int m_scoreCombo;
+    bool m_playGame;
+    bool m_exitClicked;
 
     static const char* s_name;
 
