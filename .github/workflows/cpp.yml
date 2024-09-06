@@ -40,6 +40,7 @@ jobs:
              choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
              choco install mingw -y
              choco install ninja -y
+             Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
              refreshenv
       - name: Configure CMake
         run: cmake -G "Ninja" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -B build
