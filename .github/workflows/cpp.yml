@@ -25,11 +25,8 @@ jobs:
         with:
           submodules: 'recursive'
 
-      - name: CMake Action
+      - name: Build project
         uses: threeal/cmake-action@v2
-
-      - name: Build the project
-        run: cmake --build build
 
   WindowsBuild:
     runs-on: windows-latest
@@ -45,11 +42,8 @@ jobs:
         with:
           submodules: 'recursive'
 
-      - name: CMake Action
+      - name: Build project
         uses: threeal/cmake-action@v2
-
-      - name: Build the project
-        run: cmake --build build
 
   MacOSBuild:
     runs-on: macos-latest
@@ -59,8 +53,5 @@ jobs:
         with:
           submodules: 'recursive'
 
-      - name: CMake Action
+      - name: Build project
         uses: threeal/cmake-action@v2
-
-      - name: Build the project
-        run: cmake --build build
