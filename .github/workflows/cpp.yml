@@ -38,11 +38,10 @@ jobs:
       - name: Install dependencies
         run: |
              choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
-             choco install visualstudio2022buildtools -y
-             choco install visualstudio2022-workload-vctools -y
+             choco install mingw -y
              choco install ninja -y
              refreshenv
       - name: Configure CMake
-        run: cmake -G "Ninja" -B build
+        run: cmake -G "Ninja" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -B build
       - name: Build the project
         run: cmake --build build
