@@ -15,34 +15,59 @@ jobs:
   LinuxBuild:
     runs-on: ubuntu-latest
     steps:
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y wayland-protocols libwayland-dev libxkbcommon-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev libgl1-mesa-dev libglu1-mesa-dev
-    - name: Checkout repo
-      uses: actions/checkout@v4
-      with:
-        submodules: 'recursive'
-    - name: CMake Action
-      uses: threeal/cmake-action@v1.3.0
-    - name: Build the project
-      run: cmake --build build
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wayland-protocols libwayland-dev libxkbcommon-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev libgl1-mesa-dev libglu1-mesa-dev
 
-  WindowsBuild:
-    runs-on: windows-latest
-    steps:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
           submodules: 'recursive'
+
+      - name: CMake Action
+        uses: threeal/cmake-action@v1.3.0
+
+      - name: Build the project
+        run: cmake --build build
+
+  WindowsBuild:
+    runs-on: windows-latest
+    steps:
       - name: Install dependencies
         run: |
-             choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
-             choco install mingw -y
-             choco install ninja -y
-             Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
-             refreshenv
-      - name: Configure CMake
-        run: cmake -G "Ninja" -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -B build
+              choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
+              choco install mingw -y
+              choco install ninja -y
+              Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+              refreshenv
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: CMake Action
+        uses: threeal/cmake-action@v1.3.0
+
+      - name: Build the project
+        run: cmake --build build
+
+  MacOSBuild:
+    runs-on: macos-latest
+    steps:
+      - name: Install dependencies
+        run: |
+            brew install gcc
+            brew install ninja
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+
+      - name: CMake Action
+        uses: threeal/cmake-action@v1.3.0
+
       - name: Build the project
         run: cmake --build build
