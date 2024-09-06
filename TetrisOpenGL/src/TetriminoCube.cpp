@@ -4,6 +4,8 @@
 #include <Tetris/Cube.hpp>
 #include <Tetris/TetriminoCube.hpp>
 
+#include <iostream>
+
 //---------------------------------------------------------------
 
 TetriminoCube::TetriminoCube(

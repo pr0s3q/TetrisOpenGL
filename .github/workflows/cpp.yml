@@ -12,7 +12,7 @@ on:
         required: true
 
 jobs:
-  build:
+  LinuxBuild:
     runs-on: ubuntu-latest
     steps:
     - name: Install dependencies
@@ -27,3 +27,22 @@ jobs:
       uses: threeal/cmake-action@v1.3.0
     - name: Build the project
       run: cmake --build build
+
+  WindowsBuild:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          submodules: 'recursive'
+      - name: Install dependencies
+        run: |
+             choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
+             choco install visualstudio2022buildtools -y
+             choco install visualstudio2022-workload-vctools -y
+             choco install ninja -y
+             refreshenv
+      - name: Configure CMake
+        run: cmake -G "Ninja" -B build
+      - name: Build the project
+        run: cmake --build build

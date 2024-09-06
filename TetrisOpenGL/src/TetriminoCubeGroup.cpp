@@ -4,6 +4,7 @@
 #include <Tetris/TetriminoCube.hpp>
 #include <Tetris/TetriminoCubeGroup.hpp>
 
+#include <iostream>
 #include <memory>
 
 //---------------------------------------------------------------
