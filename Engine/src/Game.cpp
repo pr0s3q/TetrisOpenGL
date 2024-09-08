@@ -183,6 +183,7 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
     stbi_image_free(image);
 
     // Set icon
+    stbi_set_flip_vertically_on_load(0);
     image = stbi_load("res/textures/icon.png", &width, &height, &channels, 4);
 
     if (!image)
