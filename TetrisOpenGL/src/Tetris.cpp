@@ -21,25 +21,23 @@ const char* Tetris::s_name = "TetrisOpenGL";
 
 Tetris::Tetris()
     : Game(3200, 1800, "Tetris OpenGL")
-    , m_buttonColor(Color::Turquoise())
-    , m_buttonTextColor(Color::Red())
+    , m_buttonColor(30, 30, 30)
+    , m_buttonColorOnHover(80, 80, 80)
+    , m_buttonTextColor(200, 200, 200)
+    , m_buttonBorderColor(10, 10, 10)
     , m_targetFPS(150)
-    , m_playGame(false)
-    , m_exitClicked(false)
     , m_score(0)
     , m_scoreCombo(1)
+    , m_playGame(false)
+    , m_exitClicked(false)
 {
     m_jsonWrapper.LoadFromFile();
 
     m_cubeGroup = std::make_shared<TetriminoCubeGroup>();
 
-    // m_guiManager is initialized in Game class constructor
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "NotInitializedField"
     m_guiManager.AddFunction(MenuGui());
     m_guiManager.AddFunction(ScoreboardGui());
     m_guiManager.AddFunction(GameScoreGui());
-#pragma clang diagnostic pop
 }
 
 //---------------------------------------------------------------
@@ -353,6 +351,7 @@ std::function<void()> Tetris::MenuGui()
         m_guiManager.CreateButton(
             250.0f,
             100.0f,
+            1.5f,
             m_playText,
             [this]
             {
@@ -360,25 +359,33 @@ std::function<void()> Tetris::MenuGui()
                 m_guiManager.SetFunctionId(2);
             },
             m_buttonColor,
+            m_buttonColorOnHover,
             m_buttonTextColor,
+            m_buttonBorderColor,
             true);
 
         m_guiManager.CreateButton(
             250.0f,
             200.0f,
+            1.5f,
             m_scoreboardText,
             [this] { m_guiManager.SetFunctionId(1); },
             m_buttonColor,
+            m_buttonColorOnHover,
             m_buttonTextColor,
+            m_buttonBorderColor,
             true);
 
         m_guiManager.CreateButton(
             250.0f,
             300.0f,
+            1.5f,
             m_exitText,
             [this] { m_exitClicked = true; },
             m_buttonColor,
+            m_buttonColorOnHover,
             m_buttonTextColor,
+            m_buttonBorderColor,
             true);
     };
 }
@@ -420,10 +427,13 @@ std::function<void()> Tetris::GameScoreGui()
         m_guiManager.CreateButton(
             10.0f,
             50.0f,
+            1.5f,
             m_saveScore,
             [this] { m_jsonWrapper.SaveToFile("Cris", m_score); },
             m_buttonColor,
-            m_buttonTextColor);
+            m_buttonColorOnHover,
+            m_buttonTextColor,
+            m_buttonBorderColor);
         // TODO: Create UI for username input (currently name is hardcoded)
         // TODO: Reset game upon saving score
     };

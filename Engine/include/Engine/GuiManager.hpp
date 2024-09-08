@@ -34,10 +34,13 @@ public:
     void CreateButton(
         float sizeX,
         float posY,
+        float buttonBorderThickness,
         const char* text,
         const std::function<void()>& onClickFunction,
         const Color& buttonColor,
+        const Color& buttonColorOnHover,
         const Color& buttonTextColor,
+        const Color& buttonBorderColor,
         bool center = false) const;
 
     //---------------------------------------------------------------

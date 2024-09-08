@@ -9,6 +9,10 @@ Color::Color(const unsigned char red, const unsigned char green, const unsigned 
     , m_a(alpha)
 {}
 
+Color::Color(const unsigned char red, const unsigned char green, const unsigned char blue)
+    : Color(red, green, blue, 255)
+{}
+
 //---------------------------------------------------------------
 
 unsigned char Color::R() const

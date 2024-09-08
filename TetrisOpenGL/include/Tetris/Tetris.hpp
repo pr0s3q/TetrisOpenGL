@@ -97,7 +97,9 @@ private:
 
     JsonWrapper m_jsonWrapper;
     Color m_buttonColor;
+    Color m_buttonColorOnHover;
     Color m_buttonTextColor;
+    Color m_buttonBorderColor;
     std::vector<std::shared_ptr<Cube>> m_cubes;
     std::shared_ptr<TetriminoCubeGroup> m_cubeGroup;
     std::shared_ptr<ImGuiWrapper> m_ImGuiWrapper;

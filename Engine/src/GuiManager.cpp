@@ -45,10 +45,13 @@ Vector2 GuiManager::CalculateTextSize(const char* text)
 void GuiManager::CreateButton(
     const float sizeX,
     const float posY,
+    const float buttonBorderThickness,
     const char* text,
     const std::function<void()>& onClickFunction,
     const Color& buttonColor,
+    const Color& buttonColorOnHover,
     const Color& buttonTextColor,
+    const Color& buttonBorderColor,
     const bool center) const
 {
     const float cornerRadius = 10.0f * m_scale;
@@ -62,17 +65,23 @@ void GuiManager::CreateButton(
 
     // Button radius
     ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, cornerRadius);
+    // Button border thickness
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, buttonBorderThickness * m_scale);
     // Button BG color
     ImGui::PushStyleColor(ImGuiCol_Button, buttonColor.ToImVec4());
+    // Button BG color on hover
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, buttonColorOnHover.ToImVec4());
     // Button text color
     ImGui::PushStyleColor(ImGuiCol_Text, buttonTextColor.ToImVec4());
+    // Button border color
+    ImGui::PushStyleColor(ImGuiCol_Border, buttonBorderColor.ToImVec4());
 
     if (ImGui::Button(text, ImVec2(250.0f * m_scale, 60.0f * m_scale)))
         onClickFunction();
 
     // Popping styles
-    ImGui::PopStyleVar(1);
-    ImGui::PopStyleColor(2);
+    ImGui::PopStyleVar(2);
+    ImGui::PopStyleColor(4);
 }
 
 //---------------------------------------------------------------
