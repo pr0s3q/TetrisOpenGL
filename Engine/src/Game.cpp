@@ -182,6 +182,23 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
     delete[] imageData;
     stbi_image_free(image);
 
+    // Set icon
+    image = stbi_load("res/textures/icon.png", &width, &height, &channels, 4);
+
+    if (!image)
+    {
+        std::cerr << "Failed to load icon image" << '\n';
+        return;
+    }
+
+    GLFWimage icons[1];
+    icons[0].width = width;
+    icons[0].height = height;
+    icons[0].pixels = image;
+
+    glfwSetWindowIcon(m_window, 1, icons);
+    stbi_image_free(image);
+
     // Bind texture to sampler
     glUseProgram(m_shaderProgram);
     glUniform1i(glGetUniformLocation(m_shaderProgram, "u_Texture"), 0);

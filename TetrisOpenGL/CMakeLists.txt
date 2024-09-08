@@ -35,13 +35,12 @@ add_custom_command(
 # Copy .png file to destination directory
 set(copy_source_dir "${CMAKE_SOURCE_DIR}/TetrisOpenGL/res/textures")
 set(copy_dest_dir "${CMAKE_BINARY_DIR}/TetrisOpenGL/res/textures")
-set(copy_file_name "img.png")
 add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory ${copy_dest_dir}
 )
 add_custom_command(
         TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy "${copy_source_dir}/${copy_file_name}" "${copy_dest_dir}/${copy_file_name}"
-        COMMENT "Copying ${copy_file_name} to build directory"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory "${copy_source_dir}" "${copy_dest_dir}"
+        COMMENT "Copying .png files to build directory"
 )
