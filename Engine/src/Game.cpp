@@ -286,10 +286,11 @@ bool Game::CheckPressedKey(const Key key) const
 
 void Game::DrawSquare(const std::shared_ptr<Entity>& entity)
 {
-    if (m_bindedTexture != entity->m_imageID)
+    const int bindedTexture = entity->m_imageID + entity->m_imageOffset;
+    if (m_bindedTexture != bindedTexture)
     {
-        glBindTexture(GL_TEXTURE_2D, m_textureIDs[entity->m_imageID]);
-        m_bindedTexture = entity->m_imageID;
+        glBindTexture(GL_TEXTURE_2D, m_textureIDs[bindedTexture]);
+        m_bindedTexture = bindedTexture;
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);

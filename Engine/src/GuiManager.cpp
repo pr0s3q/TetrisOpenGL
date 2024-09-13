@@ -128,6 +128,37 @@ void GuiManager::CreateWindow(const float width, const float height, const char*
 
 //---------------------------------------------------------------
 
+void GuiManager::CreateDropDown(
+    const std::vector<const char*>& dropDownValues,
+    const std::function<void(unsigned char)>& onItemSelect)
+{
+    ImGuiComboFlags flags = 0;
+
+    static unsigned char selectedItemIdx = 0;
+
+    const char* combo_preview_value = dropDownValues[selectedItemIdx];
+    const auto dropDownSize = static_cast<unsigned char>(dropDownValues.size());
+
+    if (ImGui::BeginCombo("Cube Color", combo_preview_value, flags))
+    {
+        for (unsigned char n = 0; n < dropDownSize; n++)
+        {
+            const bool isSelected = selectedItemIdx == n;
+            if (ImGui::Selectable(dropDownValues[n], isSelected))
+            {
+                onItemSelect(n);
+                selectedItemIdx = n;
+            }
+
+            if (isSelected)
+                ImGui::SetItemDefaultFocus();
+        }
+        ImGui::EndCombo();
+    }
+}
+
+//---------------------------------------------------------------
+
 void GuiManager::Loop() const
 {
     ImGui_ImplOpenGL3_NewFrame();

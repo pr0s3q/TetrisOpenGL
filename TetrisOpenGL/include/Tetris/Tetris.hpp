@@ -4,6 +4,7 @@
 #include <Engine/Game.hpp>
 
 #include <Tetris/JsonWrapper.hpp>
+#include <Tetris/Settings.hpp>
 
 #include <memory>
 #include <vector>
@@ -88,6 +89,7 @@ private:
     std::function<void()> MenuGui();
     std::function<void()> ScoreboardGui();
     std::function<void()> GameScoreGui();
+    std::function<void()> SettingsGui();
 
     //---------------------------------------------------------------
 
@@ -96,6 +98,7 @@ private:
     //---------------------------------------------------------------
 
     JsonWrapper m_jsonWrapper;
+    Settings m_settings;
     Color m_buttonColor;
     Color m_buttonColorOnHover;
     Color m_buttonTextColor;

@@ -19,11 +19,15 @@ public:
         const std::vector<double>& positions,
         double scaleFactorX,
         double scaleFactorY,
-        int imageId = CUBE_COLOR);
+        int imageId = GlobalColors::CubeColor);
 
     //---------------------------------------------------------------
 
-    Cube(const std::vector<double>& positions, double scaleFactorX, double scaleFactorY, int imageId = CUBE_COLOR);
+    Cube(
+        const std::vector<double>& positions,
+        double scaleFactorX,
+        double scaleFactorY,
+        int imageId = GlobalColors::CubeColor);
 
     //---------------------------------------------------------------
 

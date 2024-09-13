@@ -21,6 +21,7 @@ const char* Tetris::s_name = "TetrisOpenGL";
 
 Tetris::Tetris()
     : Game(3200, 1800, "Tetris OpenGL")
+    , m_settings()
     , m_buttonColor(30, 30, 30)
     , m_buttonColorOnHover(80, 80, 80)
     , m_buttonTextColor(200, 200, 200)
@@ -38,6 +39,7 @@ Tetris::Tetris()
     m_guiManager.AddFunction(MenuGui());
     m_guiManager.AddFunction(ScoreboardGui());
     m_guiManager.AddFunction(GameScoreGui());
+    m_guiManager.AddFunction(SettingsGui());
 }
 
 //---------------------------------------------------------------
@@ -255,14 +257,15 @@ void Tetris::CreateBorder()
     // Bottom bar
     positions.clear();
     positions.insert(positions.end(), { -4.5, -11.5, 4.5, -11.5, -4.5, -10.5, 4.5, -10.5 });
-    std::shared_ptr<Cube> cube = std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, MIDDLE_COLOR);
+    std::shared_ptr<Cube> cube =
+        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::MiddleColor);
     cube->RotateClockwise();
     m_cubes.emplace_back(cube);
 
     // Bottom bar - left part
     positions.clear();
     positions.insert(positions.end(), { -5.5, -11.5, -4.5, -11.5, -5.5, -10.5, -4.5, -10.5 });
-    cube = std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, TOP_COLOR);
+    cube = std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::TopColor);
     cube->RotateClockwise();
     cube->Mirror();
     m_cubes.emplace_back(cube);
@@ -270,7 +273,7 @@ void Tetris::CreateBorder()
     // Bottom bar - right
     positions.clear();
     positions.insert(positions.end(), { 4.5, -11.5, 5.5, -11.5, 4.5, -10.5, 5.5, -10.5 });
-    cube = std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, BOTTOM_COLOR);
+    cube = std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::BottomColor);
     cube->RotateClockwise();
     cube->Mirror();
     m_cubes.emplace_back(cube);
@@ -293,32 +296,38 @@ void Tetris::CreateBorder()
     // Left bar
     positions.clear();
     positions.insert(positions.end(), { -6.5, -9.5, -5.5, -9.5, -6.5, 9.5, -5.5, 9.5 });
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, MIDDLE_COLOR));
+    m_cubes.emplace_back(
+        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::MiddleColor));
 
     // Left bar - top part
     positions.clear();
     positions.insert(positions.end(), { -6.5, 9.5, -5.5, 9.5, -6.5, 10.5, -5.5, 10.5 });
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, TOP_COLOR));
+    m_cubes.emplace_back(
+        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::TopColor));
 
     // Left bar - bottom part
     positions.clear();
     positions.insert(positions.end(), { -6.5, -9.5, -5.5, -9.5, -6.5, -10.5, -5.5, -10.5 });
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, BOTTOM_COLOR));
+    m_cubes.emplace_back(
+        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::BottomColor));
 
     // Right bar
     positions.clear();
     positions.insert(positions.end(), { 5.5, -9.5, 6.5, -9.5, 5.5, 9.5, 6.5, 9.5 });
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, MIDDLE_COLOR));
+    m_cubes.emplace_back(
+        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::MiddleColor));
 
     // Right bar - top part
     positions.clear();
     positions.insert(positions.end(), { 5.5, 10.5, 6.5, 10.5, 5.5, 9.5, 6.5, 9.5 });
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, TOP_COLOR));
+    m_cubes.emplace_back(
+        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::TopColor));
 
     // Right bar - bottom part
     positions.clear();
     positions.insert(positions.end(), { 5.5, -10.5, 6.5, -10.5, 5.5, -9.5, 6.5, -9.5 });
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, BOTTOM_COLOR));
+    m_cubes.emplace_back(
+        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::BottomColor));
 }
 
 //---------------------------------------------------------------
@@ -345,6 +354,7 @@ std::function<void()> Tetris::MenuGui()
         static constexpr char m_scoreboardText[11] = "Scoreboard";
         static constexpr char m_exitText[5] = "Exit";
         static constexpr char m_playText[5] = "Play";
+        static constexpr char m_settingsText[9] = "Settings";
 
         m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name);
 
@@ -380,6 +390,18 @@ std::function<void()> Tetris::MenuGui()
             250.0f,
             300.0f,
             1.5f,
+            m_settingsText,
+            [this] { m_guiManager.SetFunctionId(3); },
+            m_buttonColor,
+            m_buttonColorOnHover,
+            m_buttonTextColor,
+            m_buttonBorderColor,
+            true);
+
+        m_guiManager.CreateButton(
+            250.0f,
+            400.0f,
+            1.5f,
             m_exitText,
             [this] { m_exitClicked = true; },
             m_buttonColor,
@@ -403,8 +425,36 @@ std::function<void()> Tetris::ScoreboardGui()
         {
             std::string text = scores->at(i).playerName + " " + std::to_string(scores->at(i).score);
             const Vector2 labelSize = m_guiManager.CalculateTextSize(text.c_str());
-            m_guiManager.CreateLabel(labelSize.X(), 50.0f * static_cast<float>(i), text.c_str(), true, true);
+            m_guiManager.CreateLabel(labelSize.X(), 100.0f + 50.0f * static_cast<float>(i), text.c_str(), 0.0f, true);
         }
+    };
+}
+
+//---------------------------------------------------------------
+
+std::function<void()> Tetris::SettingsGui()
+{
+    return [this]
+    {
+        m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name);
+
+        constexpr char settingsText[9] = "Settings";
+        const Vector2 labelSize = m_guiManager.CalculateTextSize(settingsText);
+        m_guiManager.CreateLabel(labelSize.X(), 100.0f, settingsText, 0.0f, true);
+
+        std::vector<const char*> items;
+        items.reserve(4);
+        items.insert(items.end(), { "Turquoise", "Yellow", "Lime", "Red" });
+
+        m_guiManager.CreateDropDown(
+            items,
+            [this](auto item)
+            {
+                m_settings.SetCubeColor(item);
+                for (const auto& cube : m_cubes)
+                    cube->SetImageOffset(4 * item);
+                GlobalColors::ImageOffset = 4 * item;
+            });
     };
 }
 

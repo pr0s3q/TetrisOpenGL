@@ -14,11 +14,20 @@ public:
 
     //---------------------------------------------------------------
 
-    Entity(const std::vector<double>& positions, int imageId, double scaleFactorX, double scaleFactorY);
+    Entity(
+        const std::vector<double>& positions,
+        int imageId,
+        int imageOffset,
+        double scaleFactorX,
+        double scaleFactorY);
 
     //---------------------------------------------------------------
 
     virtual ~Entity() = default;
+
+    //---------------------------------------------------------------
+
+    void SetImageOffset(unsigned char offset);
 
     //---------------------------------------------------------------
 
@@ -54,6 +63,7 @@ private:
     //---------------------------------------------------------------
 
     int m_imageID;
+    unsigned char m_imageOffset;
     double m_noOfXRepetition;
     double m_noOfYRepetition;
     std::vector<double> m_baseImageCoords;

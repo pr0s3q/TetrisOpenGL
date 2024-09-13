@@ -50,6 +50,12 @@ public:
 
     //---------------------------------------------------------------
 
+    void CreateDropDown(
+        const std::vector<const char*>& dropDownValues,
+        const std::function<void(unsigned char)>& onItemSelect);
+
+    //---------------------------------------------------------------
+
     void CreateWindow(float width, float height, const char* name) const;
 
     //---------------------------------------------------------------

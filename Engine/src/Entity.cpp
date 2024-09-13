@@ -5,10 +5,12 @@
 Entity::Entity(
     const std::vector<double>& positions,
     const int imageId,
+    const int imageOffset,
     const double scaleFactorX,
     const double scaleFactorY)
-    : m_imageID(imageId)
-    , m_positions()
+    : m_positions()
+    , m_imageID(imageId)
+    , m_imageOffset(imageOffset)
 {
     // Cube position
     m_positions[0] = positions[0] * scaleFactorX;
@@ -34,6 +36,13 @@ Entity::Entity(
     m_baseImageCoords.insert(m_baseImageCoords.end(), { 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0 });
 
     AssignImageCoords();
+}
+
+//---------------------------------------------------------------
+
+void Entity::SetImageOffset(const unsigned char offset)
+{
+    m_imageOffset = offset;
 }
 
 //---------------------------------------------------------------
