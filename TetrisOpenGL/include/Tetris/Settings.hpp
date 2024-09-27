@@ -4,12 +4,53 @@ class Settings
 {
 public:
 
-    Settings() = default;
+    //---------------------------------------------------------------
 
-    void SetCubeColor(unsigned char color);
-    unsigned char GetCubeColor() const;
+    static void SetCubeColor(unsigned char color);
+
+    //---------------------------------------------------------------
+
+    static int GetCubeColor();
+
+    //---------------------------------------------------------------
+
+    static int GetTopColor();
+
+    //---------------------------------------------------------------
+
+    static int GetBottomColor();
+
+    //---------------------------------------------------------------
+
+    static int GetMiddleColor();
+
+    //---------------------------------------------------------------
+
+    static int GetImageOffset();
+
+    //---------------------------------------------------------------
+
+    static void SetImageOffset(int offset);
+
+    //---------------------------------------------------------------
 
 private:
 
-    unsigned char m_cubeColor;
+    //---------------------------------------------------------------
+
+    Settings();
+
+    //---------------------------------------------------------------
+
+    static Settings s_Instance;
+
+    //---------------------------------------------------------------
+
+    int m_cubeColor;
+    int m_topColor;
+    int m_bottomColor;
+    int m_middleColor;
+    int m_imageOffset;
+
+    //---------------------------------------------------------------
 };

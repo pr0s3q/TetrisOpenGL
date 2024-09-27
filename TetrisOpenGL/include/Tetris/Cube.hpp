@@ -2,9 +2,9 @@
 
 #include <Engine/Entity.hpp>
 
-#include <Tetris/HelperDefinitions.hpp>
-
 #include <vector>
+
+#include <Tetris/Settings.hpp>
 
 enum class Key;
 
@@ -19,7 +19,7 @@ public:
         const std::vector<double>& positions,
         double scaleFactorX,
         double scaleFactorY,
-        int imageId = GlobalColors::CubeColor);
+        int imageId = Settings::GetCubeColor());
 
     //---------------------------------------------------------------
 
@@ -27,7 +27,7 @@ public:
         const std::vector<double>& positions,
         double scaleFactorX,
         double scaleFactorY,
-        int imageId = GlobalColors::CubeColor);
+        int imageId = Settings::GetCubeColor());
 
     //---------------------------------------------------------------
 

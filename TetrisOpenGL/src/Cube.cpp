@@ -20,7 +20,7 @@ Cube::Cube(
     const double scaleFactorX,
     const double scaleFactorY,
     const int imageId)
-    : Entity(positions, imageId, GlobalColors::ImageOffset, scaleFactorX, scaleFactorY)
+    : Entity(positions, imageId, Settings::GetImageOffset(), scaleFactorX, scaleFactorY)
     , m_shouldMove(true)
 {}
 

@@ -2,7 +2,6 @@
 #include <Engine/EngineEnums.hpp>
 
 #include <Tetris/Cube.hpp>
-#include <Tetris/HelperDefinitions.hpp>
 #include <Tetris/JsonWrapper.hpp>
 #include <Tetris/TetriminoCreator.hpp>
 #include <Tetris/TetriminoCube.hpp>
@@ -21,7 +20,6 @@ const char* Tetris::s_name = "TetrisOpenGL";
 
 Tetris::Tetris()
     : Game(3200, 1800, "Tetris OpenGL")
-    , m_settings()
     , m_buttonColor(30, 30, 30)
     , m_buttonColorOnHover(80, 80, 80)
     , m_buttonTextColor(200, 200, 200)
@@ -258,14 +256,14 @@ void Tetris::CreateBorder()
     positions.clear();
     positions.insert(positions.end(), { -4.5, -11.5, 4.5, -11.5, -4.5, -10.5, 4.5, -10.5 });
     std::shared_ptr<Cube> cube =
-        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::MiddleColor);
+        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetMiddleColor());
     cube->RotateClockwise();
     m_cubes.emplace_back(cube);
 
     // Bottom bar - left part
     positions.clear();
     positions.insert(positions.end(), { -5.5, -11.5, -4.5, -11.5, -5.5, -10.5, -4.5, -10.5 });
-    cube = std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::TopColor);
+    cube = std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetTopColor());
     cube->RotateClockwise();
     cube->Mirror();
     m_cubes.emplace_back(cube);
@@ -273,7 +271,7 @@ void Tetris::CreateBorder()
     // Bottom bar - right
     positions.clear();
     positions.insert(positions.end(), { 4.5, -11.5, 5.5, -11.5, 4.5, -10.5, 5.5, -10.5 });
-    cube = std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::BottomColor);
+    cube = std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetBottomColor());
     cube->RotateClockwise();
     cube->Mirror();
     m_cubes.emplace_back(cube);
@@ -297,37 +295,37 @@ void Tetris::CreateBorder()
     positions.clear();
     positions.insert(positions.end(), { -6.5, -9.5, -5.5, -9.5, -6.5, 9.5, -5.5, 9.5 });
     m_cubes.emplace_back(
-        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::MiddleColor));
+        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetMiddleColor()));
 
     // Left bar - top part
     positions.clear();
     positions.insert(positions.end(), { -6.5, 9.5, -5.5, 9.5, -6.5, 10.5, -5.5, 10.5 });
     m_cubes.emplace_back(
-        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::TopColor));
+        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetTopColor()));
 
     // Left bar - bottom part
     positions.clear();
     positions.insert(positions.end(), { -6.5, -9.5, -5.5, -9.5, -6.5, -10.5, -5.5, -10.5 });
     m_cubes.emplace_back(
-        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::BottomColor));
+        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetBottomColor()));
 
     // Right bar
     positions.clear();
     positions.insert(positions.end(), { 5.5, -9.5, 6.5, -9.5, 5.5, 9.5, 6.5, 9.5 });
     m_cubes.emplace_back(
-        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::MiddleColor));
+        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetMiddleColor()));
 
     // Right bar - top part
     positions.clear();
     positions.insert(positions.end(), { 5.5, 10.5, 6.5, 10.5, 5.5, 9.5, 6.5, 9.5 });
     m_cubes.emplace_back(
-        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::TopColor));
+        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetTopColor()));
 
     // Right bar - bottom part
     positions.clear();
     positions.insert(positions.end(), { 5.5, -10.5, 6.5, -10.5, 5.5, -9.5, 6.5, -9.5 });
     m_cubes.emplace_back(
-        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, GlobalColors::BottomColor));
+        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetBottomColor()));
 }
 
 //---------------------------------------------------------------
@@ -450,10 +448,9 @@ std::function<void()> Tetris::SettingsGui()
             items,
             [this](auto item)
             {
-                m_settings.SetCubeColor(item);
                 for (const auto& cube : m_cubes)
                     cube->SetImageOffset(4 * item);
-                GlobalColors::ImageOffset = 4 * item;
+                Settings::SetImageOffset(4 * item);
             });
     };
 }

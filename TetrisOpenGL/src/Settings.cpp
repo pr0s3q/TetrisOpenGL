@@ -2,16 +2,65 @@
 
 //---------------------------------------------------------------
 
-void Settings::SetCubeColor(const unsigned char color)
+Settings Settings::s_Instance;
+
+//---------------------------------------------------------------
+
+Settings::Settings()
+    : m_cubeColor(0)
+    , m_topColor(3)
+    , m_bottomColor(1)
+    , m_middleColor(2)
+    , m_imageOffset(0)
+{}
+
+//---------------------------------------------------------------
+
+int Settings::GetCubeColor()
 {
-    m_cubeColor = color;
+    return s_Instance.m_cubeColor;
 }
 
 //---------------------------------------------------------------
 
-unsigned char Settings::GetCubeColor() const
+int Settings::GetTopColor()
 {
-    return m_cubeColor;
+    return s_Instance.m_topColor;
+}
+
+//---------------------------------------------------------------
+
+int Settings::GetBottomColor()
+{
+    return s_Instance.m_bottomColor;
+}
+
+//---------------------------------------------------------------
+
+int Settings::GetMiddleColor()
+{
+    return s_Instance.m_middleColor;
+}
+
+//---------------------------------------------------------------
+
+int Settings::GetImageOffset()
+{
+    return s_Instance.m_imageOffset;
+}
+
+//---------------------------------------------------------------
+
+void Settings::SetCubeColor(const unsigned char color)
+{
+    s_Instance.m_cubeColor = color;
+}
+
+//---------------------------------------------------------------
+
+void Settings::SetImageOffset(const int offset)
+{
+    s_Instance.m_imageOffset = offset;
 }
 
 //---------------------------------------------------------------

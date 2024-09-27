@@ -98,7 +98,6 @@ private:
     //---------------------------------------------------------------
 
     JsonWrapper m_jsonWrapper;
-    Settings m_settings;
     Color m_buttonColor;
     Color m_buttonColorOnHover;
     Color m_buttonTextColor;
