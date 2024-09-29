@@ -20,10 +20,10 @@ const char* Tetris::s_name = "TetrisOpenGL";
 
 Tetris::Tetris()
     : Game(3200, 1800, "Tetris OpenGL")
-    , m_buttonColor(30, 30, 30)
-    , m_buttonColorOnHover(80, 80, 80)
-    , m_buttonTextColor(200, 200, 200)
-    , m_buttonBorderColor(10, 10, 10)
+    , m_uiElementColor(30, 30, 30)
+    , m_uiElementColorOnHover(80, 80, 80)
+    , m_uiElementTextColor(200, 200, 200)
+    , m_uiElementBorderColor(10, 10, 10)
     , m_targetFPS(150)
     , m_score(0)
     , m_scoreCombo(1)
@@ -255,8 +255,7 @@ void Tetris::CreateBorder()
     // Bottom bar
     positions.clear();
     positions.insert(positions.end(), { -4.5, -11.5, 4.5, -11.5, -4.5, -10.5, 4.5, -10.5 });
-    std::shared_ptr<Cube> cube =
-        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetMiddleColor());
+    auto cube = std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetMiddleColor());
     cube->RotateClockwise();
     m_cubes.emplace_back(cube);
 
@@ -366,10 +365,10 @@ std::function<void()> Tetris::MenuGui()
                 m_playGame = true;
                 m_guiManager.SetFunctionId(2);
             },
-            m_buttonColor,
-            m_buttonColorOnHover,
-            m_buttonTextColor,
-            m_buttonBorderColor,
+            m_uiElementColor,
+            m_uiElementColorOnHover,
+            m_uiElementTextColor,
+            m_uiElementBorderColor,
             true);
 
         m_guiManager.CreateButton(
@@ -378,10 +377,10 @@ std::function<void()> Tetris::MenuGui()
             1.5f,
             m_scoreboardText,
             [this] { m_guiManager.SetFunctionId(1); },
-            m_buttonColor,
-            m_buttonColorOnHover,
-            m_buttonTextColor,
-            m_buttonBorderColor,
+            m_uiElementColor,
+            m_uiElementColorOnHover,
+            m_uiElementTextColor,
+            m_uiElementBorderColor,
             true);
 
         m_guiManager.CreateButton(
@@ -390,10 +389,10 @@ std::function<void()> Tetris::MenuGui()
             1.5f,
             m_settingsText,
             [this] { m_guiManager.SetFunctionId(3); },
-            m_buttonColor,
-            m_buttonColorOnHover,
-            m_buttonTextColor,
-            m_buttonBorderColor,
+            m_uiElementColor,
+            m_uiElementColorOnHover,
+            m_uiElementTextColor,
+            m_uiElementBorderColor,
             true);
 
         m_guiManager.CreateButton(
@@ -402,10 +401,10 @@ std::function<void()> Tetris::MenuGui()
             1.5f,
             m_exitText,
             [this] { m_exitClicked = true; },
-            m_buttonColor,
-            m_buttonColorOnHover,
-            m_buttonTextColor,
-            m_buttonBorderColor,
+            m_uiElementColor,
+            m_uiElementColorOnHover,
+            m_uiElementTextColor,
+            m_uiElementBorderColor,
             true);
     };
 }
@@ -422,7 +421,7 @@ std::function<void()> Tetris::ScoreboardGui()
         for (size_t i = 0; i < scores->size() && i < 10; ++i)
         {
             std::string text = scores->at(i).playerName + " " + std::to_string(scores->at(i).score);
-            const Vector2 labelSize = m_guiManager.CalculateTextSize(text.c_str());
+            const Vector2 labelSize = GuiManager::CalculateTextSize(text.c_str());
             m_guiManager.CreateLabel(labelSize.X(), 100.0f + 50.0f * static_cast<float>(i), text.c_str(), 0.0f, true);
         }
     };
@@ -437,12 +436,14 @@ std::function<void()> Tetris::SettingsGui()
         m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name);
 
         constexpr char settingsText[9] = "Settings";
-        const Vector2 labelSize = m_guiManager.CalculateTextSize(settingsText);
+        const Vector2 labelSize = GuiManager::CalculateTextSize(settingsText);
         m_guiManager.CreateLabel(labelSize.X(), 100.0f, settingsText, 0.0f, true);
 
         std::vector<const char*> items;
         items.reserve(4);
         items.insert(items.end(), { "Turquoise", "Yellow", "Lime", "Red" });
+
+        m_guiManager.CreateGap(0.0f, 20.0f);
 
         m_guiManager.CreateDropDown(
             items,
@@ -451,7 +452,14 @@ std::function<void()> Tetris::SettingsGui()
                 for (const auto& cube : m_cubes)
                     cube->SetImageOffset(4 * item);
                 Settings::SetImageOffset(4 * item);
-            });
+            },
+            1.5f,
+            300.0f,
+            m_uiElementColor,
+            m_uiElementColorOnHover,
+            m_uiElementTextColor,
+            m_uiElementBorderColor,
+            "Cube Color");
     };
 }
 
@@ -468,8 +476,8 @@ std::function<void()> Tetris::GameScoreGui()
 
         m_guiManager.CreateLabel(10.0f, 0.0f, m_scoreText, 10.0f);
 
-        const Vector2 labelSize = m_guiManager.CalculateTextSize(m_scoreText);
-        m_guiManager.CreateLabel(20.0f + labelSize.X(), m_score);
+        const Vector2 labelSize = GuiManager::CalculateTextSize(m_scoreText);
+        GuiManager::CreateLabel(5.0f + labelSize.X(), m_score);
 
         m_guiManager.CreateButton(
             10.0f,
@@ -477,10 +485,10 @@ std::function<void()> Tetris::GameScoreGui()
             1.5f,
             m_saveScore,
             [this] { m_jsonWrapper.SaveToFile("Cris", m_score); },
-            m_buttonColor,
-            m_buttonColorOnHover,
-            m_buttonTextColor,
-            m_buttonBorderColor);
+            m_uiElementColor,
+            m_uiElementColorOnHover,
+            m_uiElementTextColor,
+            m_uiElementBorderColor);
         // TODO: Create UI for username input (currently name is hardcoded)
         // TODO: Reset game upon saving score
     };

@@ -130,16 +130,52 @@ void GuiManager::CreateWindow(const float width, const float height, const char*
 
 void GuiManager::CreateDropDown(
     const std::vector<const char*>& dropDownValues,
-    const std::function<void(unsigned char)>& onItemSelect)
+    const std::function<void(unsigned char)>& onItemSelect,
+    const float dropdownBorderThickness,
+    const float dropdownWidth,
+    const Color& dropdownColor,
+    const Color& dropdownColorOnHover,
+    const Color& dropdownTextColor,
+    const Color& dropdownBorderColor,
+    const char* dropdownLabelText) const
 {
-    ImGuiComboFlags flags = 0;
-
     static unsigned char selectedItemIdx = 0;
 
-    const char* combo_preview_value = dropDownValues[selectedItemIdx];
+    const char* previewValue = dropDownValues[selectedItemIdx];
     const auto dropDownSize = static_cast<unsigned char>(dropDownValues.size());
 
-    if (ImGui::BeginCombo("Cube Color", combo_preview_value, flags))
+    const float cornerRadius = 10.0f * m_scale;
+
+    // Combo radius
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, cornerRadius);
+    // Combo border thickness
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, dropdownBorderThickness * m_scale);
+    // Combo padding
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f * m_scale, 5.0f * m_scale));
+    // Combo BG color
+    ImGui::PushStyleColor(ImGuiCol_FrameBg, dropdownColor.ToImVec4());
+    ImGui::PushStyleColor(ImGuiCol_Button, dropdownColor.ToImVec4());
+    ImGui::PushStyleColor(ImGuiCol_Header, dropdownColor.ToImVec4());
+    // Combo BG color on hover
+    ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, dropdownColorOnHover.ToImVec4());
+    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, dropdownColorOnHover.ToImVec4());
+    ImGui::PushStyleColor(ImGuiCol_HeaderHovered, dropdownColorOnHover.ToImVec4());
+    // Combo text color
+    ImGui::PushStyleColor(ImGuiCol_Text, dropdownTextColor.ToImVec4());
+    // Combo border color
+    ImGui::PushStyleColor(ImGuiCol_Border, dropdownBorderColor.ToImVec4());
+
+    // Center the dropdown
+    const ImVec2 windowSize = ImGui::GetWindowSize();
+    const Vector2 textSize = CalculateTextSize(dropdownLabelText);
+    const float xPos = (windowSize.x - textSize.X()) * 0.5f - dropdownWidth;
+    ImGui::SetCursorPosX(xPos);
+
+    // Set dropdown width
+    ImGui::SetNextItemWidth(dropdownWidth * m_scale);
+
+    constexpr ImGuiComboFlags flags = 0;
+    if (ImGui::BeginCombo(dropdownLabelText, previewValue, flags))
     {
         for (unsigned char n = 0; n < dropDownSize; n++)
         {
@@ -155,6 +191,17 @@ void GuiManager::CreateDropDown(
         }
         ImGui::EndCombo();
     }
+
+    // Popping styles
+    ImGui::PopStyleVar(3);
+    ImGui::PopStyleColor(8);
+}
+
+//---------------------------------------------------------------
+
+void GuiManager::CreateGap(const float gapOnX, const float gapOnY) const
+{
+    ImGui::Dummy(ImVec2(gapOnX * m_scale, gapOnY * m_scale));
 }
 
 //---------------------------------------------------------------

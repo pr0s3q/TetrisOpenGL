@@ -27,7 +27,7 @@ public:
 
     //---------------------------------------------------------------
 
-    Vector2 CalculateTextSize(const char* text);
+    static Vector2 CalculateTextSize(const char* text);
 
     //---------------------------------------------------------------
 
@@ -46,13 +46,24 @@ public:
     //---------------------------------------------------------------
 
     void CreateLabel(float sizeX, float posY, const char* text, float offsetX = 0.0f, bool center = false) const;
-    void CreateLabel(float posX, int number);
+    static void CreateLabel(float posX, int number);
 
     //---------------------------------------------------------------
 
     void CreateDropDown(
         const std::vector<const char*>& dropDownValues,
-        const std::function<void(unsigned char)>& onItemSelect);
+        const std::function<void(unsigned char)>& onItemSelect,
+        float dropdownBorderThickness,
+        float dropdownWidth,
+        const Color& dropdownColor,
+        const Color& dropdownColorOnHover,
+        const Color& dropdownTextColor,
+        const Color& dropdownBorderColor,
+        const char* dropdownLabelText) const;
+
+    //---------------------------------------------------------------
+
+    void CreateGap(float gapOnX, float gapOnY) const;
 
     //---------------------------------------------------------------
 

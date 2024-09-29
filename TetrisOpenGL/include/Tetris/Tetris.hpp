@@ -4,7 +4,6 @@
 #include <Engine/Game.hpp>
 
 #include <Tetris/JsonWrapper.hpp>
-#include <Tetris/Settings.hpp>
 
 #include <memory>
 #include <vector>
@@ -15,7 +14,7 @@ class TetriminoCubeGroup;
 
 enum class Key;
 
-class Tetris : Game
+class Tetris final : Game
 {
 public:
 
@@ -98,10 +97,10 @@ private:
     //---------------------------------------------------------------
 
     JsonWrapper m_jsonWrapper;
-    Color m_buttonColor;
-    Color m_buttonColorOnHover;
-    Color m_buttonTextColor;
-    Color m_buttonBorderColor;
+    Color m_uiElementColor;
+    Color m_uiElementColorOnHover;
+    Color m_uiElementTextColor;
+    Color m_uiElementBorderColor;
     std::vector<std::shared_ptr<Cube>> m_cubes;
     std::shared_ptr<TetriminoCubeGroup> m_cubeGroup;
     std::shared_ptr<ImGuiWrapper> m_ImGuiWrapper;
