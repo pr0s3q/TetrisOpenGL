@@ -2,6 +2,11 @@
 
 //---------------------------------------------------------------
 
+Cube::Cube()
+    : m_shouldMove(false)
+{}
+
+//---------------------------------------------------------------
 Cube::Cube(
     const bool staticImage,
     const std::vector<double>& positions,

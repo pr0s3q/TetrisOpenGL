@@ -2,6 +2,16 @@
 
 //---------------------------------------------------------------
 
+Entity::Entity()
+    : m_positions{}
+    , m_imageID(0)
+    , m_imageOffset(0)
+    , m_noOfXRepetition(0)
+    , m_noOfYRepetition(0)
+{}
+
+//---------------------------------------------------------------
+
 Entity::Entity(
     const std::vector<double>& positions,
     const int imageId,

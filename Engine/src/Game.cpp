@@ -170,8 +170,8 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
                     const int arrIndex = textureIndex + channel;
                     const int blockIndex = arrIndex / 4;
                     const int indexInBlock = arrIndex % 4;
-                    const int internalTextureIntex = (noOfBlocks - 1 - blockIndex) * 4 + indexInBlock;
-                    imageData[internalTextureIntex] = image[imageIndex + channel];
+                    const int internalTextureIndex = (noOfBlocks - 1 - blockIndex) * 4 + indexInBlock;
+                    imageData[internalTextureIndex] = image[imageIndex + channel];
                 }
             }
         }
@@ -295,6 +295,27 @@ void Game::DrawSquare(const std::shared_ptr<Entity>& entity)
 
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(entity->m_positions), entity->m_positions);
+
+    glUseProgram(m_shaderProgram);
+    CheckProgramLinking(m_shaderProgram);
+    glBindVertexArray(m_VAO);
+    CheckOpenGLError("Before draw");
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+}
+
+//---------------------------------------------------------------
+
+void Game::DrawSquare(const Entity& entity)
+{
+    const int bindedTexture = entity.m_imageID + entity.m_imageOffset;
+    if (m_bindedTexture != bindedTexture)
+    {
+        glBindTexture(GL_TEXTURE_2D, m_textureIDs[bindedTexture]);
+        m_bindedTexture = bindedTexture;
+    }
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(entity.m_positions), entity.m_positions);
 
     glUseProgram(m_shaderProgram);
     CheckProgramLinking(m_shaderProgram);

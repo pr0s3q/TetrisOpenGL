@@ -46,6 +46,7 @@ public:
     //---------------------------------------------------------------
 
     void DrawSquare(const std::shared_ptr<Entity>& entity);
+    void DrawSquare(const Entity& entity);
 
     //---------------------------------------------------------------
 

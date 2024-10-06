@@ -3,12 +3,12 @@
 #include <Engine/Color.hpp>
 #include <Engine/Game.hpp>
 
+#include <Tetris/Cube.hpp>
 #include <Tetris/JsonWrapper.hpp>
 
 #include <memory>
 #include <vector>
 
-class Cube;
 class ImGuiWrapper;
 class TetriminoCubeGroup;
 
@@ -102,6 +102,7 @@ private:
     Color m_uiElementTextColor;
     Color m_uiElementBorderColor;
     std::vector<std::shared_ptr<Cube>> m_cubes;
+    std::array<Cube, 13> m_borderCubes;
     std::shared_ptr<TetriminoCubeGroup> m_cubeGroup;
     std::shared_ptr<ImGuiWrapper> m_ImGuiWrapper;
     int m_targetFPS;

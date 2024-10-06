@@ -24,6 +24,7 @@ Tetris::Tetris()
     , m_uiElementColorOnHover(80, 80, 80)
     , m_uiElementTextColor(200, 200, 200)
     , m_uiElementBorderColor(10, 10, 10)
+    , m_borderCubes()
     , m_targetFPS(150)
     , m_score(0)
     , m_scoreCombo(1)
@@ -243,88 +244,83 @@ void Tetris::CreateBorder()
     // Max possible cube entities from tetrimino - 11 X 21 -> 231 (11 X 21 is the board size)
     // Total 238 cubes (reserve 250 to have some extra space just in case)
     // If, std::vector will expand over 250, this could mean potential memory leak
-    m_cubes.reserve(250);
+    m_cubes.reserve(240);
 
     std::vector<double> positions;
     positions.reserve(8);
 
     // Bottom left cube
     positions.insert(positions.end(), { -6.5, -11.5, -5.5, -11.5, -6.5, -10.5, -5.5, -10.5 });
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY));
+    m_borderCubes[0] = Cube(true, positions, m_scaleFactorX, m_scaleFactorY);
 
     // Bottom bar
     positions.clear();
     positions.insert(positions.end(), { -4.5, -11.5, 4.5, -11.5, -4.5, -10.5, 4.5, -10.5 });
-    auto cube = std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetMiddleColor());
-    cube->RotateClockwise();
-    m_cubes.emplace_back(cube);
+    auto cube = Cube(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetMiddleColor());
+    cube.RotateClockwise();
+    m_borderCubes[1] = cube;
 
     // Bottom bar - left part
     positions.clear();
     positions.insert(positions.end(), { -5.5, -11.5, -4.5, -11.5, -5.5, -10.5, -4.5, -10.5 });
-    cube = std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetTopColor());
-    cube->RotateClockwise();
-    cube->Mirror();
-    m_cubes.emplace_back(cube);
+    cube = Cube(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetTopColor());
+    cube.RotateClockwise();
+    cube.Mirror();
+    m_borderCubes[2] = cube;
 
     // Bottom bar - right
     positions.clear();
     positions.insert(positions.end(), { 4.5, -11.5, 5.5, -11.5, 4.5, -10.5, 5.5, -10.5 });
-    cube = std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetBottomColor());
-    cube->RotateClockwise();
-    cube->Mirror();
-    m_cubes.emplace_back(cube);
+    cube = Cube(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetBottomColor());
+    cube.RotateClockwise();
+    cube.Mirror();
+    m_borderCubes[3] = cube;
 
     // Bottom right cube
     positions.clear();
     positions.insert(positions.end(), { 5.5, -11.5, 6.5, -11.5, 5.5, -10.5, 6.5, -10.5 });
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY));
+    m_borderCubes[4] = Cube(true, positions, m_scaleFactorX, m_scaleFactorY);
 
     // Top left cube
     positions.clear();
     positions.insert(positions.end(), { -6.5, 10.5, -5.5, 10.5, -6.5, 11.5, -5.5, 11.5 });
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY));
+    m_borderCubes[5] = Cube(true, positions, m_scaleFactorX, m_scaleFactorY);
 
     // Top right cube
     positions.clear();
     positions.insert(positions.end(), { 5.5, 10.5, 6.5, 10.5, 5.5, 11.5, 6.5, 11.5 });
-    m_cubes.emplace_back(std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY));
+    m_borderCubes[6] = Cube(true, positions, m_scaleFactorX, m_scaleFactorY);
 
     // Left bar
     positions.clear();
     positions.insert(positions.end(), { -6.5, -9.5, -5.5, -9.5, -6.5, 9.5, -5.5, 9.5 });
-    m_cubes.emplace_back(
-        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetMiddleColor()));
+    m_borderCubes[7] = Cube(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetMiddleColor());
+    // m_cubes.emplace_back(
 
     // Left bar - top part
     positions.clear();
     positions.insert(positions.end(), { -6.5, 9.5, -5.5, 9.5, -6.5, 10.5, -5.5, 10.5 });
-    m_cubes.emplace_back(
-        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetTopColor()));
+    m_borderCubes[8] = Cube(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetTopColor());
 
     // Left bar - bottom part
     positions.clear();
     positions.insert(positions.end(), { -6.5, -9.5, -5.5, -9.5, -6.5, -10.5, -5.5, -10.5 });
-    m_cubes.emplace_back(
-        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetBottomColor()));
+    m_borderCubes[9] = Cube(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetBottomColor());
 
     // Right bar
     positions.clear();
     positions.insert(positions.end(), { 5.5, -9.5, 6.5, -9.5, 5.5, 9.5, 6.5, 9.5 });
-    m_cubes.emplace_back(
-        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetMiddleColor()));
+    m_borderCubes[10] = Cube(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetMiddleColor());
 
     // Right bar - top part
     positions.clear();
     positions.insert(positions.end(), { 5.5, 10.5, 6.5, 10.5, 5.5, 9.5, 6.5, 9.5 });
-    m_cubes.emplace_back(
-        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetTopColor()));
+    m_borderCubes[11] = Cube(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetTopColor());
 
     // Right bar - bottom part
     positions.clear();
     positions.insert(positions.end(), { 5.5, -10.5, 6.5, -10.5, 5.5, -9.5, 6.5, -9.5 });
-    m_cubes.emplace_back(
-        std::make_shared<Cube>(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetBottomColor()));
+    m_borderCubes[12] = Cube(true, positions, m_scaleFactorX, m_scaleFactorY, Settings::GetBottomColor());
 }
 
 //---------------------------------------------------------------
@@ -526,6 +522,9 @@ bool Tetris::InternalLoop()
     if (m_playGame)
     {
         for (const auto& cube : m_cubes)
+            DrawSquare(cube);
+
+        for (const auto& cube : m_borderCubes)
             DrawSquare(cube);
 
         if (CheckTime())
