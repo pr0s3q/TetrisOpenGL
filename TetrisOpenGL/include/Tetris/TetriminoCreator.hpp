@@ -15,7 +15,7 @@ public:
     //---------------------------------------------------------------
 
     static void Create(
-        const std::shared_ptr<TetriminoCubeGroup>& cubeGroup,
+        TetriminoCubeGroup& cubeGroup,
         std::vector<std::shared_ptr<Cube>>& cubes,
         double scaleFactorX,
         double scaleFactorY);
@@ -24,7 +24,7 @@ public:
 
     static void RotateIfPossible(
         const std::vector<std::shared_ptr<Cube>>& cubes,
-        const std::shared_ptr<TetriminoCubeGroup>& cubeGroup,
+        TetriminoCubeGroup& cubeGroup,
         const double& scaleFactorX,
         const double& scaleFactorY);
 
@@ -53,7 +53,7 @@ private:
         const std::vector<std::shared_ptr<Cube>>& cubes,
         const std::vector<int>& xLocations,
         const std::vector<int>& yLocations,
-        const std::shared_ptr<TetriminoCubeGroup>& cubeGroup);
+        TetriminoCubeGroup& cubeGroup);
 
     //---------------------------------------------------------------
 };

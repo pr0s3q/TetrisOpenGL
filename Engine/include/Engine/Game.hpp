@@ -37,7 +37,7 @@ public:
 
     //---------------------------------------------------------------
 
-    bool CheckPressedKey(Key key) const;
+    [[nodiscard]] bool CheckPressedKey(Key key) const;
 
     //---------------------------------------------------------------
 
@@ -50,7 +50,7 @@ public:
 
     //---------------------------------------------------------------
 
-    ImGuiIO& InitImGui() const;
+    [[nodiscard]] ImGuiIO& InitImGui() const;
 
     //---------------------------------------------------------------
 
@@ -69,7 +69,7 @@ public:
     /// Check, whether program should terminate
     /// </summary>
     /// <returns>True, if game should terminate, false otherwise</returns>
-    bool ShouldTerminate() const;
+    [[nodiscard]] bool ShouldTerminate() const;
 
     //---------------------------------------------------------------
 
@@ -77,7 +77,6 @@ protected:
 
     //---------------------------------------------------------------
 
-    GLFWwindow* m_window;
     const int m_height;
     const int m_width;
     double m_scaleFactorX;
@@ -125,6 +124,7 @@ private:
 
     //---------------------------------------------------------------
 
+    GLFWwindow* m_window;
     double m_dtFactor;
     double m_lastTime;
     std::unique_ptr<unsigned int[]> m_textureIDs;

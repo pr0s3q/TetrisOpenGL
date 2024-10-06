@@ -42,8 +42,14 @@ Entity::Entity(
     m_noOfXRepetition = positions[0] - positions[2];
     m_noOfYRepetition = positions[1] - positions[5];
 
-    m_baseImageCoords.reserve(8);
-    m_baseImageCoords.insert(m_baseImageCoords.end(), { 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 1.0 });
+    m_baseImageCoords[0] = 0.0;
+    m_baseImageCoords[1] = 0.0;
+    m_baseImageCoords[2] = 1.0;
+    m_baseImageCoords[3] = 0.0;
+    m_baseImageCoords[4] = 0.0;
+    m_baseImageCoords[5] = 1.0;
+    m_baseImageCoords[6] = 1.0;
+    m_baseImageCoords[7] = 1.0;
 
     AssignImageCoords();
 }

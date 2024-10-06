@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.28)
 project(TetrisOpenGL)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 
 add_executable(${PROJECT_NAME} Main.cpp
         src/BoardManager.cpp

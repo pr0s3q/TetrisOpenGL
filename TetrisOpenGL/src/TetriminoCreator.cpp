@@ -13,7 +13,7 @@
 //---------------------------------------------------------------
 
 void TetriminoCreator::Create(
-    const std::shared_ptr<TetriminoCubeGroup>& cubeGroup,
+    TetriminoCubeGroup& cubeGroup,
     std::vector<std::shared_ptr<Cube>>& cubes,
     const double scaleFactorX,
     const double scaleFactorY)
@@ -37,7 +37,7 @@ void TetriminoCreator::Create(
         rng_engine(clock() + std::hash<std::thread::id>()(std::this_thread::get_id()));
     auto generator = std::bind(uid, rng_engine);
     const auto type = static_cast<TetriminoType>(generator());
-    cubeGroup->SetType(type);
+    cubeGroup.SetType(type);
 
     std::vector<std::vector<double>> positions;
     std::vector<int> xLocations;
@@ -55,7 +55,7 @@ void TetriminoCreator::Create(
             std::make_shared<TetriminoCube>(positions[i], xLocations[i], yLocations[i], scaleFactorX, scaleFactorY);
         cubes.emplace_back(cube);
         tetriminoCubes.emplace_back(cube);
-        cubeGroup->AddCube(cube);
+        cubeGroup.AddCube(cube);
     }
 }
 
@@ -63,18 +63,18 @@ void TetriminoCreator::Create(
 
 void TetriminoCreator::RotateIfPossible(
     const std::vector<std::shared_ptr<Cube>>& cubes,
-    const std::shared_ptr<TetriminoCubeGroup>& cubeGroup,
+    TetriminoCubeGroup& cubeGroup,
     const double& scaleFactorX,
     const double& scaleFactorY)
 {
-    const TetriminoType type = cubeGroup->GetType();
+    const TetriminoType type = cubeGroup.GetType();
 
     if (type == TetriminoType::O)
         return;
 
-    const int xMovingFactor = cubeGroup->GetXMovingFactor();
-    const int yMovingFactor = cubeGroup->GetYMovingFactor();
-    int rotation = cubeGroup->GetRotation() + 1;
+    const int xMovingFactor = cubeGroup.GetXMovingFactor();
+    const int yMovingFactor = cubeGroup.GetYMovingFactor();
+    int rotation = cubeGroup.GetRotation() + 1;
     std::vector<int> xLocations;
     std::vector<int> yLocations;
     std::vector<std::vector<double>> positions;
@@ -113,7 +113,7 @@ void TetriminoCreator::RotateIfPossible(
         return;
 
     CreateTetriminoPositions(positions, xLocations, yLocations);
-    cubeGroup->ApplyRotationPositions(positions, xLocations, yLocations, rotation, scaleFactorX, scaleFactorY);
+    cubeGroup.ApplyRotationPositions(positions, xLocations, yLocations, rotation, scaleFactorX, scaleFactorY);
 }
 
 //---------------------------------------------------------------
@@ -287,7 +287,7 @@ bool TetriminoCreator::IsCollidingWithOtherCubes(
     const std::vector<std::shared_ptr<Cube>>& cubes,
     const std::vector<int>& xLocations,
     const std::vector<int>& yLocations,
-    const std::shared_ptr<TetriminoCubeGroup>& cubeGroup)
+    TetriminoCubeGroup& cubeGroup)
 {
     for (const int xLocation : xLocations)
         if (xLocation < -5 || xLocation > 5)
@@ -297,7 +297,7 @@ bool TetriminoCreator::IsCollidingWithOtherCubes(
         if (yLocation < -10 || yLocation > 10)
             return true;
 
-    const auto tetriminoCubes = cubeGroup->GetCubes();
+    const auto& tetriminoCubes = cubeGroup.GetCubes();
     for (const auto& cube : cubes)
     {
         if (cube->IsStatic())

@@ -5,13 +5,10 @@
 
 #include <Tetris/Cube.hpp>
 #include <Tetris/JsonWrapper.hpp>
+#include <Tetris/TetriminoCubeGroup.hpp>
 
-#include <array>
 #include <memory>
 #include <vector>
-
-class ImGuiWrapper;
-class TetriminoCubeGroup;
 
 enum class Key;
 
@@ -104,8 +101,7 @@ private:
     Color m_uiElementBorderColor;
     std::vector<std::shared_ptr<Cube>> m_cubes;
     Cube m_borderCubes[13];
-    std::shared_ptr<TetriminoCubeGroup> m_cubeGroup;
-    std::shared_ptr<ImGuiWrapper> m_ImGuiWrapper;
+    TetriminoCubeGroup m_cubeGroup;
     int m_targetFPS;
     int m_score;
     int m_scoreCombo;

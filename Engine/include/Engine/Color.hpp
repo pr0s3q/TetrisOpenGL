@@ -28,14 +28,14 @@ public:
 
     //---------------------------------------------------------------
 
-    unsigned char R() const;
-    unsigned char G() const;
-    unsigned char B() const;
-    unsigned char A() const;
+    [[nodiscard]] unsigned char R() const;
+    [[nodiscard]] unsigned char G() const;
+    [[nodiscard]] unsigned char B() const;
+    [[nodiscard]] unsigned char A() const;
 
     //---------------------------------------------------------------
 
-    ImVec4 ToImVec4() const;
+    [[nodiscard]] ImVec4 ToImVec4() const;
 
     //---------------------------------------------------------------
 

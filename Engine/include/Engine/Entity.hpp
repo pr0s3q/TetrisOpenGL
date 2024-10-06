@@ -70,7 +70,7 @@ private:
     unsigned char m_imageOffset;
     double m_noOfXRepetition;
     double m_noOfYRepetition;
-    std::vector<double> m_baseImageCoords;
+    double m_baseImageCoords[8];
 
     //---------------------------------------------------------------
 };

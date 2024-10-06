@@ -33,8 +33,6 @@ Tetris::Tetris()
 {
     m_jsonWrapper.LoadFromFile();
 
-    m_cubeGroup = std::make_shared<TetriminoCubeGroup>();
-
     m_guiManager.AddFunction(MenuGui());
     m_guiManager.AddFunction(ScoreboardGui());
     m_guiManager.AddFunction(GameScoreGui());
@@ -200,13 +198,13 @@ void Tetris::CheckPressedKey(const Key keyPressed, const double& scaleFactor)
         case Key::LEFT:
         case Key::RIGHT:
         {
-            m_cubeGroup->MoveCubes(m_cubes, scaleFactor, keyPressed);
+            m_cubeGroup.MoveCubes(m_cubes, scaleFactor, keyPressed);
 
-            if (m_cubeGroup->ShouldBeMovable(m_cubes))
+            if (m_cubeGroup.ShouldBeMovable(m_cubes))
                 return;
 
-            m_cubeGroup->SetMove(false);
-            m_cubeGroup->ResetCubes();
+            m_cubeGroup.SetMove(false);
+            m_cubeGroup.ResetCubes();
             CheckForRowToDelete();
             TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
             break;

@@ -33,7 +33,7 @@ public:
 
     //---------------------------------------------------------------
 
-    bool CanBeMoved(const std::vector<std::shared_ptr<Cube>>& cubes, const Key keyPressed) const;
+    [[nodiscard]] bool CanBeMoved(const std::vector<std::shared_ptr<Cube>>& cubes, const Key keyPressed) const;
 
     //---------------------------------------------------------------
 
@@ -41,19 +41,19 @@ public:
 
     //---------------------------------------------------------------
 
-    int GetRotation() const;
+    [[nodiscard]] int GetRotation() const;
 
     //---------------------------------------------------------------
 
-    TetriminoType GetType() const;
+    [[nodiscard]] TetriminoType GetType() const;
 
     //---------------------------------------------------------------
 
-    int GetXMovingFactor() const;
+    [[nodiscard]] int GetXMovingFactor() const;
 
     //---------------------------------------------------------------
 
-    int GetYMovingFactor() const;
+    [[nodiscard]] int GetYMovingFactor() const;
 
     //---------------------------------------------------------------
 
@@ -73,7 +73,7 @@ public:
 
     //---------------------------------------------------------------
 
-    bool ShouldBeMovable(const std::vector<std::shared_ptr<Cube>>& cubes) const;
+    [[nodiscard]] bool ShouldBeMovable(const std::vector<std::shared_ptr<Cube>>& cubes) const;
 
     //---------------------------------------------------------------
 

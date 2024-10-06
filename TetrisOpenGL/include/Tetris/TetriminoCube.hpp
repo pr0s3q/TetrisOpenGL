@@ -7,7 +7,7 @@
 enum class Key;
 class ConnectedTetriminoCubes;
 
-class TetriminoCube : public Cube
+class TetriminoCube final : public Cube
 {
 public:
 
@@ -31,15 +31,15 @@ public:
 
     //---------------------------------------------------------------
 
-    bool CanBeMoved(Key keyPressed) const;
+    [[nodiscard]] bool CanBeMoved(Key keyPressed) const;
 
     //---------------------------------------------------------------
 
-    int GetXLocation() const;
+    [[nodiscard]] int GetXLocation() const;
 
     //---------------------------------------------------------------
 
-    int GetYLocation() const;
+    [[nodiscard]] int GetYLocation() const;
 
     //---------------------------------------------------------------
 
