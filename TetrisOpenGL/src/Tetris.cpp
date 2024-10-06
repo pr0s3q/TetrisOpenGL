@@ -217,8 +217,8 @@ void Tetris::CheckPressedKey(const Key keyPressed, const double& scaleFactor)
         case Key::DEBUG_KEY_1:
         {
 #ifdef _DEBUG
-            m_cubeGroup->SetMove(false);
-            m_cubeGroup->ResetCubes();
+            m_cubeGroup.SetMove(false);
+            m_cubeGroup.ResetCubes();
             TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
 #endif
             break;
