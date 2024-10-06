@@ -6,6 +6,7 @@
 #include <Tetris/Cube.hpp>
 #include <Tetris/JsonWrapper.hpp>
 
+#include <array>
 #include <memory>
 #include <vector>
 
@@ -102,7 +103,7 @@ private:
     Color m_uiElementTextColor;
     Color m_uiElementBorderColor;
     std::vector<std::shared_ptr<Cube>> m_cubes;
-    std::array<Cube, 13> m_borderCubes;
+    Cube m_borderCubes[13];
     std::shared_ptr<TetriminoCubeGroup> m_cubeGroup;
     std::shared_ptr<ImGuiWrapper> m_ImGuiWrapper;
     int m_targetFPS;

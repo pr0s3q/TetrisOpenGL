@@ -240,10 +240,10 @@ void Tetris::CreateBorder()
 {
     m_cubes = std::vector<std::shared_ptr<Cube>>();
     // Reserve std::vector, so the array is not going to expand during runtime
-    // Border - 7 cubes
+    // Border - 13 cubes
     // Max possible cube entities from tetrimino - 11 X 21 -> 231 (11 X 21 is the board size)
-    // Total 238 cubes (reserve 250 to have some extra space just in case)
-    // If, std::vector will expand over 250, this could mean potential memory leak
+    // Total 238 cubes (reserve 240 to have some extra space just in case)
+    // If, std::vector will expand over 240, this could mean potential memory leak
     m_cubes.reserve(240);
 
     std::vector<double> positions;
@@ -447,6 +447,10 @@ std::function<void()> Tetris::SettingsGui()
             {
                 for (const auto& cube : m_cubes)
                     cube->SetImageOffset(4 * item);
+
+                for (auto& cube : m_borderCubes)
+                    cube.SetImageOffset(4 * item);
+
                 Settings::SetImageOffset(4 * item);
             },
             1.5f,
