@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Engine/Array.hpp>
 #include <Engine/Color.hpp>
 #include <Engine/Game.hpp>
 
@@ -100,7 +101,7 @@ private:
     Color m_uiElementTextColor;
     Color m_uiElementBorderColor;
     std::vector<std::shared_ptr<Cube>> m_cubes;
-    Cube m_borderCubes[13];
+    Array<Cube, 13> m_borderCubes;
     TetriminoCubeGroup m_cubeGroup;
     int m_targetFPS;
     int m_score;
