@@ -67,6 +67,18 @@ public:
 
     //---------------------------------------------------------------
 
+    void CreateTextInput(
+        float sizeX,
+        float posY,
+        char (&textInput)[21],
+        float textInputBorderThickness,
+        const Color& textInputColor,
+        const Color& textInputTextColor,
+        const Color& textInputBorderColor,
+        bool center) const;
+
+    //---------------------------------------------------------------
+
     void CreateWindow(float width, float height, const char* name) const;
 
     //---------------------------------------------------------------

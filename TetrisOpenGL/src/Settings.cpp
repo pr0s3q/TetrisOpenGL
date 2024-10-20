@@ -51,13 +51,6 @@ int Settings::GetImageOffset()
 
 //---------------------------------------------------------------
 
-void Settings::SetCubeColor(const unsigned char color)
-{
-    s_Instance.m_cubeColor = color;
-}
-
-//---------------------------------------------------------------
-
 void Settings::SetImageOffset(const int offset)
 {
     s_Instance.m_imageOffset = offset;

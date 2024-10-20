@@ -36,6 +36,7 @@ Tetris::Tetris()
     m_guiManager.AddFunction(ScoreboardGui());
     m_guiManager.AddFunction(GameScoreGui());
     m_guiManager.AddFunction(SettingsGui());
+    m_guiManager.AddFunction(SaveScoreGui());
 }
 
 //---------------------------------------------------------------
@@ -481,13 +482,61 @@ std::function<void()> Tetris::GameScoreGui()
             50.0f,
             1.5f,
             m_saveScore,
-            [this] { m_jsonWrapper.SaveToFile("Cris", m_score); },
+            [this]
+            {
+                m_playGame = false;
+                m_guiManager.SetFunctionId(4);
+            },
             m_uiElementColor,
             m_uiElementColorOnHover,
             m_uiElementTextColor,
             m_uiElementBorderColor);
-        // TODO: Create UI for username input (currently name is hardcoded)
-        // TODO: Reset game upon saving score
+    };
+}
+
+//---------------------------------------------------------------
+
+std::function<void()> Tetris::SaveScoreGui()
+{
+    return [this]
+    {
+        constexpr char m_saveScore[11] = "Save Score";
+        static char nameBuffer[21] = "";
+
+        m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name);
+
+        m_guiManager.CreateTextInput(
+            700.0f,
+            100.0f,
+            nameBuffer,
+            1.5f,
+            m_uiElementColor,
+            m_uiElementTextColor,
+            m_uiElementBorderColor,
+            true);
+
+        m_guiManager.CreateButton(
+            250.0f,
+            200.0f,
+            1.5f,
+            m_saveScore,
+            [this]
+            {
+                if (m_score != 0)
+                {
+                    m_jsonWrapper.SaveToFile(nameBuffer, m_score);
+                    ResetGame();
+                }
+
+                memset(nameBuffer, 0, sizeof(nameBuffer));
+                m_playGame = true;
+                m_guiManager.SetFunctionId(2);
+            },
+            m_uiElementColor,
+            m_uiElementColorOnHover,
+            m_uiElementTextColor,
+            m_uiElementBorderColor,
+            true);
     };
 }
 
@@ -497,6 +546,19 @@ void Tetris::AddScore()
 {
     m_score += m_scoreCombo * 100;
     ++m_scoreCombo;
+}
+
+//---------------------------------------------------------------
+
+void Tetris::ResetGame()
+{
+    m_score = 0;
+    m_scoreCombo = 0;
+    m_cubeGroup.ResetCubes();
+
+    m_cubes.clear();
+
+    TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
 }
 
 //---------------------------------------------------------------

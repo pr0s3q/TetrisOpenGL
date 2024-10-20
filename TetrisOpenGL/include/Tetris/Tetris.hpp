@@ -88,10 +88,15 @@ private:
     std::function<void()> ScoreboardGui();
     std::function<void()> GameScoreGui();
     std::function<void()> SettingsGui();
+    std::function<void()> SaveScoreGui();
 
     //---------------------------------------------------------------
 
     void AddScore();
+
+    //---------------------------------------------------------------
+
+    void ResetGame();
 
     //---------------------------------------------------------------
 

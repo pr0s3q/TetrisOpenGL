@@ -206,6 +206,52 @@ void GuiManager::CreateGap(const float gapOnX, const float gapOnY) const
 
 //---------------------------------------------------------------
 
+void GuiManager::CreateTextInput(
+    const float sizeX,
+    const float posY,
+    char (&textInput)[21],
+    const float textInputBorderThickness,
+    const Color& textInputColor,
+    const Color& textInputTextColor,
+    const Color& textInputBorderColor,
+    const bool center) const
+{
+    const float cornerRadius = 10.0f * m_scale;
+    float xPos;
+    if (center)
+        xPos = (1600.0f - sizeX) / 2.0f;
+    else
+        xPos = cornerRadius / 2.0f;
+
+    ImGui::SetCursorPos({ xPos * m_scale, posY * m_scale });
+
+    // TextInput radius
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, cornerRadius);
+    // TextInput border thickness
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, textInputBorderThickness * m_scale);
+    // TextInput padding
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(10.0f * m_scale, 5.0f * m_scale));
+    // TextInput BG color
+    ImGui::PushStyleColor(ImGuiCol_FrameBg, textInputColor.ToImVec4());
+    ImGui::PushStyleColor(ImGuiCol_Button, textInputColor.ToImVec4());
+    ImGui::PushStyleColor(ImGuiCol_Header, textInputColor.ToImVec4());
+    // TextInput text color
+    ImGui::PushStyleColor(ImGuiCol_Text, textInputTextColor.ToImVec4());
+    // TextInput border color
+    ImGui::PushStyleColor(ImGuiCol_Border, textInputBorderColor.ToImVec4());
+
+    // Set TextInput width
+    ImGui::SetNextItemWidth(sizeX * m_scale);
+    constexpr size_t textSize = static_cast<int>(std::size(textInput));
+    ImGui::InputText("##", textInput, textSize);
+
+    // Popping styles
+    ImGui::PopStyleVar(3);
+    ImGui::PopStyleColor(5);
+}
+
+//---------------------------------------------------------------
+
 void GuiManager::Loop() const
 {
     ImGui_ImplOpenGL3_NewFrame();
