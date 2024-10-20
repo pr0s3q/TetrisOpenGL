@@ -242,7 +242,7 @@ void GuiManager::CreateTextInput(
 
     // Set TextInput width
     ImGui::SetNextItemWidth(sizeX * m_scale);
-    constexpr size_t textSize = static_cast<int>(std::size(textInput));
+    constexpr int textSize = IM_ARRAYSIZE(textInput);
     ImGui::InputText("##", textInput, textSize);
 
     // Popping styles
