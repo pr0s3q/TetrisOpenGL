@@ -225,8 +225,12 @@ void Tetris::CheckPressedKey(const Key keyPressed, const double& scaleFactor)
         }
         case Key::ESC:
         {
-            m_guiManager.SetFunctionId(0);
-            m_playGame = false;
+            m_guiManager.PopFunctionId();
+            if (m_guiManager.CurrentFunctionId() == 2)
+                m_playGame = true;
+            else
+                m_playGame = false;
+
             break;
         }
     }
@@ -357,7 +361,7 @@ std::function<void()> Tetris::MenuGui()
             [this]
             {
                 m_playGame = true;
-                m_guiManager.SetFunctionId(2);
+                m_guiManager.PushFunctionId(2);
             },
             m_uiElementColor,
             m_uiElementColorOnHover,
@@ -370,7 +374,7 @@ std::function<void()> Tetris::MenuGui()
             200.0f,
             1.5f,
             m_scoreboardText,
-            [this] { m_guiManager.SetFunctionId(1); },
+            [this] { m_guiManager.PushFunctionId(1); },
             m_uiElementColor,
             m_uiElementColorOnHover,
             m_uiElementTextColor,
@@ -382,7 +386,7 @@ std::function<void()> Tetris::MenuGui()
             300.0f,
             1.5f,
             m_settingsText,
-            [this] { m_guiManager.SetFunctionId(3); },
+            [this] { m_guiManager.PushFunctionId(3); },
             m_uiElementColor,
             m_uiElementColorOnHover,
             m_uiElementTextColor,
@@ -485,7 +489,7 @@ std::function<void()> Tetris::GameScoreGui()
             [this]
             {
                 m_playGame = false;
-                m_guiManager.SetFunctionId(4);
+                m_guiManager.PushFunctionId(4);
             },
             m_uiElementColor,
             m_uiElementColorOnHover,
@@ -530,7 +534,7 @@ std::function<void()> Tetris::SaveScoreGui()
 
                 memset(nameBuffer, 0, sizeof(nameBuffer));
                 m_playGame = true;
-                m_guiManager.SetFunctionId(2);
+                m_guiManager.PopFunctionId();
             },
             m_uiElementColor,
             m_uiElementColorOnHover,
@@ -580,7 +584,8 @@ bool Tetris::InternalLoop()
 
     m_guiManager.Loop();
 
-    CheckPressedKey(Key::ESC);
+    if (CheckTime())
+        CheckPressedKey(Key::ESC);
 
     if (m_playGame)
     {

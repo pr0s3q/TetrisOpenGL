@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Engine/Stack.hpp>
 #include <Engine/Vector2.hpp>
 
 #include <functional>
@@ -28,6 +29,10 @@ public:
     //---------------------------------------------------------------
 
     static Vector2 CalculateTextSize(const char* text);
+
+    //---------------------------------------------------------------
+
+    [[nodiscard]] unsigned long long CurrentFunctionId() const;
 
     //---------------------------------------------------------------
 
@@ -91,7 +96,11 @@ public:
 
     //---------------------------------------------------------------
 
-    bool SetFunctionId(unsigned long long functionId);
+    void PushFunctionId(unsigned long long id);
+
+    //---------------------------------------------------------------
+
+    void PopFunctionId();
 
     //---------------------------------------------------------------
 
@@ -101,7 +110,7 @@ private:
 
     ImFont* m_font;
     std::vector<std::function<void()>> m_functions;
-    unsigned long long m_functionId;
+    Stack<unsigned long long, 10> m_functionIdStack;
     float m_scale;
 
     //---------------------------------------------------------------

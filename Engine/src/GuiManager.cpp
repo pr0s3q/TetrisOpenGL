@@ -10,9 +10,11 @@
 
 GuiManager::GuiManager(const float scale)
     : m_font(nullptr)
-    , m_functionId(0)
-    , m_scale(scale)
-{}
+    ,m_functionIdStack()
+    ,m_scale(scale)
+{
+    m_functionIdStack.Push(0);
+}
 
 //---------------------------------------------------------------
 
@@ -38,6 +40,13 @@ void GuiManager::AddFunction(const std::function<void()>& function)
 Vector2 GuiManager::CalculateTextSize(const char* text)
 {
     return Vector2(ImGui::CalcTextSize(text, nullptr, true));
+}
+
+//---------------------------------------------------------------
+
+unsigned long long GuiManager::CurrentFunctionId() const
+{
+    return m_functionIdStack.Peek();
 }
 
 //---------------------------------------------------------------
@@ -258,7 +267,7 @@ void GuiManager::Loop() const
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    m_functions[m_functionId]();
+    m_functions[m_functionIdStack.Peek()]();
 
     ImGui::PopFont();
     ImGui::End();
@@ -277,13 +286,17 @@ void GuiManager::PushFont() const
 
 //---------------------------------------------------------------
 
-bool GuiManager::SetFunctionId(const unsigned long long functionId)
+void GuiManager::PushFunctionId(const unsigned long long id)
 {
-    if (m_functions.size() < functionId)
-        return false;
+    m_functionIdStack.Push(id);
+}
 
-    m_functionId = functionId;
-    return true;
+//---------------------------------------------------------------
+
+void GuiManager::PopFunctionId()
+{
+    if (m_functionIdStack.ElementCount() > 1)
+        m_functionIdStack.Pop();
 }
 
 //---------------------------------------------------------------
