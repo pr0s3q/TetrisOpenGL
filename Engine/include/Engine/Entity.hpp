@@ -70,7 +70,8 @@ private:
     unsigned char m_imageOffset;
     double m_noOfXRepetition;
     double m_noOfYRepetition;
-    double m_baseImageCoords[8];
+
+    static double s_baseImageCoords[4];
 
     //---------------------------------------------------------------
 };

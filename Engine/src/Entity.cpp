@@ -2,6 +2,10 @@
 
 //---------------------------------------------------------------
 
+double Entity::s_baseImageCoords[] = {0.0, 0.0, 1.0, 1.0};
+
+//---------------------------------------------------------------
+
 Entity::Entity()
     : m_positions{}
     , m_imageID(0)
@@ -41,15 +45,6 @@ Entity::Entity(
 
     m_noOfXRepetition = positions[0] - positions[2];
     m_noOfYRepetition = positions[1] - positions[5];
-
-    m_baseImageCoords[0] = 0.0;
-    m_baseImageCoords[1] = 0.0;
-    m_baseImageCoords[2] = 1.0;
-    m_baseImageCoords[3] = 0.0;
-    m_baseImageCoords[4] = 0.0;
-    m_baseImageCoords[5] = 1.0;
-    m_baseImageCoords[6] = 1.0;
-    m_baseImageCoords[7] = 1.0;
 
     AssignImageCoords();
 }
@@ -123,14 +118,14 @@ void Entity::RotateClockwise()
 
 void Entity::AssignImageCoords()
 {
-    m_positions[2] = m_baseImageCoords[0];
-    m_positions[3] = m_baseImageCoords[1];
-    m_positions[6] = m_baseImageCoords[2];
-    m_positions[7] = m_baseImageCoords[3];
-    m_positions[10] = m_baseImageCoords[4];
-    m_positions[11] = m_baseImageCoords[5];
-    m_positions[14] = m_baseImageCoords[6];
-    m_positions[15] = m_baseImageCoords[7];
+    m_positions[2] = s_baseImageCoords[0];
+    m_positions[3] = s_baseImageCoords[1];
+    m_positions[6] = s_baseImageCoords[2];
+    m_positions[7] = s_baseImageCoords[1];
+    m_positions[10] = s_baseImageCoords[0];
+    m_positions[11] = s_baseImageCoords[3];
+    m_positions[14] = s_baseImageCoords[2];
+    m_positions[15] = s_baseImageCoords[3];
 
     m_positions[6] *= m_noOfXRepetition;
     m_positions[11] *= m_noOfYRepetition;

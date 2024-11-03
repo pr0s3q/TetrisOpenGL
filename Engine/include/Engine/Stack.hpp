@@ -12,7 +12,7 @@ public:
 
     //---------------------------------------------------------------
 
-    unsigned int ElementCount() const;
+    [[nodiscard]] unsigned int ElementCount() const;
 
     //---------------------------------------------------------------
 

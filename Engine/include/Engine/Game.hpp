@@ -50,10 +50,6 @@ public:
 
     //---------------------------------------------------------------
 
-    [[nodiscard]] ImGuiIO& InitImGui() const;
-
-    //---------------------------------------------------------------
-
     virtual bool InternalLoop() = 0;
 
     //---------------------------------------------------------------
@@ -81,13 +77,6 @@ protected:
     const int m_width;
     double m_scaleFactorX;
     double m_scaleFactorY;
-    const char* m_vertexShaderSource;
-    const char* m_fragmentShaderSource;
-    unsigned int m_fragmentShader;
-    unsigned int m_vertexShader;
-    unsigned int m_shaderProgram;
-    unsigned int m_VAO;
-    unsigned int m_VBO;
     GuiManager m_guiManager;
 
     //---------------------------------------------------------------
@@ -112,6 +101,10 @@ private:
 
     //---------------------------------------------------------------
 
+    [[nodiscard]] ImGuiIO& InitImGui() const;
+
+    //---------------------------------------------------------------
+
     /// <summary>
     /// Throws std::runtime_error with specific error message
     /// </summary>
@@ -127,6 +120,13 @@ private:
     GLFWwindow* m_window;
     double m_dtFactor;
     double m_lastTime;
+    const char* m_vertexShaderSource;
+    const char* m_fragmentShaderSource;
+    unsigned int m_fragmentShader;
+    unsigned int m_vertexShader;
+    unsigned int m_shaderProgram;
+    unsigned int m_VAO;
+    unsigned int m_VBO;
     std::unique_ptr<unsigned int[]> m_textureIDs;
     int m_boundTexture;
 
