@@ -585,7 +585,17 @@ bool Tetris::InternalLoop()
     m_guiManager.Loop();
 
     if (CheckTime())
+    {
+        if (m_playGame)
+        {
+            CheckPressedKey(Key::DOWN, m_scaleFactorY);
+            CheckPressedKey(Key::UP, m_scaleFactorY);
+            CheckPressedKey(Key::LEFT, m_scaleFactorX);
+            CheckPressedKey(Key::RIGHT, m_scaleFactorX);
+            CheckPressedKey(Key::ROTATE);
+        }
         CheckPressedKey(Key::ESC);
+    }
 
     if (m_playGame)
     {
@@ -597,11 +607,6 @@ bool Tetris::InternalLoop()
 
         if (CheckTime())
         {
-            CheckPressedKey(Key::DOWN, m_scaleFactorY);
-            CheckPressedKey(Key::UP, m_scaleFactorY);
-            CheckPressedKey(Key::LEFT, m_scaleFactorX);
-            CheckPressedKey(Key::RIGHT, m_scaleFactorX);
-            CheckPressedKey(Key::ROTATE);
 
 #ifdef _DEBUG // Extra feature for debug - L key is creating new TetriminoCube
             CheckPressedKey(Key::DEBUG_KEY_1);
