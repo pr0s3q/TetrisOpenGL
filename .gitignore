@@ -13,3 +13,14 @@ cmake-build-release
 *.ini
 *.json
 *.diff
+*.a
+
+Makefile
+CMakeCache.txt
+cmake_install.cmake
+_deps
+CMakeFiles
+TetrisOpenGL/TetrisOpenGL
+*sensitivity
+Engine/GLEW
+Engine/GLFW
