@@ -44,14 +44,3 @@ jobs:
 
       - name: Build project
         uses: threeal/cmake-action@v2
-
-  MacOSBuild:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          submodules: 'recursive'
-
-      - name: Build project
-        uses: threeal/cmake-action@v2
