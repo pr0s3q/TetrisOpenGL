@@ -84,7 +84,7 @@ public:
 
     //---------------------------------------------------------------
 
-    void CreateWindow(float width, float height, const char* name) const;
+    void CreateWindow(float sizeX, float sizeY, const char* name, bool center) const;
 
     //---------------------------------------------------------------
 

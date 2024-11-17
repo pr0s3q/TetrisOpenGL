@@ -66,6 +66,21 @@ private:
 
     //---------------------------------------------------------------
 
+    /// <summary>
+    /// Validate, if new created Tetrimino is not touching the floor
+    /// or if it is not overlapping other cubes.
+    /// If so, the game is over.
+    /// </summary>
+    /// <returns>False if any problems with new tetrimino has been found.
+    /// True otherwise.</returns>
+    [[nodiscard]] bool ValidateNewTetrimino() const;
+
+    //---------------------------------------------------------------
+
+    void SetGameOver();
+
+    //---------------------------------------------------------------
+
     void CheckPressedKey(Key keyPressed, const double& scaleFactor = 0.0);
 
     //---------------------------------------------------------------
@@ -89,6 +104,7 @@ private:
     std::function<void()> GameScoreGui();
     std::function<void()> SettingsGui();
     std::function<void()> SaveScoreGui();
+    std::function<void()> GameOverGui();
 
     //---------------------------------------------------------------
 

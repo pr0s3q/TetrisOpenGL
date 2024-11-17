@@ -37,6 +37,7 @@ Tetris::Tetris()
     m_guiManager.AddFunction(GameScoreGui());
     m_guiManager.AddFunction(SettingsGui());
     m_guiManager.AddFunction(SaveScoreGui());
+    m_guiManager.AddFunction(GameOverGui());
 }
 
 //---------------------------------------------------------------
@@ -186,6 +187,27 @@ void Tetris::CheckForRowToDelete()
 
 //---------------------------------------------------------------
 
+bool Tetris::ValidateNewTetrimino() const
+{
+    if (!m_cubeGroup.ShouldBeMovable(m_cubes))
+        return false;
+
+    if (m_cubeGroup.OverlapOtherCubes(m_cubes))
+        return false;
+
+    return true;
+}
+
+//---------------------------------------------------------------
+
+void Tetris::SetGameOver()
+{
+    m_playGame = false;
+    m_guiManager.PushFunctionId(5);
+}
+
+//---------------------------------------------------------------
+
 void Tetris::CheckPressedKey(const Key keyPressed, const double& scaleFactor)
 {
     if (!Game::CheckPressedKey(keyPressed))
@@ -207,6 +229,9 @@ void Tetris::CheckPressedKey(const Key keyPressed, const double& scaleFactor)
             m_cubeGroup.ResetCubes();
             CheckForRowToDelete();
             TetriminoCreator::Create(m_cubeGroup, m_cubes, m_scaleFactorX, m_scaleFactorY);
+            if (!ValidateNewTetrimino())
+                SetGameOver();
+
             break;
         }
         case Key::ROTATE:
@@ -346,12 +371,12 @@ std::function<void()> Tetris::MenuGui()
 {
     return [this]
     {
-        static constexpr char m_scoreboardText[11] = "Scoreboard";
-        static constexpr char m_exitText[5] = "Exit";
-        static constexpr char m_playText[5] = "Play";
-        static constexpr char m_settingsText[9] = "Settings";
+        static constexpr auto m_scoreboardText = "Scoreboard";
+        static constexpr auto m_exitText = "Exit";
+        static constexpr auto m_playText = "Play";
+        static constexpr auto m_settingsText = "Settings";
 
-        m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name);
+        m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name, false);
 
         m_guiManager.CreateButton(
             250.0f,
@@ -413,7 +438,7 @@ std::function<void()> Tetris::ScoreboardGui()
 {
     return [this]
     {
-        m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name);
+        m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name, false);
 
         const std::vector<Score>* scores = m_jsonWrapper.GetScores();
         for (size_t i = 0; i < scores->size() && i < 10; ++i)
@@ -431,9 +456,9 @@ std::function<void()> Tetris::SettingsGui()
 {
     return [this]
     {
-        m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name);
+        m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name, false);
 
-        constexpr char settingsText[9] = "Settings";
+        constexpr auto settingsText = "Settings";
         const Vector2 labelSize = GuiManager::CalculateTextSize(settingsText);
         m_guiManager.CreateLabel(labelSize.X(), 100.0f, settingsText, 0.0f, true);
 
@@ -471,10 +496,10 @@ std::function<void()> Tetris::GameScoreGui()
 {
     return [this]
     {
-        constexpr char m_scoreText[8] = "Score: ";
-        constexpr char m_saveScore[11] = "Save Score";
+        constexpr auto m_scoreText = "Score: ";
+        constexpr auto m_saveScore = "Save Score";
 
-        m_guiManager.CreateWindow(static_cast<float>(m_width) / 3, static_cast<float>(m_height), s_name);
+        m_guiManager.CreateWindow(static_cast<float>(m_width) / 3, static_cast<float>(m_height), s_name, false);
 
         m_guiManager.CreateLabel(10.0f, 0.0f, m_scoreText, 10.0f);
 
@@ -504,10 +529,10 @@ std::function<void()> Tetris::SaveScoreGui()
 {
     return [this]
     {
-        constexpr char m_saveScore[11] = "Save Score";
+        constexpr auto m_saveScore = "Save Score";
         static char nameBuffer[21] = "";
 
-        m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name);
+        m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name, false);
 
         m_guiManager.CreateTextInput(
             700.0f,
@@ -526,13 +551,60 @@ std::function<void()> Tetris::SaveScoreGui()
             m_saveScore,
             [this]
             {
-                if (m_score != 0)
-                {
-                    m_jsonWrapper.SaveToFile(nameBuffer, m_score);
-                    ResetGame();
-                }
-
+                m_jsonWrapper.SaveToFile(nameBuffer, m_score);
                 memset(nameBuffer, 0, sizeof(nameBuffer));
+                m_playGame = true;
+                m_guiManager.PopFunctionId();
+                if (m_guiManager.CurrentFunctionId() == 5)
+                    m_guiManager.PopFunctionId();
+
+                ResetGame();
+            },
+            m_uiElementColor,
+            m_uiElementColorOnHover,
+            m_uiElementTextColor,
+            m_uiElementBorderColor,
+            true);
+    };
+}
+
+//---------------------------------------------------------------
+
+std::function<void()> Tetris::GameOverGui()
+{
+    return [this]
+    {
+        constexpr auto m_gameOverText = "Game Over";
+        constexpr auto m_saveScore = "Save Score";
+        constexpr auto m_newGame = "New Game";
+        const Vector2 labelSize = GuiManager::CalculateTextSize(m_gameOverText);
+        m_guiManager.CreateWindow(static_cast<float>(m_width), static_cast<float>(m_height), s_name, true);
+        m_guiManager.CreateLabel(labelSize.X(), 100.0f, m_gameOverText, 10.0f, true);
+
+        m_guiManager.CreateButton(
+            250.0f,
+            175.0f,
+            1.5f,
+            m_saveScore,
+            [this]
+            {
+                m_playGame = false;
+                m_guiManager.PushFunctionId(4);
+            },
+            m_uiElementColor,
+            m_uiElementColorOnHover,
+            m_uiElementTextColor,
+            m_uiElementBorderColor,
+            true);
+
+        m_guiManager.CreateButton(
+            250.0f,
+            275.0f,
+            1.5f,
+            m_newGame,
+            [this]
+            {
+                ResetGame();
                 m_playGame = true;
                 m_guiManager.PopFunctionId();
             },

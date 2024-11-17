@@ -22,11 +22,11 @@ Game::Game(const int screenWidth, const int screenHeight, const char* title)
     , m_width(screenWidth)
     , m_scaleFactorX(70.0 * m_width / 1600 / m_width)
     , m_scaleFactorY(70.0 * m_height / 900 / m_height)
-    , m_VAO()
-    , m_VBO()
     , m_guiManager(static_cast<float>(m_width) / 1600)
     , m_dtFactor(0.1)
     , m_lastTime(0)
+    , m_VAO()
+    , m_VBO()
     , m_boundTexture(0)
 {
     if (!glfwInit())
@@ -286,11 +286,11 @@ bool Game::CheckPressedKey(const Key key) const
 
 void Game::DrawSquare(const std::shared_ptr<Entity>& entity)
 {
-    const int bindedTexture = entity->m_imageID + entity->m_imageOffset;
-    if (m_boundTexture != bindedTexture)
+    const int boundTexture = entity->m_imageID + entity->m_imageOffset;
+    if (m_boundTexture != boundTexture)
     {
-        glBindTexture(GL_TEXTURE_2D, m_textureIDs[bindedTexture]);
-        m_boundTexture = bindedTexture;
+        glBindTexture(GL_TEXTURE_2D, m_textureIDs[boundTexture]);
+        m_boundTexture = boundTexture;
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
@@ -307,11 +307,11 @@ void Game::DrawSquare(const std::shared_ptr<Entity>& entity)
 
 void Game::DrawSquare(const Entity& entity)
 {
-    const int bindedTexture = entity.m_imageID + entity.m_imageOffset;
-    if (m_boundTexture != bindedTexture)
+    const int boundTexture = entity.m_imageID + entity.m_imageOffset;
+    if (m_boundTexture != boundTexture)
     {
-        glBindTexture(GL_TEXTURE_2D, m_textureIDs[bindedTexture]);
-        m_boundTexture = bindedTexture;
+        glBindTexture(GL_TEXTURE_2D, m_textureIDs[boundTexture]);
+        m_boundTexture = boundTexture;
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);

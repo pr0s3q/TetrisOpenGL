@@ -10,8 +10,8 @@
 
 GuiManager::GuiManager(const float scale)
     : m_font(nullptr)
-    ,m_functionIdStack()
-    ,m_scale(scale)
+    , m_functionIdStack()
+    , m_scale(scale)
 {
     m_functionIdStack.Push(0);
 }
@@ -122,10 +122,13 @@ void GuiManager::CreateLabel(const float posX, const int number)
 
 //---------------------------------------------------------------
 
-void GuiManager::CreateWindow(const float width, const float height, const char* name) const
+void GuiManager::CreateWindow(const float sizeX, const float sizeY, const char* name, const bool center) const
 {
-    ImGui::SetNextWindowSize({ width, height });
-    ImGui::SetNextWindowPos({ 0, 0 });
+    ImGui::SetNextWindowSize({ sizeX, sizeY });
+    float xPos = 0;
+    if (center)
+        xPos = (1600.0f * m_scale - sizeX) / 2.0f;
+    ImGui::SetNextWindowPos({ xPos, 0 });
     ImGui::Begin(
         name,
         nullptr,

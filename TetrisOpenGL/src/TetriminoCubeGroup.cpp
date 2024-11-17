@@ -220,8 +220,10 @@ bool TetriminoCubeGroup::ShouldBeMovable(const std::vector<std::shared_ptr<Cube>
                 break;
             }
         }
+
         if (belongToCurrentGroup)
             continue;
+
         for (const auto& tetriminoCube : m_tetriminoCubes)
             if (cubeEntity->GetXLocation() == tetriminoCube->GetXLocation() &&
                 cubeEntity->GetYLocation() == tetriminoCube->GetYLocation() - 1)
@@ -229,6 +231,40 @@ bool TetriminoCubeGroup::ShouldBeMovable(const std::vector<std::shared_ptr<Cube>
     }
 
     return shouldBeMovable;
+}
+
+//---------------------------------------------------------------
+
+bool TetriminoCubeGroup::OverlapOtherCubes(const std::vector<std::shared_ptr<Cube>>& cubes) const
+{
+    bool overlap = false;
+
+    for (const auto& cube : cubes)
+    {
+        if (cube->IsStatic())
+            continue;
+
+        const auto cubeEntity = std::dynamic_pointer_cast<TetriminoCube>(cube);
+        bool belongToCurrentGroup = false;
+        for (const auto& tetriminoCube : m_tetriminoCubes)
+        {
+            if (tetriminoCube == cubeEntity)
+            {
+                belongToCurrentGroup = true;
+                break;
+            }
+        }
+
+        if (belongToCurrentGroup)
+            continue;
+
+        for (const auto& tetriminoCube : m_tetriminoCubes)
+            if (cubeEntity->GetXLocation() == tetriminoCube->GetXLocation() &&
+                cubeEntity->GetYLocation() == tetriminoCube->GetYLocation())
+                overlap = true;
+    }
+
+    return overlap;
 }
 
 //---------------------------------------------------------------
