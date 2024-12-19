@@ -27,6 +27,10 @@ public:
 
     //---------------------------------------------------------------
 
+    [[nodiscard]] unsigned int Size() const;
+
+    //---------------------------------------------------------------
+
 private:
 
     //---------------------------------------------------------------
@@ -88,6 +92,14 @@ T& Array<T, N>::operator[](unsigned int index)
         return m_internalArray[index];
 
     return m_internalArray[0];
+}
+
+//---------------------------------------------------------------
+
+template <typename T, unsigned int N>
+unsigned int Array<T, N>::Size() const
+{
+    return N;
 }
 
 //---------------------------------------------------------------
