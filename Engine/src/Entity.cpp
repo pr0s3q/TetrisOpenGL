@@ -22,7 +22,7 @@ Entity::Entity(
     const int imageOffset,
     const double scaleFactorX,
     const double scaleFactorY)
-    : m_positions()
+    : m_positions(new double)
     , m_imageID(imageId)
     , m_imageOffset(imageOffset)
 {
